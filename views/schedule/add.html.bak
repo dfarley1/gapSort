@@ -1,0 +1,8 @@
+@auth.requires_login()
+{{extend 'layout.html'}}
+
+<h1 style="text-align: center;">
+    Add an Event to Your Schedule
+</h1>
+
+{{=form}}

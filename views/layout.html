@@ -57,15 +57,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          {{=response.logo or ''}}
+          <!--{{=response.logo or ''}}-->
+            <h1 style="color: white;text-decoration: none;"><a href="../default/index" style="color: white;text-decoration: none;">
+                GapSort
+            </a></h1>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav navbar-right">
             {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}}
           </ul>
-          {{if response.menu:}}
+          <!-- {{if response.menu:}}
           {{=MENU(response.menu, _class='nav navbar-nav',li_class='dropdown',ul_class='dropdown-menu')}}
-          {{pass}}
+          {{pass}} -->
         </div>
       </div>
     </nav>
@@ -105,10 +108,7 @@
     <footer class="footer">
       <div class="container-fluid">
         <div class="copyright pull-left">{{=T('Copyright')}} &#169; {{=request.now.year}}</div>
-          <div id="poweredBy" class="pull-right">
-            {{=T('Powered by')}}
-            <a href="http://www.web2py.com/">web2py</a>
-          </div>
+          
       </div>
     </footer>
     {{end}}
@@ -126,6 +126,6 @@
     </script>
     {{pass}}
     <!-- Share ============================y============ -->
-    <script src="{{=URL('static','js/share.js',vars=dict(static=URL('static','images')))}}"></script>
+    <!--<script src="{{=URL('static','js/share.js',vars=dict(static=URL('static','images')))}}"></script>-->
   </body>
 </html>
