@@ -1,0 +1,4 @@
+user_groups.id,user_groups.user_id,user_groups.group_id
+1,1,2
+2,2,2
+3,3,2
