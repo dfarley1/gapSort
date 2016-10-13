@@ -1,0 +1,26 @@
+{{extend 'layout.html'}}
+<h1>Your Schedule</h1>
+
+{{import datetime}}
+<div style="border-style: solid; border-radius: 4px;">
+    
+{{for i in range(0,14):}}
+
+<div style="position: relative;display: inline-block;">
+    <img src="../static/images/tile.png" style="display: inline;">
+    <p style="position: absolute;color: white;top: 0px;left: 0px;">
+        {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}      
+        {{=date + datetime.timedelta(days=i)}}
+    </p>
+    {{for event in events:}}
+    {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
+    <p style="position: absolute;left: 0px; top: 50px; color: red;">
+    {{=event.description}}<br>
+    </p>        
+    {{pass}}
+    {{pass}}
+    
+</div>
+{{pass}}
+    
+    </div>
