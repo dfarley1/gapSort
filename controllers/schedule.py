@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # try something like
+import datetime
+
 def index(): return dict(message="hello from schedule.py")
 
 @auth.requires_login()
@@ -12,3 +14,15 @@ def add():
     if form.process().accepted:
         redirect('../default/index')
     return dict(form=form)
+
+def myschedule():
+    date = datetime.date.today()
+    events = db(db.events.user_id == auth.user.id).select();
+    weekdays = week   = ['Sunday', 
+              'Monday', 
+              'Tuesday', 
+              'Wednesday', 
+              'Thursday',  
+              'Friday', 
+              'Saturday']
+    return dict(date=date, events=events, weekdays=weekdays)
