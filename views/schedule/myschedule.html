@@ -1,26 +1,28 @@
 {{extend 'layout.html'}}
+<link rel="stylesheet" type = "text/css" href="../static/css/schedule.css">
 <h1>Your Schedule</h1>
 
 {{import datetime}}
-<div style="border-style: solid; border-radius: 4px;">
-    
+<div class="whole_calendar">
+
 {{for i in range(0,14):}}
 
-<div style="position: relative;display: inline-block;">
-    <img src="../static/images/tile.png" style="display: inline;">
-    <p style="position: absolute;color: white;top: 0px;left: 0px;">
-        {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}      
+<a href="./add"><div class="calendar_tile">
+
+    <p class="date">
+        {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         {{=date + datetime.timedelta(days=i)}}
     </p>
     {{for event in events:}}
     {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
-    <p style="position: absolute;left: 0px; top: 50px; color: red;">
+    <p class="event">
     {{=event.description}}<br>
-    </p>        
+    </p>
     {{pass}}
     {{pass}}
-    
-</div>
+
+</div></a>
 {{pass}}
-    
+
+<a href="./add"><div class="addevent"></div></a>
     </div>

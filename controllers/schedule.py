@@ -16,6 +16,7 @@ def add():
         redirect('../default/index')
     return dict(form=form)
 
+@auth.requires_login()
 def myschedule():
     date = datetime.date.today()
     events = db(db.events.user_id == auth.user.id).select();
