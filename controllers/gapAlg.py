@@ -5,7 +5,12 @@ import datetime
 from gluon import DAL, Field
 from collections import namedtuple
 
+#group that is hard coded in
 GROUP = 1
+
+#indexes in the tuples of start and end time
+START_TIME = 0
+END_TIME = 1
 
 @auth.requires_login()
 def gaps():
@@ -50,16 +55,16 @@ def gaps():
     while True:
 
         #if the gap starts after the event
-        if gap[0] > event[1]:
+        if gap[START_TIME] > event[END_TIME]:
             if events:
                 event = events.pop()
                 continue
             break
 
         #if the gap ends before the event
-        if gap[1] < event[0]:
+        if gap[END_TIME] < event[START_TIME]:
             #insert the gap into the database!!
-            db.gaps.insert(start_time=gap[0],end_time=gap[1],group_id=GROUP)
+            db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=GROUP)
             if temp_gaps:
                 gap = temp_gaps.pop()
                 continue
@@ -68,10 +73,10 @@ def gaps():
         #if they overlap
         else:
             #if the event falls within the gap
-            if (gap[0] < event[0]) and (gap[1] > event[1]):
+            if (gap[START_TIME] < event[END_TIME]) and (gap[END_TIME] > event[START_TIME]):
                 #create two new gaps
-                gap1 = (gap[0],event[0])
-                gap2 = (event[1],gap[1])
+                gap1 = (gap[START_TIME],event[START_TIME])
+                gap2 = (event[END_TIME],gap[END_TIME])
 
                 #insert the second gap onto stack
                 temp_gaps.insert(0,gap2)
@@ -85,9 +90,9 @@ def gaps():
                 break
 
             #if the event begins before the gap and end before the gap does
-            if gap[0] < event[0]:
+            if gap[START_TIME] < event[START_TIME]:
                 #reset the gap to the accurate gap
-                gap = (gap[0],event[0])
+                gap = (gap[START_TIME],event[START_TIME])
 
                 if events:
                     event = events.pop()
@@ -97,18 +102,18 @@ def gaps():
             #if the event begins after the gap begins and ends after the gap
             else:
                 #reset the gap to the accurate gap
-                gap = (event[1],gap[1])
+                gap = (event[END_TIME],gap[END_TIME])
                 if events:
                     event = events.pop()
                     continue
                 break
 
     #insert the gap we are looking at once done
-    db.gaps.insert(start_time=gap[0],end_time=gap[1],group_id=GROUP)
+    db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=GROUP)
 
     #insert the rest of temp_gaps into the database.
     for gap in temp_gaps:
-        db.gaps.insert(start_time=gap[0],end_time=gap[1],group_id=GROUP)
+        db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=GROUP)
 
     #set random message
     return dict(message='done')
