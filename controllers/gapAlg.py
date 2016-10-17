@@ -9,7 +9,16 @@ GROUP = 1
 
 @auth.requires_login()
 def gaps():
-	"""main gap finding alg"""
+	"""gaps()
+
+	Removes the elements in db.gaps associated with group GROUP
+	Finds gaps in the users events and then places them in db.gaps
+	With the correct group_id
+
+	**NOTES**: currently does not have a view to see them on the webpage,
+	also currently the group is hard-coded to group_id=1 and finding gaps in
+	date range 10-5-16 -> 10-19-15. Will want to change this to prompt user
+	for what information they want"""
 
 	#clear the gaps in the group id
 	db(db.gaps.group_id == GROUP).delete()
@@ -28,17 +37,18 @@ def gaps():
 	#create a list to store all temporary gaps in
 	temp_gaps = []
 
+	#hard_coded start and end date
 	gap_start = datetime.datetime(2016,10,05)
 	gap_end = datetime.datetime(2016,10,19)
 
 	temp_gaps.append((gap_start,gap_end))
 
-	msg = ''
-
 	event = events.pop()
 	gap = temp_gaps.pop()
 
+	#loop through until all events are accounted for
 	while True:
+
 		#if the gap starts after the event
 		if gap[0] > event[1]:
 			if events:
@@ -63,7 +73,10 @@ def gaps():
 				gap1 = (gap[0],event[0])
 				gap2 = (event[1],gap[1])
 
+				#insert the second gap onto stack
 				temp_gaps.insert(0,gap2)
+
+				#loop back on the first event
 				gap = gap1
 
 				if events:
@@ -71,29 +84,31 @@ def gaps():
 					continue
 				break
 
+			#if the event begins before the gap and end before the gap does
 			if gap[0] < event[0]:
-				#event begins after gap and ends after gap,
-				#since the events are sorted by finish time we do not know if one starts earlier and therefore,
-				#cannot push this gap onto the db
+				#reset the gap to the accurate gap
 				gap = (gap[0],event[0])
+
 				if events:
 					event = events.pop()
 					continue
 				break
-				#gap[1] = event[0]
+
+			#if the event begins after the gap begins and ends after the gap
 			else:
-				#event begins before gap and ends before gap ends, because of ordering we can move onto next event,
-				#although we cannot move onto next gap because the next event might conflict.
+				#reset the gap to the accurate gap
 				gap = (event[1],gap[1])
 				if events:
 					event = events.pop()
 					continue
 				break
 
+	#insert the gap we are looking at once done
 	db.gaps.insert(start_time=gap[0],end_time=gap[1],group_id=GROUP)
+
 	#insert the rest of temp_gaps into the database.
 	for gap in temp_gaps:
 		db.gaps.insert(start_time=gap[0],end_time=gap[1],group_id=GROUP)
 
-	# #set random message
+	#set random message
 	return dict(message='done')
