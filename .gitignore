@@ -1,7 +1,7 @@
 **/*.bak
 **/*.log
 **/*.DS_Store
-sessions/*
-databases/*
-errors/*
-languages/*
+sessions/**
+databases/**
+errors/**
+languages/**
