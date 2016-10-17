@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # try something like
+<<<<<<< HEAD
 import datetime
 
+=======
+>>>>>>> c6e7b0a11531c5983076c95310851e8b8ed1fbd4
 def index(): return dict(message="hello from schedule.py")
 
 @auth.requires_login()
@@ -14,6 +17,7 @@ def add():
     if form.process().accepted:
         redirect('../default/index')
     return dict(form=form)
+<<<<<<< HEAD
 
 def myschedule():
     date = datetime.date.today()
@@ -26,3 +30,5 @@ def myschedule():
               'Friday', 
               'Saturday']
     return dict(date=date, events=events, weekdays=weekdays)
+=======
+>>>>>>> c6e7b0a11531c5983076c95310851e8b8ed1fbd4

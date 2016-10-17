@@ -1,4 +1,5 @@
 {{extend 'layout.html'}}
+<<<<<<< HEAD
 <link rel="stylesheet" type = "text/css" href="../static/css/index.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="../static/js/index.js"></script>
@@ -6,10 +7,17 @@
 <!--<button id="edit">
     <a href="../schedule/add">Edit Your Schedule</a>
 </button>
+=======
+
+<button>
+    <a href="../schedule/add">Edit Your Schedule</a>
+</button><br><br>
+>>>>>>> c6e7b0a11531c5983076c95310851e8b8ed1fbd4
 
 
 <button>
     <a href="../schedule/myschedule">See Your Schedule</a>
+<<<<<<< HEAD
 </button>
 
 
@@ -33,3 +41,15 @@
 <a href="#"><div id="create_group">Create Group</div></a>
     
 </body>
+=======
+</button><br><br>
+
+
+<button>
+    <a href="../group/name">Create A Group</a>
+</button><br><br>
+
+<button>
+	<a href="../gapAlg/gaps">See Gaps</a>
+</button><br><br>
+>>>>>>> c6e7b0a11531c5983076c95310851e8b8ed1fbd4

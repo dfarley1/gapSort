@@ -1,0 +1,7 @@
+events.id,events.user_id,events.start_time,events.end_time,events.description,events.name,events.group_id
+1,2,2016-10-13 12:03:00,2016-10-13 12:10:00,start 12:03 end 12:10,userid2 event1,2
+2,2,2016-10-13 12:15:00,2016-10-13 12:20:00,start 12:15 end 12:20,userid2 event2,2
+3,2,2016-10-13 12:25:00,2016-10-13 12:30:00,start 12:25 end 12:30,userid2 event3,2
+4,3,2016-10-13 12:07:00,2016-10-13 12:12:00,start 12:07 end 12:12,userid3 event1,2
+5,3,2016-10-13 12:19:00,2016-10-13 12:26:00,start 12:19 end 12:26,userid3 event2,2
+

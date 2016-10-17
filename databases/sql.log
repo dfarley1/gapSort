@@ -1,4 +1,4 @@
-timestamp: 2016-10-02T18:56:22.828523
+timestamp: 2016-10-16T21:18:54.234592
 CREATE TABLE auth_user(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name CHAR(128),
@@ -10,21 +10,21 @@ CREATE TABLE auth_user(
     registration_id CHAR(512)
 );
 success!
-timestamp: 2016-10-02T18:56:22.831095
+timestamp: 2016-10-16T21:18:54.236740
 CREATE TABLE auth_group(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     role CHAR(512),
     description TEXT
 );
 success!
-timestamp: 2016-10-02T18:56:22.833223
+timestamp: 2016-10-16T21:18:54.238738
 CREATE TABLE auth_membership(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
     group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  
 );
 success!
-timestamp: 2016-10-02T18:56:22.835413
+timestamp: 2016-10-16T21:18:54.241591
 CREATE TABLE auth_permission(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE  ,
@@ -33,7 +33,7 @@ CREATE TABLE auth_permission(
     record_id INTEGER
 );
 success!
-timestamp: 2016-10-02T18:56:22.837172
+timestamp: 2016-10-16T21:18:54.243593
 CREATE TABLE auth_event(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     time_stamp TIMESTAMP,
@@ -43,7 +43,7 @@ CREATE TABLE auth_event(
     description TEXT
 );
 success!
-timestamp: 2016-10-02T18:56:22.839327
+timestamp: 2016-10-16T21:18:54.245950
 CREATE TABLE auth_cas(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
@@ -53,7 +53,7 @@ CREATE TABLE auth_cas(
     renew CHAR(1)
 );
 success!
-timestamp: 2016-10-10T20:14:54.997693
+timestamp: 2016-10-16T21:18:54.247934
 CREATE TABLE users(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name CHAR(512),
@@ -61,20 +61,21 @@ CREATE TABLE users(
     password CHAR(512)
 );
 success!
-timestamp: 2016-10-10T20:14:54.999772
+timestamp: 2016-10-16T21:18:54.250058
 CREATE TABLE groups(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    manager CHAR(512)
+    manager CHAR(512),
+    name CHAR(512)
 );
 success!
-timestamp: 2016-10-10T20:14:55.001500
+timestamp: 2016-10-16T21:18:54.251889
 CREATE TABLE user_groups(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     group_id INTEGER
 );
 success!
-timestamp: 2016-10-10T20:14:55.004084
+timestamp: 2016-10-16T21:18:54.254101
 CREATE TABLE events(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
@@ -83,5 +84,13 @@ CREATE TABLE events(
     description CHAR(512),
     name CHAR(512),
     group_id INTEGER
+);
+success!
+timestamp: 2016-10-16T21:18:54.255868
+CREATE TABLE gaps(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP
 );
 success!

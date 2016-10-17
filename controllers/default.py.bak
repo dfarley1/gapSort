@@ -57,5 +57,8 @@ def call():
     supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
     """
     return service()
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c6e7b0a11531c5983076c95310851e8b8ed1fbd4

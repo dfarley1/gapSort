@@ -1,0 +1,14 @@
+{{extend 'layout.html'}}
+<h1 style="text-align: center;">
+    Enter the the email of group members
+</h1>
+{{=form}}
+<br/>
+<h3>
+    Group members
+</h3>
+<ul>
+{{for user in users:}}
+{{=LI(user.first_name)}}
+{{pass}}
+</ul>

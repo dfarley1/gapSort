@@ -1,0 +1,644 @@
+(dp1
+S'output'
+p2
+S"<class 'sqlite3.OperationalError'> table groups already exists"
+p3
+sS'layer'
+p4
+S'/Applications/web2py/web2py.app/Contents/Resources/applications/gapSort/models/db.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n\n# -------------------------------------------------------------------------\n# This scaffolding model makes your app work on Google App Engine too\n# File is released under public domain and you can use without limitations\n# -------------------------------------------------------------------------\n\nif request.global_settings.web2py_version < "2.14.1":\n    raise HTTP(500, "Requires web2py 2.13.3 or newer")\n\n# -------------------------------------------------------------------------\n# if SSL/HTTPS is properly configured and you want all HTTP requests to\n# be redirected to HTTPS, uncomment the line below:\n# -------------------------------------------------------------------------\n# request.requires_https()\n\n# -------------------------------------------------------------------------\n# app configuration made easy. Look inside private/appconfig.ini\n# -------------------------------------------------------------------------\nfrom gluon.contrib.appconfig import AppConfig\n\n# -------------------------------------------------------------------------\n# once in production, remove reload=True to gain full speed\n# -------------------------------------------------------------------------\nmyconf = AppConfig(reload=True)\n\nif not request.env.web2py_runtime_gae:\n    # ---------------------------------------------------------------------\n    # if NOT running on Google App Engine use SQLite or other DB\n    # ---------------------------------------------------------------------\n    db = DAL(myconf.get(\'db.uri\'),\n             pool_size=myconf.get(\'db.pool_size\'),\n             migrate_enabled=myconf.get(\'db.migrate\'),\n             check_reserved=[\'all\'])\nelse:\n    # ---------------------------------------------------------------------\n    # connect to Google BigTable (optional \'google:datastore://namespace\')\n    # ---------------------------------------------------------------------\n    db = DAL(\'google:datastore+ndb\')\n    # ---------------------------------------------------------------------\n    # store sessions and tickets there\n    # ---------------------------------------------------------------------\n    session.connect(request, response, db=db)\n    # ---------------------------------------------------------------------\n    # or store session in Memcache, Redis, etc.\n    # from gluon.contrib.memdb import MEMDB\n    # from google.appengine.api.memcache import Client\n    # session.connect(request, response, db = MEMDB(Client()))\n    # ---------------------------------------------------------------------\n\n# -------------------------------------------------------------------------\n# by default give a view/generic.extension to all actions from localhost\n# none otherwise. a pattern can be \'controller/function.extension\'\n# -------------------------------------------------------------------------\nresponse.generic_patterns = [\'*\'] if request.is_local else []\n# -------------------------------------------------------------------------\n# choose a style for forms\n# -------------------------------------------------------------------------\nresponse.formstyle = myconf.get(\'forms.formstyle\')  # or \'bootstrap3_stacked\' or \'bootstrap2\' or other\nresponse.form_label_separator = myconf.get(\'forms.separator\') or \'\'\n\n# -------------------------------------------------------------------------\n# (optional) optimize handling of static files\n# -------------------------------------------------------------------------\n# response.optimize_css = \'concat,minify,inline\'\n# response.optimize_js = \'concat,minify,inline\'\n\n# -------------------------------------------------------------------------\n# (optional) static assets folder versioning\n# -------------------------------------------------------------------------\n# response.static_version = \'0.0.0\'\n\n# -------------------------------------------------------------------------\n# Here is sample code if you need for\n# - email capabilities\n# - authentication (registration, login, logout, ... )\n# - authorization (role based authorization)\n# - services (xml, csv, json, xmlrpc, jsonrpc, amf, rss)\n# - old style crud actions\n# (more options discussed in gluon/tools.py)\n# -------------------------------------------------------------------------\n\nfrom gluon.tools import Auth, Service, PluginManager\n\n# host names must be a list of allowed host names (glob syntax allowed)\nauth = Auth(db, host_names=myconf.get(\'host.names\'))\nservice = Service()\nplugins = PluginManager()\n\n# -------------------------------------------------------------------------\n# create all tables needed by auth if not custom tables\n# -------------------------------------------------------------------------\nauth.define_tables(username=False, signature=False)\n\n# -------------------------------------------------------------------------\n# configure email\n# -------------------------------------------------------------------------\nmail = auth.settings.mailer\nmail.settings.server = \'logging\' if request.is_local else myconf.get(\'smtp.server\')\nmail.settings.sender = myconf.get(\'smtp.sender\')\nmail.settings.login = myconf.get(\'smtp.login\')\nmail.settings.tls = myconf.get(\'smtp.tls\') or False\nmail.settings.ssl = myconf.get(\'smtp.ssl\') or False\n\n# -------------------------------------------------------------------------\n# configure auth policy\n# -------------------------------------------------------------------------\nauth.settings.registration_requires_verification = False\nauth.settings.registration_requires_approval = False\nauth.settings.reset_password_requires_verification = True\n\n# -------------------------------------------------------------------------\n# Define your tables below (or better in another model file) for example\n#\n# >>> db.define_table(\'mytable\', Field(\'myfield\', \'string\'))\n#\n# Fields can be \'string\',\'text\',\'password\',\'integer\',\'double\',\'boolean\'\n#       \'date\',\'time\',\'datetime\',\'blob\',\'upload\', \'reference TABLENAME\'\n# There is an implicit \'id integer autoincrement\' field\n# Consult manual for more options, validators, etc.\n#\n# More API examples for controllers:\n#\n# >>> db.mytable.insert(myfield=\'value\')\n# >>> rows = db(db.mytable.myfield == \'value\').select(db.mytable.ALL)\n# >>> for row in rows: print row.id, row.myfield\n# -------------------------------------------------------------------------\n\n#define user table\ndb.define_table(\'users\', Field(\'name\', \'string\'), Field(\'email\', \'string\'), Field(\'password\', \'string\'))\n\n#define group table\ndb.define_table(\'groups\', Field(\'manager\', \'string\'), Field(\'name\', \'string\'))\n\n#define user_groups table\ndb.define_table(\'user_groups\', Field(\'user_id\', \'integer\'), Field(\'group_id\', \'integer\'))\n\n#define events table\ndb.define_table(\'events\', \n    Field(\'user_id\', \'integer\'), \n    Field(\'start_time\', \'datetime\'), \n    Field(\'end_time\', \'datetime\'), \n    Field(\'description\', \'string\'), \n    Field(\'name\', \'string\'), \n    Field(\'group_id\', \'integer\')\n)\n\n# -------------------------------------------------------------------------\n# after defining tables, uncomment below to enable auditing\n# -------------------------------------------------------------------------\n# auth.enable_record_versioning(db)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+S'exception'
+p10
+(dp11
+S'__module__'
+p12
+S"'sqlite3'"
+p13
+sS'__getslice__'
+p14
+S"<method-wrapper '__getslice__' of OperationalError object>"
+p15
+sS'__str__'
+p16
+S"<method-wrapper '__str__' of OperationalError object>"
+p17
+sS'__reduce__'
+p18
+S'<built-in method __reduce__ of OperationalError object>'
+p19
+sS'__dict__'
+p20
+S'{}'
+p21
+sS'__sizeof__'
+p22
+S'<built-in method __sizeof__ of OperationalError object>'
+p23
+sS'__weakref__'
+p24
+S'None'
+p25
+sS'__init__'
+p26
+S"<method-wrapper '__init__' of OperationalError object>"
+p27
+sS'__setattr__'
+p28
+S"<method-wrapper '__setattr__' of OperationalError object>"
+p29
+sS'__reduce_ex__'
+p30
+S'<built-in method __reduce_ex__ of OperationalError object>'
+p31
+sS'__new__'
+p32
+S'<built-in method __new__ of type object>'
+p33
+sS'__format__'
+p34
+S'<built-in method __format__ of OperationalError object>'
+p35
+sS'__class__'
+p36
+S"<class 'sqlite3.OperationalError'>"
+p37
+sS'__doc__'
+p38
+S'None'
+p39
+sS'__getitem__'
+p40
+S"<method-wrapper '__getitem__' of OperationalError object>"
+p41
+sS'__setstate__'
+p42
+S'<built-in method __setstate__ of OperationalError object>'
+p43
+sS'__getattribute__'
+p44
+S"<method-wrapper '__getattribute__' of OperationalError object>"
+p45
+sS'args'
+p46
+S"('table groups already exists',)"
+p47
+sS'__subclasshook__'
+p48
+S'<built-in method __subclasshook__ of type object>'
+p49
+sS'__unicode__'
+p50
+S'<built-in method __unicode__ of OperationalError object>'
+p51
+sS'__delattr__'
+p52
+S"<method-wrapper '__delattr__' of OperationalError object>"
+p53
+sS'__repr__'
+p54
+S"<method-wrapper '__repr__' of OperationalError object>"
+p55
+sS'__hash__'
+p56
+S"<method-wrapper '__hash__' of OperationalError object>"
+p57
+ssS'evalue'
+p58
+S'table groups already exists'
+p59
+sS'request'
+p60
+cgluon.html
+XML_unpickle
+p61
+(S's\xde[\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">ajax</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">application</td><td style="vertical-align:top;">:</td><td><div>gapSort</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cid</td><td style="vertical-align:top;">:</td><td><div>c592760886081</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">controller</td><td style="vertical-align:top;">:</td><td><div>appadmin</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_admin</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-550c78fe-cff2-4429-81a8-dab830c9d344<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_welcome</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-0facf93d-9f29-479c-ab9b-2add2b1f5373<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">env</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT</td><td style="vertical-align:top;">:</td><td><div>*/*</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_ENCODING</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, sdch</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_ACCEPT_LANGUAGE</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_CONNECTION</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_COOKIE</td><td style="vertical-align:top;">:</td><td><div>_ga=GA1.1.1539661291.1455757694; session_id_welcome=127.0.0.1-0facf93d-9f29-479c-ab9b-2add2b1f5373; session_id_admin=127.0.0.1-550c78fe-cff2-4429-81a8-dab830c9d344</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_DNT</td><td style="vertical-align:top;">:</td><td><div>1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_HOST</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_REFERER</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/admin/default/edit/gapSort/controllers/group.py?id=controllers__group__py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_USER_AGENT</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_WEB2PY_COMPONENT_ELEMENT</td><td style="vertical-align:top;">:</td><td><div>c592760886081</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_WEB2PY_COMPONENT_LOCATION</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/admin/default/edit/gapSort/controllers/group.py?id=controllers__group__py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">HTTP_X_REQUESTED_WITH</td><td style="vertical-align:top;">:</td><td><div>XMLHttpRequest</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">PATH_INFO</td><td style="vertical-align:top;">:</td><td><div>/gapSort/appadmin/hooks</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">QUERY_STRING</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_ADDR</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REMOTE_PORT</td><td style="vertical-align:top;">:</td><td><div>57686</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">REQUEST_METHOD</td><td style="vertical-align:top;">:</td><td><div>GET</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SCRIPT_NAME</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_NAME</td><td style="vertical-align:top;">:</td><td><div>Bowens-MacBook-Pro.local</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PORT</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_PROTOCOL</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">SERVER_SOFTWARE</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;/Applications/web2py/web2py.app/Contents/Resources/applications/welcome/&#x27;, &#x27;/Applications/web2py/web2py.app/Contents/Resources/applications/gapSort/&#x27;, &#x27;/Applications/web2py/web2py.app/Contents/Resources/applications/admin/&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>/Applications/web2py/web2py.app/Contents/Resources</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x10fad9680: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;Bowens-MacBook-Pro.local&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;port&#x27;: 8000, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;/Applications/web2py/web2py.app/Contents/Resources&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;******&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>/Applications/web2py/web2py.app/Contents/Resources</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept</td><td style="vertical-align:top;">:</td><td><div>*/*</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_encoding</td><td style="vertical-align:top;">:</td><td><div>gzip, deflate, sdch</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_accept_language</td><td style="vertical-align:top;">:</td><td><div>en-US,en;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_connection</td><td style="vertical-align:top;">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_cookie</td><td style="vertical-align:top;">:</td><td><div>_ga=GA1.1.1539661291.1455757694; session_id_welcome=127.0.0.1-0facf93d-9f29-479c-ab9b-2add2b1f5373; session_id_admin=127.0.0.1-550c78fe-cff2-4429-81a8-dab830c9d344</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_dnt</td><td style="vertical-align:top;">:</td><td><div>1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_host</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_referer</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/admin/default/edit/gapSort/controllers/group.py?id=controllers__group__py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_user_agent</td><td style="vertical-align:top;">:</td><td><div>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_web2py_component_element</td><td style="vertical-align:top;">:</td><td><div>c592760886081</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_web2py_component_location</td><td style="vertical-align:top;">:</td><td><div>http://127.0.0.1:8000/admin/default/edit/gapSort/controllers/group.py?id=controllers__group__py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">http_x_requested_with</td><td style="vertical-align:top;">:</td><td><div>XMLHttpRequest</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>Bowens-MacBook-Pro.local</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path_info</td><td style="vertical-align:top;">:</td><td><div>/gapSort/appadmin/hooks</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">query_string</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_addr</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">remote_port</td><td style="vertical-align:top;">:</td><td><div>57686</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_method</td><td style="vertical-align:top;">:</td><td><div>GET</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">request_uri</td><td style="vertical-align:top;">:</td><td><div>/gapSort/appadmin/hooks</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">script_name</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_name</td><td style="vertical-align:top;">:</td><td><div>Bowens-MacBook-Pro.local</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_port</td><td style="vertical-align:top;">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_protocol</td><td style="vertical-align:top;">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">server_software</td><td style="vertical-align:top;">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_path</td><td style="vertical-align:top;">:</td><td><div>/Applications/web2py/web2py.app/Contents/Resources</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.14.6-stable+timestamp.2016.05.10.00.21.47</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x10eb361e0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x10fa75120&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x117267bd0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi.version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_errors</td><td style="vertical-align:top;">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0x10eb361e0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_file_wrapper</td><td style="vertical-align:top;">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x10fa75120&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_input</td><td style="vertical-align:top;">:</td><td><div>&lt;socket._fileobject object at 0x117267bd0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multiprocess</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_multithread</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_run_once</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_url_scheme</td><td style="vertical-align:top;">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi_version</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">extension</td><td style="vertical-align:top;">:</td><td><div>html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">folder</td><td style="vertical-align:top;">:</td><td><div>/Applications/web2py/web2py.app/Contents/Resources/applications/gapSort/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">function</td><td style="vertical-align:top;">:</td><td><div>hooks</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">global_settings</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">app_folders</td><td style="vertical-align:top;">:</td><td><div>set([&#x27;/Applications/web2py/web2py.app/Contents/Resources/applications/welcome/&#x27;, &#x27;/Applications/web2py/web2py.app/Contents/Resources/applications/gapSort/&#x27;, &#x27;/Applications/web2py/web2py.app/Contents/Resources/applications/admin/&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">applications_parent</td><td style="vertical-align:top;">:</td><td><div>/Applications/web2py/web2py.app/Contents/Resources</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_args</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cmd_options</td><td style="vertical-align:top;">:</td><td><div>&lt;Values at 0x10fad9680: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;with_scheduler&#x27;: False, &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;Bowens-MacBook-Pro.local&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;port&#x27;: 8000, &#x27;print_errors&#x27;: False, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;/Applications/web2py/web2py.app/Contents/Resources&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;minthreads&#x27;: None, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;profiler_dir&#x27;: None, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;interfaces&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;gae&#x27;: None, &#x27;password&#x27;: &#x27;******&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;import_models&#x27;: False, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">db_sessions</td><td style="vertical-align:top;">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">debugging</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">gluon_parent</td><td style="vertical-align:top;">:</td><td><div>/Applications/web2py/web2py.app/Contents/Resources</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_jython</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_pypy</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_source</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">local_hosts</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>Bowens-MacBook-Pro.local</div></td></tr><tr><td><div>::1</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">web2py_version</td><td style="vertical-align:top;">:</td><td><div>2.14.6-stable+timestamp.2016.05.10.00.21.47</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_https</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_local</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_restful</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_scheduler</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">is_shell</td><td style="vertical-align:top;">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">now</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2016, 10, 16, 7, 51, 13, 864596)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_args</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">raw_extension</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">url</td><td style="vertical-align:top;">:</td><td><div>/gapSort/appadmin/hooks</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">utcnow</td><td style="vertical-align:top;">:</td><td><div>datetime.datetime(2016, 10, 16, 14, 51, 13, 864604)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">wsgi</td><td style="vertical-align:top;">:</td><td><div>&lt;gluon.main.LazyWSGI object at 0x117869390&gt;</div></td></tr></table></div>'
+tRp62
+sS'frames'
+p63
+(lp64
+(dp65
+S'file'
+p66
+S'/Applications/web2py/web2py.app/Contents/Resources/gluon/restricted.py'
+p67
+sS'dump'
+p68
+(dp69
+S'environment'
+p70
+S"{'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'AppConfig': <function AppConfig>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, ...}"
+p71
+sS'ccode'
+p72
+S'<code object <module> at 0x1178794b0, file "/App...urces/applications/gapSort/models/db.py", line 8>'
+p73
+ssS'lnum'
+p74
+I227
+sS'lines'
+p75
+(dp76
+I224
+S'            ccode = code'
+p77
+sI225
+S'        else:'
+p78
+sI226
+S'            ccode = compile2(code, layer)'
+p79
+sI227
+S'        exec ccode in environment'
+p80
+sI228
+S'    except HTTP:'
+p81
+sI229
+S'        raise'
+p82
+sI230
+S'    except RestrictedError:'
+p83
+sI231
+S'        # do not encapsulate (obfuscate) the original RestrictedError'
+p84
+sI222
+S'    try:'
+p85
+sI223
+S'        if isinstance(code, types.CodeType):'
+p86
+ssS'call'
+p87
+S"(code='# -*- coding: utf-8 -*-\\n\\n# ---------------------...------------\\n# auth.enable_record_versioning(db)\\n', environment={'A': <class 'gluon.html.A'>, 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ASSIGNJS': <function ASSIGNJS>, 'AppConfig': <function AppConfig>, 'Auth': <class 'gluon.tools.Auth'>, 'B': <class 'gluon.html.B'>, 'BEAUTIFY': <class 'gluon.html.BEAUTIFY'>, 'BODY': <class 'gluon.html.BODY'>, 'BR': <class 'gluon.html.BR'>, 'BUTTON': <class 'gluon.html.BUTTON'>, ...}, layer='/Applications/web2py/web2py.app/Contents/Resources/applications/gapSort/models/db.py')"
+p88
+sS'func'
+p89
+S'restricted'
+p90
+sa(dp91
+g66
+S'/Applications/web2py/web2py.app/Contents/Resources/applications/gapSort/models/db.py'
+p92
+sg68
+(dp93
+S'Field'
+p94
+S"<class 'pydal.objects.Field'>"
+p95
+sS'db.define_table'
+p96
+S'<bound method DAL.define_table of <DAL uri="sqlite://storage.sqlite">>'
+p97
+sS'db'
+p98
+S'<DAL uri="sqlite://storage.sqlite">'
+p99
+ssg74
+I133
+sg75
+(dp100
+I128
+S''
+sI129
+S'#define user table'
+p101
+sI130
+S"db.define_table('users', Field('name', 'string'), Field('email', 'string'), Field('password', 'string'))"
+p102
+sI131
+S''
+sI132
+S'#define group table'
+p103
+sI133
+S"db.define_table('groups', Field('manager', 'string'), Field('name', 'string'))"
+p104
+sI134
+S''
+sI135
+S'#define user_groups table'
+p105
+sI136
+S"db.define_table('user_groups', Field('user_id', 'integer'), Field('group_id', 'integer'))"
+p106
+sI137
+S''
+ssg87
+S'()'
+p107
+sg89
+S'<module>'
+p108
+sa(dp109
+g66
+S'/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/base.py'
+p110
+sg68
+(dp111
+S'fields'
+p112
+S'(<pydal.objects.Field object>, <pydal.objects.Field object>)'
+p113
+sS'self'
+p114
+S'<DAL uri="sqlite://storage.sqlite">'
+p115
+sS'args'
+p116
+g21
+sS'tablename'
+p117
+S"'groups'"
+p118
+sS'table'
+p119
+S'undefined'
+p120
+sS'self.lazy_define_table'
+p121
+S'<bound method DAL.lazy_define_table of <DAL uri="sqlite://storage.sqlite">>'
+p122
+ssg74
+I834
+sg75
+(dp123
+I832
+S'            table = None'
+p124
+sI833
+S'        else:'
+p125
+sI834
+S'            table = self.lazy_define_table(tablename,*fields,**args)'
+p126
+sI835
+S'        if not tablename in self.tables:'
+p127
+sI836
+S'            self.tables.append(tablename)'
+p128
+sI837
+S'        return table'
+p129
+sI838
+S''
+sI829
+S'                    % (tablename,invalid_args))'
+p130
+sI830
+S'        if self._lazy_tables and tablename not in self._LAZY_TABLES:'
+p131
+sI831
+S'            self._LAZY_TABLES[tablename] = (tablename,fields,args)'
+p132
+ssg87
+S'(self=<DAL uri="sqlite://storage.sqlite">, tablename=\'groups\', *fields=(<pydal.objects.Field object>, <pydal.objects.Field object>), **args={})'
+p133
+sg89
+S'define_table'
+p134
+sa(dp135
+g66
+S'/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/base.py'
+p136
+sg68
+(dp137
+S'polymodel'
+p138
+S'None'
+p139
+ssg74
+I873
+sg75
+(dp140
+I868
+S'            try:'
+p141
+sI869
+S'                GLOBAL_LOCKER.acquire()'
+p142
+sI870
+S'                self._lastsql = self._adapter.create_table('
+p143
+sI871
+S'                    table,migrate=migrate,'
+p144
+sI872
+S'                    fake_migrate=fake_migrate,'
+p145
+sI873
+S'                    polymodel=polymodel)'
+p146
+sI874
+S'            finally:'
+p147
+sI875
+S'                GLOBAL_LOCKER.release()'
+p148
+sI876
+S'        else:'
+p149
+sI877
+S'            table._dbt = None'
+p150
+ssg87
+S'(self=<DAL uri="sqlite://storage.sqlite">, tablename=\'groups\', *fields=(<pydal.objects.Field object>, <pydal.objects.Field object>), **args={})'
+p151
+sg89
+S'lazy_define_table'
+p152
+sa(dp153
+g66
+S'/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/adapters/base.py'
+p154
+sg68
+(dp155
+S'query'
+p156
+S"'CREATE TABLE groups(\\n    id INTEGER PRIMARY KEY ...ENT,\\n    manager CHAR(512),\\n    name CHAR(512)\\n);'"
+p157
+sS'self'
+p158
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p159
+sS'table'
+p160
+S'<Table groups (id, manager, name)>'
+p161
+sS'self.create_sequence_and_triggers'
+p162
+S'<bound method SQLiteAdapter.create_sequence_and_... of <pydal.adapters.sqlite.SQLiteAdapter object>>'
+p163
+ssg74
+I482
+sg75
+(dp164
+I480
+S'                            query), table)'
+p165
+sI481
+S'            if not fake_migrate:'
+p166
+sI482
+S'                self.create_sequence_and_triggers(query, table)'
+p167
+sI483
+S'                db.commit()'
+p168
+sI484
+S'                # Postgres geom fields are added now,'
+p169
+sI485
+S'                # after the table has been created'
+p170
+sI486
+S'                for query in postcreation_fields:'
+p171
+sI477
+S'            if table._dbt:'
+p172
+sI478
+S"                self.log('timestamp: %s\\n%s\\n'"
+p173
+sI479
+S'                         % (datetime.datetime.today().isoformat(),'
+p174
+ssg87
+S'(self=<pydal.adapters.sqlite.SQLiteAdapter object>, table=<Table groups (id, manager, name)>, migrate=True, fake_migrate=False, polymodel=None)'
+p175
+sg89
+S'create_table'
+p176
+sa(dp177
+g66
+S'/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/adapters/base.py'
+p178
+sg68
+(dp179
+S'query'
+p180
+S"'CREATE TABLE groups(\\n    id INTEGER PRIMARY KEY ...ENT,\\n    manager CHAR(512),\\n    name CHAR(512)\\n);'"
+p181
+sS'self'
+p182
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p183
+sS'self.execute'
+p184
+S'<bound method SQLiteAdapter.execute of <pydal.adapters.sqlite.SQLiteAdapter object>>'
+p185
+ssg74
+I1369
+sg75
+(dp186
+I1364
+S''
+sI1365
+S'    def constraint_name(self, table, fieldname):'
+p187
+sI1366
+S"        return '%s_%s__constraint' % (table,fieldname)"
+p188
+sI1367
+S''
+sI1368
+S'    def create_sequence_and_triggers(self, query, table, **args):'
+p189
+sI1369
+S'        self.execute(query)'
+p190
+sI1370
+S''
+sI1371
+S''
+sI1372
+S'    def log_execute(self, *a, **b):'
+p191
+sI1373
+S'        if not self.connection: raise ValueError(a[0])'
+p192
+ssg87
+S"(self=<pydal.adapters.sqlite.SQLiteAdapter object>, query='CREATE TABLE groups(\\n    id INTEGER PRIMARY KEY ...ENT,\\n    manager CHAR(512),\\n    name CHAR(512)\\n);', table=<Table groups (id, manager, name)>, **args={})"
+p193
+sg89
+S'create_sequence_and_triggers'
+p194
+sa(dp195
+g66
+S'/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/adapters/base.py'
+p196
+sg68
+(dp197
+S'a'
+S"('CREATE TABLE groups(\\n    id INTEGER PRIMARY KEY ...ENT,\\n    manager CHAR(512),\\n    name CHAR(512)\\n);',)"
+p198
+sS'self'
+p199
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p200
+sS'b'
+g21
+sS'self.log_execute'
+p201
+S'<bound method SQLiteAdapter.log_execute of <pydal.adapters.sqlite.SQLiteAdapter object>>'
+p202
+ssg74
+I1388
+sg75
+(dp203
+I1383
+S'        self.db._timings.append((command,time.time()-t0))'
+p204
+sI1384
+S'        del self.db._timings[:-TIMINGSSIZE]'
+p205
+sI1385
+S'        return ret'
+p206
+sI1386
+S''
+sI1387
+S'    def execute(self, *a, **b):'
+p207
+sI1388
+S'        return self.log_execute(*a, **b)'
+p208
+sI1389
+S''
+sI1390
+S'    def execute_test_query(self):'
+p209
+sI1391
+S'        return self.execute(self.test_query)'
+p210
+sI1392
+S''
+ssg87
+S"(self=<pydal.adapters.sqlite.SQLiteAdapter object>, *a=('CREATE TABLE groups(\\n    id INTEGER PRIMARY KEY ...ENT,\\n    manager CHAR(512),\\n    name CHAR(512)\\n);',), **b={})"
+p211
+sg89
+S'execute'
+p212
+sa(dp213
+g66
+S'/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/adapters/base.py'
+p214
+sg68
+(dp215
+S'a'
+S"('CREATE TABLE groups(\\n    id INTEGER PRIMARY KEY ...ENT,\\n    manager CHAR(512),\\n    name CHAR(512)\\n);',)"
+p216
+sS'b'
+g21
+sS'self'
+p217
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p218
+sS'ret'
+p219
+g120
+sS'command'
+p220
+S"'CREATE TABLE groups(\\n    id INTEGER PRIMARY KEY ...ENT,\\n    manager CHAR(512),\\n    name CHAR(512)\\n);'"
+p221
+sS'self.get_cursor'
+p222
+S'<bound method SQLiteAdapter.get_cursor of <pydal.adapters.sqlite.SQLiteAdapter object>>'
+p223
+sS').execute'
+p224
+g120
+ssg74
+I1382
+sg75
+(dp225
+I1377
+S'            command = self.filter_sql_command(command)'
+p226
+sI1378
+S'        if self.db._debug:'
+p227
+sI1379
+S"            self.db.logger.debug('SQL: %s' % command)"
+p228
+sI1380
+S'        self.db._lastsql = command'
+p229
+sI1381
+S'        t0 = time.time()'
+p230
+sI1382
+S'        ret = self.get_cursor().execute(command, *a[1:], **b)'
+p231
+sI1383
+S'        self.db._timings.append((command,time.time()-t0))'
+p232
+sI1384
+S'        del self.db._timings[:-TIMINGSSIZE]'
+p233
+sI1385
+S'        return ret'
+p234
+sI1386
+S''
+ssg87
+S"(self=<pydal.adapters.sqlite.SQLiteAdapter object>, *a=('CREATE TABLE groups(\\n    id INTEGER PRIMARY KEY ...ENT,\\n    manager CHAR(512),\\n    name CHAR(512)\\n);',), **b={})"
+p235
+sg89
+S'log_execute'
+p236
+sasS'pyver'
+p237
+S'Python 2.7.10: /usr/bin/python (prefix: /System/Library/Frameworks/Python.framework/Versions/2.7)'
+p238
+sS'session'
+p239
+g61
+(S's\x1a\x00\x00\x00<div><table></table></div>'
+tRp240
+sS'etype'
+p241
+S"<class 'sqlite3.OperationalError'>"
+p242
+sS'date'
+p243
+S'Sun Oct 16 07:51:14 2016'
+p244
+sS'response'
+p245
+g61
+(S'sM\x16\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top;">body</td><td style="vertical-align:top;">:</td><td><div>&lt;cStringIO.StringO object at 0x1178c8420&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">cookies</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">session_id_gapsort</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-80e3a5b3-0594-4598-8b9d-d36fce4c4704<table><tr><td style="font-weight:bold;vertical-align:top;">comment</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">domain</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">expires</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">httponly</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">max-age</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">path</td><td style="vertical-align:top;">:</td><td><div>/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">secure</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">version</td><td style="vertical-align:top;">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">delimiters</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>{{</div></td></tr><tr><td><div>}}</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">files</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">flash</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">form_label_separator</td><td style="vertical-align:top;">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">formstyle</td><td style="vertical-align:top;">:</td><td><div>bootstrap3_inline</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">generic_patterns</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>*</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">headers</td><td style="vertical-align:top;">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top;">X-Powered-By</td><td style="vertical-align:top;">:</td><td><div>web2py</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">menu</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">meta</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">models_to_run</td><td style="vertical-align:top;">:</td><td><div><table><tr><td><div>^\\w+\\.py$</div></td></tr><tr><td><div>^appadmin/\\w+\\.py$</div></td></tr><tr><td><div>^appadmin/hooks/\\w+\\.py$</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">postprocessing</td><td style="vertical-align:top;">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_client</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_compression_level</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_cookie_expires</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_data_name</td><td style="vertical-align:top;">:</td><td><div>session_data_gapsort</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_file</td><td style="vertical-align:top;">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_filename</td><td style="vertical-align:top;">:</td><td><div>/Applications/web2py/web2py.app/Contents/Resources/applications/gapSort/sessions/127.0.0.1-80e3a5b3-0594-4598-8b9d-d36fce4c4704</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_hash</td><td style="vertical-align:top;">:</td><td><div>c0762cbf4baf7f9af97c051e7fcb8083</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id</td><td style="vertical-align:top;">:</td><td><div>127.0.0.1-80e3a5b3-0594-4598-8b9d-d36fce4c4704</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_id_name</td><td style="vertical-align:top;">:</td><td><div>session_id_gapsort</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_masterapp</td><td style="vertical-align:top;">:</td><td><div>gapSort</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_new</td><td style="vertical-align:top;">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">session_storage_type</td><td style="vertical-align:top;">:</td><td><div>file</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">status</td><td style="vertical-align:top;">:</td><td><div>200</div></td></tr><tr><td style="font-weight:bold;vertical-align:top;">view</td><td style="vertical-align:top;">:</td><td><div>appadmin/hooks.html</div></td></tr></table></div>'
+tRp246
+sS'locals'
+p247
+(dp248
+S'a'
+S"('CREATE TABLE groups(\\n    id INTEGER PRIMARY KEY ...ENT,\\n    manager CHAR(512),\\n    name CHAR(512)\\n);',)"
+p249
+sS'self'
+p250
+S'<pydal.adapters.sqlite.SQLiteAdapter object>'
+p251
+sS'b'
+g21
+sS'command'
+p252
+S"'CREATE TABLE groups(\\n    id INTEGER PRIMARY KEY ...ENT,\\n    manager CHAR(512),\\n    name CHAR(512)\\n);'"
+p253
+sS't0'
+p254
+S'1476629474.206555'
+p255
+sssS'traceback'
+p256
+S'Traceback (most recent call last):\n  File "/Applications/web2py/web2py.app/Contents/Resources/gluon/restricted.py", line 227, in restricted\n    exec ccode in environment\n  File "/Applications/web2py/web2py.app/Contents/Resources/applications/gapSort/models/db.py", line 133, in <module>\n    db.define_table(\'groups\', Field(\'manager\', \'string\'), Field(\'name\', \'string\'))\n  File "/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/base.py", line 834, in define_table\n    table = self.lazy_define_table(tablename,*fields,**args)\n  File "/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/base.py", line 873, in lazy_define_table\n    polymodel=polymodel)\n  File "/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/adapters/base.py", line 482, in create_table\n    self.create_sequence_and_triggers(query, table)\n  File "/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/adapters/base.py", line 1369, in create_sequence_and_triggers\n    self.execute(query)\n  File "/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/adapters/base.py", line 1388, in execute\n    return self.log_execute(*a, **b)\n  File "/Applications/web2py/web2py.app/Contents/Resources/gluon/packages/dal/pydal/adapters/base.py", line 1382, in log_execute\n    ret = self.get_cursor().execute(command, *a[1:], **b)\nOperationalError: table groups already exists\n'
+p257
+s.

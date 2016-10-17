@@ -1,0 +1,4 @@
+auth_user.id,auth_user.first_name,auth_user.last_name,auth_user.email,auth_user.password,auth_user.registration_key,auth_user.reset_password_key,auth_user.registration_id
+1,testManager,testManager,testManager@email.com,"pbkdf2(1000,20,sha512)$9568969f38fa3d83$6e63f4472a2d7be98d77220c2b9cee02a9b5e243",,,
+2,testPerson1,testPerson1,testPerson1@email.com,"pbkdf2(1000,20,sha512)$9fe76247e4b083b3$7e0af39bd7721ee9b4d2bb6ef8f866b9dc04a24a",,,
+3,testPerson2,testPerson2,testPerson2@email.com,"pbkdf2(1000,20,sha512)$9973bd54a1d42d18$e75bacdf8c57f90ea014c357f03b0f8569baa582",,,
