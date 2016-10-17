@@ -18,9 +18,11 @@ def add():
 
 @auth.requires_login()
 def myschedule():
+    # get todays date so we know where the calendar should start
     date = datetime.date.today()
+    # get all events for this user
     events = db(db.events.user_id == auth.user.id).select();
-    weekdays = week   = ['Sunday', 
+    weekdays   = ['Sunday', 
               'Monday', 
               'Tuesday', 
               'Wednesday', 
@@ -28,6 +30,22 @@ def myschedule():
               'Friday', 
               'Saturday']
     return dict(date=date, events=events, weekdays=weekdays)
+
+@auth.requires_login()
+def groupschedule():
+    # get todays date so we know where the calendar should start
+    date = datetime.date.today()
+    # get all events for this user
+    events = db(db.events.user_id == auth.user.id).select();
+    gaps = db(db.gaps.group_id == 1).select();
+    weekdays   = ['Sunday', 
+              'Monday', 
+              'Tuesday', 
+              'Wednesday', 
+              'Thursday',  
+              'Friday', 
+              'Saturday']
+    return dict(date=date, events=events, weekdays=weekdays, gaps=gaps)
 
     
 def findGaps():
@@ -87,6 +105,3 @@ def findGaps():
     
     
     return dict(start_time=start_time, end_time=end_time)
-
-
-

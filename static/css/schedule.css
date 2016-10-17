@@ -44,6 +44,11 @@ h1 {
     color: red;
 }
 
+.gap {
+    height: 10px;
+    color: blue;
+}
+
 a:hover {
     opacity: .95;
 }
