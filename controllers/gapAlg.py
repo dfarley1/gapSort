@@ -19,7 +19,7 @@ def gaps():
 		FROM events as event 
 		WHERE
 			event.user_id IN (SELECT user_id FROM user_groups WHERE group_id=%d)
-		ORDER BY event.end_time
+		ORDER BY event.end_time DESC
 		""" %GROUP)
 
 	if not events:
@@ -33,14 +33,16 @@ def gaps():
 
 	temp_gaps.append((gap_start,gap_end))
 
-	msg = events
+	msg = ''
 
 	event = events.pop()
 	gap = temp_gaps.pop()
 
 	while True:
 		#if the gap starts after the event
+		msg += "gap: %s,%s  event: %s,%s\n" %(str(gap[0]),str(gap[1]),str(event[0]),str(event[1]))
 		if gap[0] > event[1]:
+			msg+='event before gap '
 			if events:
 				event = events.pop()
 				continue
@@ -48,20 +50,23 @@ def gaps():
 
 		#if the gap ends before the event
 		if gap[1] < event[0]:
+			msg+='event after gap '
 			#insert the gap into the database!!
 			db.gaps.insert(start_time=gap[0],end_time=gap[1],group_id=GROUP)
-			if gaps:
-				gap = gaps.pop()
+			if temp_gaps:
+				gap = temp_gaps.pop()
 				continue
 			break
 
 		#if they overlap
 		else:
 			#if the event falls within the gap
-			if (gap[0] < event[1]) and (gap[1] >event[0]):
+			if (gap[0] < event[1]) and (gap[1] > event[0]):
 				#create two new gaps
+				msg+='event in gap'
+
 				gap1 = (gap[0],event[0])
-				gap2 = (gap[1],event[1])
+				gap2 = (event[1],gap[1])
 
 				temp_gaps.insert(0,gap2)
 				gap = gap1
@@ -72,8 +77,10 @@ def gaps():
 				break
 
 			if gap[0] < event[0]:
+				msg+='event begins after gap'
 				gap[1] = event[0]
 			else:
+				msg+='event begins before gap'
 				gap[0] = event[1]
 
 	#insert the rest of temp_gaps into the database.
