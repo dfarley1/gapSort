@@ -1,0 +1,5 @@
+*.bak
+*.log
+sessions/*
+#databases/*
+errors/*

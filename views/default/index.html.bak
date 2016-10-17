@@ -6,10 +6,14 @@
 
 
 <button>
-    <a href="#">Join A Group</a>
+    <a href="../schedule/myschedule">See Your Schedule</a>
 </button><br><br>
 
 
 <button>
     <a href="../group/name">Create A Group</a>
+</button><br><br>
+
+<button>
+	<a href="../gapAlg/gaps">See Gaps</a>
 </button><br><br>

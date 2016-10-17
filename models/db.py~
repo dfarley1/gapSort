@@ -126,6 +126,10 @@ auth.settings.reset_password_requires_verification = True
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 8b650f8f033266836a6abfc68dba7d438c48ac07
 #define user table
 db.define_table('users', Field('name', 'string'), Field('email', 'string'), Field('password', 'string'))
 
@@ -145,12 +149,15 @@ db.define_table('events',
     Field('group_id', 'integer')
 )
 
+<<<<<<< HEAD
+=======
 db.define_table('gaps',
     Field('group_id','integer'),
     Field('start_time','datetime'),
     Field('end_time','datetime')
 )
 
+>>>>>>> 8b650f8f033266836a6abfc68dba7d438c48ac07
 # -------------------------------------------------------------------------
 # after defining tables, uncomment below to enable auditing
 # -------------------------------------------------------------------------
