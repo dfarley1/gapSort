@@ -53,3 +53,295 @@ CREATE TABLE auth_cas(
     renew CHAR(1)
 );
 success!
+timestamp: 2016-10-12T23:37:09.537457
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512)
+);
+success!
+timestamp: 2016-10-12T23:39:29.316992
+CREATE TABLE users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    email CHAR(512),
+    password CHAR(512)
+);
+success!
+timestamp: 2016-10-12T23:39:29.321597
+CREATE TABLE user_groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    group_id INTEGER
+);
+success!
+timestamp: 2016-10-13T17:13:13.324751
+ALTER TABLE groups ADD name CHAR(512);
+success!
+timestamp: 2016-10-15T16:51:00.239327
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T16:51:01.299216
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T16:51:09.819054
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T16:51:11.995530
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T16:51:22.185626
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T16:51:26.208123
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T16:51:39.957074
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T16:54:06.940843
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T16:54:08.300147
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:52:33.504900
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:52:35.171151
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:52:36.862642
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:53:33.698996
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:53:50.568383
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:53:54.377840
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:54:16.275007
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:54:31.353037
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:54:35.989049
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:54:39.997979
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:55:22.746653
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:55:37.994943
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:57:27.040497
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:59:45.794520
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:59:47.716766
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-15T22:59:49.135534
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:45:13.887084
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:45:16.544602
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:45:21.674520
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:46:15.652876
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:47:14.571940
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:48:24.815744
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:49:14.060446
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:50:12.131274
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:50:14.169142
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:50:28.582286
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:51:14.205073
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+timestamp: 2016-10-16T07:52:35.972188
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+success!
+timestamp: 2016-10-16T07:52:35.977907
+CREATE TABLE user_groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    group_id INTEGER
+);
+timestamp: 2016-10-16T07:53:13.961700
+CREATE TABLE user_groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    group_id INTEGER
+);
+timestamp: 2016-10-16T07:56:39.866266
+CREATE TABLE user_groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    group_id INTEGER
+);
+timestamp: 2016-10-16T07:56:59.771815
+CREATE TABLE user_groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    group_id INTEGER
+);
+timestamp: 2016-10-16T07:57:43.773177
+CREATE TABLE user_groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    group_id INTEGER
+);
+success!
+timestamp: 2016-10-16T08:17:41.793551
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512),
+    name CHAR(512)
+);
+success!
+timestamp: 2016-10-16T08:17:41.796700
+CREATE TABLE user_groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    group_id INTEGER
+);
+success!
