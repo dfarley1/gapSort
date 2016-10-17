@@ -40,9 +40,7 @@ def gaps():
 
 	while True:
 		#if the gap starts after the event
-		msg += "gap: %s,%s  event: %s,%s\n" %(str(gap[0]),str(gap[1]),str(event[0]),str(event[1]))
 		if gap[0] > event[1]:
-			msg+='event before gap '
 			if events:
 				event = events.pop()
 				continue
@@ -50,7 +48,6 @@ def gaps():
 
 		#if the gap ends before the event
 		if gap[1] < event[0]:
-			msg+='event after gap '
 			#insert the gap into the database!!
 			db.gaps.insert(start_time=gap[0],end_time=gap[1],group_id=GROUP)
 			if temp_gaps:
@@ -61,10 +58,8 @@ def gaps():
 		#if they overlap
 		else:
 			#if the event falls within the gap
-			if (gap[0] < event[1]) and (gap[1] > event[0]):
+			if (gap[0] < event[0]) and (gap[1] > event[1]):
 				#create two new gaps
-				msg+='event in gap'
-
 				gap1 = (gap[0],event[0])
 				gap2 = (event[1],gap[1])
 
@@ -77,15 +72,28 @@ def gaps():
 				break
 
 			if gap[0] < event[0]:
-				msg+='event begins after gap'
-				gap[1] = event[0]
+				#event begins after gap and ends after gap,
+				#since the events are sorted by finish time we do not know if one starts earlier and therefore,
+				#cannot push this gap onto the db
+				gap = (gap[0],event[0])
+				if events:
+					event = events.pop()
+					continue
+				break
+				#gap[1] = event[0]
 			else:
-				msg+='event begins before gap'
-				gap[0] = event[1]
+				#event begins before gap and ends before gap ends, because of ordering we can move onto next event,
+				#although we cannot move onto next gap because the next event might conflict.
+				gap = (event[1],gap[1])
+				if events:
+					event = events.pop()
+					continue
+				break
 
+	db.gaps.insert(start_time=gap[0],end_time=gap[1],group_id=GROUP)
 	#insert the rest of temp_gaps into the database.
 	for gap in temp_gaps:
 		db.gaps.insert(start_time=gap[0],end_time=gap[1],group_id=GROUP)
 
-	#set random message
-	return dict(message=msg)
+	# #set random message
+	return dict(message='done')
