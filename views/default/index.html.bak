@@ -1,7 +1,4 @@
 {{extend 'layout.html'}}
-<html>
-    
-
 <link rel="stylesheet" type = "text/css" href="../static/css/index.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="../static/js/index.js"></script>
@@ -36,6 +33,3 @@
 <a href="#"><div id="create_group">Create Group</div></a>
     
 </body>
-
-    
-</html>

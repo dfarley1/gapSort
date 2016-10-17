@@ -53,3 +53,35 @@ CREATE TABLE auth_cas(
     renew CHAR(1)
 );
 success!
+timestamp: 2016-10-10T20:14:54.997693
+CREATE TABLE users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    email CHAR(512),
+    password CHAR(512)
+);
+success!
+timestamp: 2016-10-10T20:14:54.999772
+CREATE TABLE groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manager CHAR(512)
+);
+success!
+timestamp: 2016-10-10T20:14:55.001500
+CREATE TABLE user_groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    group_id INTEGER
+);
+success!
+timestamp: 2016-10-10T20:14:55.004084
+CREATE TABLE events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP,
+    description CHAR(512),
+    name CHAR(512),
+    group_id INTEGER
+);
+success!

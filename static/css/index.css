@@ -1,0 +1,95 @@
+html {
+  min-height: 100%;
+  
+}
+
+body {
+  height: 800px;
+  background-image: url('http://wallpapercave.com/wp/fcaM4Mo.jpg');
+}
+#edit {
+    width: 250px;
+    height: 250px;
+    border: solid;
+    border-width: 5px;
+    background-image: linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),url("https://assets.ifttt.com/images/channels/554351061/icons/on_color_large.png");
+    background-size: cover; /* or contain depending on what you want */
+    background-position: center center;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    margin-right: -4px;
+}
+
+#view_schedule {
+    width: 250px;
+    height: 250px;
+    display: inline-block;
+    border: solid;
+    background-image: linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),url("http://mcmath.sd38.bc.ca/sites/mcmath.sd38.bc.ca/files/475044059236022788-calendar-sheets.0.39.2000.800.full_.jpg");
+    background-size: cover; /* or contain depending on what you want */
+    background-position: center center;
+    background-repeat: no-repeat;
+    vertical-align: top;
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    border-width: 5px;
+}
+
+#my_groups {
+    width: 250px;
+    height: 250px;
+    display: inline-block;
+    border: solid;
+    background-image: linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),url('https://s-media-cache-ak0.pinimg.com/564x/e5/53/e3/e553e3c638ba3353256a1e8f086e1f48.jpg');
+    background-size: cover; /* or contain depending on what you want */
+    background-position: center center;
+    background-repeat: no-repeat;
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    border-width: 5px;
+    margin-right: -4px;
+}
+
+#create_group {
+    width: 250px;
+    height: 250px;
+    display: inline-block;
+    border: solid;
+    background-image: url('https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/512/plus_minus-.png');
+    background-size: cover; /* or contain depending on what you want */
+    background-position: center center;
+    background-repeat: no-repeat;
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    border-width: 5px;
+}
+
+#quadimage {
+    position: absolute;
+    margin: auto;
+    top: 500px; left: 0; bottom: 0; right: 0;
+    height: 507px;
+    width: 506px;
+    border: solid;
+    border-radius: 5px;
+}
+
+a:hover {
+    opacity: .8;
+}
