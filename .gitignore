@@ -1,5 +1,6 @@
-*.bak
-*.log
+**/*.bak
+**/*.log
+**/*.DS_Store
 sessions/*
 databases/*
 errors/*
