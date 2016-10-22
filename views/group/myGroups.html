@@ -1,0 +1,23 @@
+{{extend 'layout.html'}}
+<h1>My Groups</h1><br><br>
+
+<!-- My ID={{=int(auth.user.id)}}</br></br> -->
+
+{{for group in groups:}}
+    <p style="font-size:20px">{{=group.name}}</p>
+    {{if (int(group.manager) == int(auth.user.id)):}} 
+        (Manager)
+    {{pass}}
+    <hr>
+    <!--
+    ID={{=group.id}}</br>
+    Name={{=group.name}}</br>
+    Manager={{=group.manager}} - 
+    {{if (int(group.manager) == int(auth.user.id)):}} 
+        Yes
+    {{else:}}
+        No
+    {{pass}}
+    </br></br>
+    -->
+{{pass}}
