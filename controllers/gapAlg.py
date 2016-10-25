@@ -6,17 +6,16 @@ from gluon import DAL, Field
 from collections import namedtuple
 
 #group that is hard coded in
-GROUP = 1
+HARD_CODED = 1
 
 #indexes in the tuples of start and end time
 START_TIME = 0
 END_TIME = 1
 
-@auth.requires_login()
 def gaps():
     """gaps()
 
-    Removes the elements in db.gaps associated with group GROUP
+    Removes the elements in db.gaps associated with group HARD_CODED
     Finds gaps in the users events and then places them in db.gaps
     With the correct group_id
 
@@ -26,7 +25,13 @@ def gaps():
     for what information they want"""
 
     #clear the gaps in the group id
-    db(db.gaps.group_id == GROUP).delete()
+
+    if request.args(0):
+        group = request.args(0)
+    else:
+        group = HARD_CODED
+
+    db(db.gaps.group_id == group).delete()
     
     #retrieve all events associated with users that are in the group
     events = db.executesql("""SELECT event.start_time as start_time, event.end_time as end_time
@@ -34,7 +39,7 @@ def gaps():
         WHERE
             event.user_id IN (SELECT user_id FROM user_groups WHERE group_id=%d)
         ORDER BY event.end_time DESC
-        """ %GROUP)
+        """ %group)
 
     if not events:
         return dict(message='no events')
@@ -43,8 +48,8 @@ def gaps():
     temp_gaps = []
 
     #hard_coded start and end date
-    gap_start = datetime.datetime(2016,10,20)
-    gap_end = datetime.datetime(2016,10,31)
+    gap_start = datetime.datetime(2016,10,21)
+    gap_end = datetime.datetime(2016,11,4)
 
     temp_gaps.append((gap_start,gap_end))
 
@@ -53,9 +58,10 @@ def gaps():
 
     #loop through until all events are accounted for
     while True:
-
+        print "gap: %s,%s event: %s,%s" %(gap[START_TIME],gap[END_TIME],event[START_TIME],event[END_TIME])
         #if the gap starts after the event
         if gap[START_TIME] > event[END_TIME]:
+            print 'gap after event'
             if events:
                 event = events.pop()
                 continue
@@ -63,8 +69,9 @@ def gaps():
 
         #if the gap ends before the event
         if gap[END_TIME] < event[START_TIME]:
+            print 'gap before event'
             #insert the gap into the database!!
-            db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=GROUP)
+            db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
             if temp_gaps:
                 gap = temp_gaps.pop()
                 continue
@@ -72,6 +79,7 @@ def gaps():
 
         #if they overlap
         else:
+            print 'event in gap'
             #if the event falls within the gap
             if (gap[START_TIME] < event[END_TIME]) and (gap[END_TIME] > event[START_TIME]):
                 #create two new gaps
@@ -91,6 +99,7 @@ def gaps():
 
             #if the event begins before the gap and end before the gap does
             if gap[START_TIME] < event[START_TIME]:
+                print 'event first overlap'
                 #reset the gap to the accurate gap
                 gap = (gap[START_TIME],event[START_TIME])
 
@@ -101,6 +110,7 @@ def gaps():
 
             #if the event begins after the gap begins and ends after the gap
             else:
+                print 'gap first overlap'
                 #reset the gap to the accurate gap
                 gap = (event[END_TIME],gap[END_TIME])
                 if events:
@@ -109,11 +119,11 @@ def gaps():
                 break
 
     #insert the gap we are looking at once done
-    db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=GROUP)
+    db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
 
     #insert the rest of temp_gaps into the database.
     for gap in temp_gaps:
-        db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=GROUP)
+        db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
 
     #set random message
-    return dict(message='done')
+    redirect('../schedule/groupschedule/%d' %group)
