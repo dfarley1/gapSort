@@ -69,6 +69,15 @@ def displayGroup(groupID):
         #if(UserID == groupID):
     return users  
 
+def myGroups():
+    user_groups = db(db.user_groups.user_id == auth.user.id).select()
+    
+    groups = []
+    for user_group in user_groups:
+        groups.append(db.groups(user_group.group_id))
+    
+    return dict(groups = groups)
+    
 def user(): return dict(form=auth())
 
 
