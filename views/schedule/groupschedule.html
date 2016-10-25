@@ -1,6 +1,13 @@
 {{extend 'layout.html'}}
 <!-- include our css file -->
-<link rel="stylesheet" type = "text/css" href="../static/css/schedule.css">
+<link rel="stylesheet" type = "text/css" href="../../static/css/schedule.css">
+
+
+
+<input id="gaptoggle" type="checkbox"></input><label style="color: white;">Gaps</label><br>
+
+<input id="eventtoggle" type="checkbox"></input><label style="color: white;">Events</label>
+
 <h1>Group Schedule</h1>
 
 {{import datetime}}
@@ -17,6 +24,18 @@
         {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         {{=date + datetime.timedelta(days=i)}}
     </p>
+    
+    {{for one_users_events in list_of_events:}}
+        {{for event in one_users_events:}}
+            {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
+                <p class="event">
+                {{=event.description}}<br>
+                </p>
+            {{pass}}
+        {{pass}}
+    {{pass}}
+    
+
     
     <!-- check if there is a gap on this day and, if so, display it -->
     {{for gap in gaps:}}
@@ -38,4 +57,37 @@
 
 <div style="color: white">
 {{=gaps}}   
+</div><br><br>
+
+<div style="color: white">
+{{=users}}
 </div>
+
+<div style="color: white">
+{{=list_of_events[1]}}
+</div>
+
+<script>
+    var gapsShowing = false;
+    $(".gap").hide();
+    $("#gaptoggle").click( function() {
+        if (gapsShowing) {
+            $(".gap").hide();
+            gapsShowing = false;
+        } else {
+            $(".gap").show();
+            gapsShowing = true;
+        }
+    })
+
+    var eventsShowing = false;
+    $(".event").hide();
+    $("#eventtoggle").click( function() {
+        if (eventsShowing) {
+            $(".event").hide();
+            eventsShowing = false;
+        } else {
+            $(".event").show();
+            eventsShowing = true;
+        }
+    })</script>

@@ -35,9 +35,17 @@ def myschedule():
 def groupschedule():
     # get todays date so we know where the calendar should start
     date = datetime.date.today()
-    # get all events for this user
-    events = db(db.events.user_id == auth.user.id).select();
+    # what group is this?
+    group_id = int(request.args[0]);
+    #get this groups gaps
     gaps = db(db.gaps.group_id == 1).select();
+    # get user_ids for all people in this group
+    users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
+    # add each users events to the events list
+    list_of_events = [];
+    for user in users:
+        one_users_events = db(db.events.user_id == user.user_id).select()
+        list_of_events.append(one_users_events);
     weekdays   = ['Sunday', 
               'Monday', 
               'Tuesday', 
@@ -45,7 +53,7 @@ def groupschedule():
               'Thursday',  
               'Friday', 
               'Saturday']
-    return dict(date=date, events=events, weekdays=weekdays, gaps=gaps)
+    return dict(date=date, weekdays=weekdays, gaps=gaps, users=users, list_of_events=list_of_events)
 
     
 def findGaps():

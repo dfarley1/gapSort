@@ -43,8 +43,8 @@ def gaps():
     temp_gaps = []
 
     #hard_coded start and end date
-    gap_start = datetime.datetime(2016,10,05)
-    gap_end = datetime.datetime(2016,10,19)
+    gap_start = datetime.datetime(2016,10,20)
+    gap_end = datetime.datetime(2016,10,31)
 
     temp_gaps.append((gap_start,gap_end))
 
