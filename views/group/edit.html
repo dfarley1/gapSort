@@ -1,0 +1,8 @@
+{{extend 'layout.html'}}
+<h1>Your group memebers</h1>
+<form>
+{{for user in users:}}
+	<input type="checkbox" id={{=user.email}} value={{=user.email}}>{{=" ".join((user.first_name, user.last_name))}}</input>
+	<br>
+{{pass}}
+</from>

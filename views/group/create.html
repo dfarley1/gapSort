@@ -7,8 +7,17 @@
 <h3>
     Group members
 </h3>
-<ul>
+<form>
 {{for user in users:}}
-{{=LI(user.first_name)}}
+	<input type="checkbox" id={{=user.email}} value={{=user.email}}>{{=" ".join((user.first_name, user.last_name))}}</input>
+	<br>
 {{pass}}
-</ul>
+</form>
+
+<button onclick="jQuery.ajax('{{=URL('deleteUserFromGroup')}}');">Delete Members</button>
+
+<script type="text/javascript"></script>
+
+
+
+

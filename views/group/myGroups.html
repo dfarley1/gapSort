@@ -6,7 +6,8 @@
 {{for group in groups:}}
     <p style="font-size:20px">{{=group.name}}</p>
     {{if (int(group.manager) == int(auth.user.id)):}} 
-        (Manager)
+        (Manager
+        <BUTTON onclick= 'window.location="{{=URL('group', 'edit', args=[group.id])}}";'>EDIT GROUP</BUTTON>
     {{pass}}
     <hr>
     <!--
