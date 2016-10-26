@@ -48,8 +48,8 @@ def gaps():
     temp_gaps = []
 
     #hard_coded start and end date
-    gap_start = datetime.datetime(2016,10,21)
-    gap_end = datetime.datetime(2016,11,4)
+    gap_start = datetime.datetime.now()
+    gap_end = gap_start + datetime.timedelta(days=14)
 
     temp_gaps.append((gap_start,gap_end))
 
