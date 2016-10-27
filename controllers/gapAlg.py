@@ -27,7 +27,7 @@ def gaps():
     #clear the gaps in the group id
 
     if request.args(0):
-        group = request.args(0)
+        group = int(request.args(0))
     else:
         group = HARD_CODED
 
@@ -126,4 +126,4 @@ def gaps():
         db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
 
     #set random message
-    redirect('../schedule/groupschedule/%d' %group)
+    redirect('../../schedule/groupschedule/%d' %group)

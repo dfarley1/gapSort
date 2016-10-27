@@ -4,7 +4,7 @@
 <!-- My ID={{=int(auth.user.id)}}</br></br> -->
 
 {{for group in groups:}}
-    <span style="font-size:36px"><a href="../schedule/groupschedule/{{=group.id}}">{{=group.name}}</a></span>
+    <span style="font-size:36px"><a href="../gapAlg/gaps/{{=group.id}}">{{=group.name}}</a></span>
     {{if (int(group.manager) == int(auth.user.id)):}}
         <a href="edit/{{=group.id}}"> (edit)</a>
         <!-- <BUTTON onclick= 'window.location="{{=URL('group', 'edit', args=[group.id])}}";'>EDIT GROUP</BUTTON>
