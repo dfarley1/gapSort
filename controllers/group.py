@@ -38,8 +38,19 @@ def create():
 def edit():
     print "this is the group"
     groupID = request.args(0)
+    editNameForm = SQLFORM(db.groups, groupID, fields=['name'])
+    addUserForm = FORM('Email address: ', INPUT(_name='email'), INPUT(_type = 'submit'))
+    if editNameForm.process().accepted:
+        session.flash = 'record updated'
+        db.executesql("""UPDATE groups
+                        SET name = '%s'
+                        WHERE id = '%s' """ %(form.vars.name, groupID))
+    if addUserForm.process(onvalidation=isUser).accepted:
+       session.flash = 'record inserted'
+       insertUser(addUserForm,groupID)
     users = []
-    users = displayGroup(groupID)
+    users = displayGroup(groupID) 
+
     # users = []
     # membersID = db.executesql("""SELECT id
     #                         FROM user_groups
@@ -50,7 +61,7 @@ def edit():
     #                         where (id = '%s') """ %(ID.user_id))
     #     users.append(userSQl)
 
-    return dict(users = users)
+    return dict(editNameForm = editNameForm, addUserForm = addUserForm ,users = users)
 
 def isUser(form):
     member = db.executesql("""SELECT id
@@ -100,9 +111,9 @@ def displayGroup(groupID):
         #if(UserID == groupID):
     return users  
 
+@auth.requires_login()
 def myGroups():
-    user_groups = db(db.user_groups.user_id == auth.user.id).select()
-    
+    user_groups = db(db.user_groups.user_id == auth.user.id).select()  
     groups = []
     for user_group in user_groups:
         groups.append(db.groups(user_group.group_id))
@@ -110,13 +121,17 @@ def myGroups():
     return dict(groups = groups)
 
 def deleteUserFromGroup():
-    print "THIS worked"
-    
+    # isManager = db.executesql("""SELECT id 
+    #                         FROM groups
+    #                         WHERE manager = '%s' AND id = '%s' == """%(userID,groupID))
+    # if isManager:
+    #     print "THIS is the manager"
+    # else:
+    # db.executesql("""DELETE FROM user_groups
+    #                 WHERE  user_id = '%s' AND group_id = '%s'""" %(userID,groupID))
+    print "got into here"
+    redirect('edit')
 def user(): return dict(form=auth())
-
-
-
-
 
 
 #select id form users where email = email
