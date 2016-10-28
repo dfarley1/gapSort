@@ -42,7 +42,7 @@ def groupschedule():
     # what group is this?
     group_id = int(request.args[0]);
     #get this groups gaps
-    gaps = db(db.gaps.group_id == 1).select();
+    gaps = db(db.gaps.group_id == group_id).select();
     # get user_ids for all people in this group
     users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
     # add each users events to the events list
