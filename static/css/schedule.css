@@ -39,14 +39,79 @@ h1 {
     margin-top: 0px;
 }
 
-.event {
+.event0 {
     height: 10px;
     color: red;
 }
 
-.gap {
+.event1 {
     height: 10px;
-    color: blue;
+    color: green;
+}
+
+.event2 {
+    height: 10px;
+    color: purple;
+}
+
+.event3 {
+    height: 10px;
+    color: pink;
+}
+
+.event4 {
+    height: 10px;
+    color: orange;
+}
+
+.event5 {
+    height: 10px;
+    color: orange;
+}
+
+.event6 {
+    height: 10px;
+    color: Navy;
+}
+
+.event7 {
+    height: 10px;
+    color: Aqua;
+}
+
+.event8 {
+    height: 10px;
+    color: Teal;
+}
+
+.event9 {
+    height: 10px;
+    color: Olive;
+}
+
+.event10 {
+    height: 10px;
+    color: Lime;
+}
+
+.event11 {
+    height: 10px;
+    color: Maroon;
+}
+
+
+
+
+.gap {
+    height: 20px;
+    color: #003399;
+    background-color: #ccffcc;
+}
+
+.big_gap {
+    height: 40px;
+    color: #003399;
+    background-color: #ccffcc;
 }
 
 a:hover {
