@@ -4,12 +4,13 @@
 
 <input id="gaptoggle" type="checkbox"></input><label style="color: white;">Gaps</label><br>
 
-<input id="eventtoggle" type="checkbox"></input><label style="color: white;">All Events</label>
+<input id="eventtoggle" type="checkbox"></input><label style="color: white;">All Events</label><br>
+
 {{userNum = 0}}
-{{for one_users_events in list_of_events:}}
+{{for user in users:}}
     {{user_toggle_class = "events_of_user%d" % userNum}}
-    <input class="{{=user_toggle_class}}" type="checkbox" value="{{=user_toggle_class}}"></input>
-    <label style="color: white;">{{=one_users_events[0].user_id}}</label>
+    <input class="{{=user_toggle_class}}" type="checkbox" value="{{=user_toggle_class}}" style="display: inline-block;"></input>
+    <label style="color: white;">{{=user.user_id}}</label>
     {{userNum += 1}}
 {{pass}}
 
