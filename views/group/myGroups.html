@@ -7,7 +7,7 @@
     <span style="font-size:36px"><a href="../schedule/groupschedule/{{=group.id}}">{{=group.name}}</a></span>
     {{if (int(group.manager) == int(auth.user.id)):}}
         <a href="edit/{{=group.id}}"> (edit)</a>
-        <!-- <BUTTON onclick= 'window.location="{{=URL('group', 'edit', args=[group.id])}}";'>EDIT GROUP</BUTTON>
+        <!-- <BUTTON onclick = 'window.location="{{=URL('group', 'edit', args=[group.id])}}";'>EDIT GROUP</BUTTON>
         -->
     {{pass}}
     <hr>

@@ -44,7 +44,7 @@ def edit():
         session.flash = 'record updated'
         db.executesql("""UPDATE groups
                         SET name = '%s'
-                        WHERE id = '%s' """ %(form.vars.name, groupID))
+                        WHERE id = '%s' """ %(editNameForm.vars.name, groupID))
     if addUserForm.process(onvalidation=isUser).accepted:
        session.flash = 'record inserted'
        insertUser(addUserForm,groupID)
@@ -61,12 +61,12 @@ def edit():
     #                         where (id = '%s') """ %(ID.user_id))
     #     users.append(userSQl)
 
-    return dict(editNameForm = editNameForm, addUserForm = addUserForm ,users = users)
+    return dict(editNameForm = editNameForm, addUserForm = addUserForm , users = users, groupID=groupID)
 
-def isUser(form):
+def isUser(addUserForm):
     member = db.executesql("""SELECT id
                             FROM auth_user
-                            WHERE (email = '%s')""" %(form.vars.name))
+                            WHERE (email = '%s')""" %(addUserForm.vars.name))
     # if member:
     #     form.errors.email = 'not a user'
 
@@ -130,7 +130,8 @@ def deleteUserFromGroup():
     # db.executesql("""DELETE FROM user_groups
     #                 WHERE  user_id = '%s' AND group_id = '%s'""" %(userID,groupID))
     print "got into here"
-    redirect('edit')
+    redirect(URL('edit', args=(request.args(0))))
+
 def user(): return dict(form=auth())
 
 
