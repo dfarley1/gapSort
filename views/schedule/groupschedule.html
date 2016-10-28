@@ -2,20 +2,29 @@
 <!-- include our css file -->
 <link rel="stylesheet" type = "text/css" href="../../static/css/schedule.css">
 
-<input id="gaptoggle" type="checkbox"></input><label style="color: white;">Gaps</label><br>
+<!-- get a little control panel going -->
+<div id="control_panel">
+    <!-- have some toggle options -->
+    <input id="gaptoggle" type="checkbox"></input><label style="color: white;">Gaps</label><br>
 
-<input id="eventtoggle" type="checkbox"></input><label style="color: white;">All Events</label><br>
+    <input id="eventtoggle" type="checkbox"></input><label style="color: white;">All Events</label><br>
 
+<!-- make toggle options for each user in the group -->
 {{userNum = 0}}
 {{for user in users:}}
+    <!-- each user will have a unique css class so that we can hide/show that class with javascript later -->
     {{user_toggle_class = "events_of_user%d" % userNum}}
-    <input class="{{=user_toggle_class}}" type="checkbox" value="{{=user_toggle_class}}" style="display: inline-block;"></input>
-    <label style="color: white;">{{=user.user_id}}</label>
+    <input class="{{=user_toggle_class}}" type="checkbox" value="{{=user_toggle_class}}"></input>
+    <label style="color: white;">{{=user.user_id}}</label><br>
     {{userNum += 1}}
 {{pass}}
+</div>
+
+
 
 <h1>Group Schedule</h1>
 
+<!-- python module for all date related things -->
 {{import datetime}}
 <!-- outer div to contain all of the calendar tiles -->
 <div class="whole_calendar">
@@ -30,17 +39,23 @@
         {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         {{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
     </p>
+    
+    <!-- keep track of which user's events we are talking about -->
     {{userNum = 0}}
-    {{colors = ["color: blue;", "color: green;", "color: orange;", "color: purple;", "color: red;"]}}
+    <!-- gotta go through our 2d list of user events -->
     {{for one_users_events in list_of_events:}}
         {{for event in one_users_events:}}
+            <!-- include which user number user this and put it in their css class
+                 so they can have a unique color for their events -->
             {{event_class = "event event%d" % userNum}}
+            <!-- does this user even have an event on this day? -->
             {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
                 <p class="{{=event_class}}">
                 {{=event.description}}<br>
                 </p>
             {{pass}}
         {{pass}}
+        <!-- on to the next user's set of events -->
         {{userNum += 1}}
     {{pass}}
 
@@ -48,13 +63,17 @@
 
     <!-- check if there is a gap on this day and, if so, display it -->
     {{for gap in gaps:}}
+        <!-- gap on this day? -->
         {{if (gap.start_time.date() == date + datetime.timedelta(days=i)):}}
+            <!-- let's see how big this gap is -->
             {{start = gap.start_time.hour}}
             {{end = gap.end_time.hour}}
+            <!-- gap might have been small so give it a small box -->
             {{if ((abs(end - start)) < 3):}}
                 <p class="gap">
                 {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
                 </p>
+            <!-- gap must have been pretty big, give it a big box -->
             {{else:}}
                 <p class="big_gap">
                 {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
@@ -63,60 +82,81 @@
         {{pass}}
     {{pass}}
 
-
-</div></a>
+<!-- end of this calendar tile, on to the next day -->
+</div></a> 
 {{pass}}
     
 <!-- plus minus sign to fill up the last tile slot -->
 <a href="./add"><div class="addevent"></div></a>
     
-</div> <!-- end of outer calendar div -->
+</div> <!-- end of whole calendar -->
 
 
 <script>
+    
     var gapsShowing = false;
+    var eventsShowing = false;
     var currentlyHidden = [];
     
+    // start with each users' event class in the hidden list
     for (var i = 0; i < 12; i++) {
         class_to_hide = ".event" + String(i);
         currentlyHidden.push(class_to_hide);
     }
     
+    //start with all gaps and events hidden
     $(".gap").hide();
     $(".big_gap").hide();
+    $(".event").hide();
     
+    //someone clicked on the toggle gaps button
     $("#gaptoggle").click( function() {
+        //should we hide or show all gaps?
         if (gapsShowing) {
+            //hide
             $(".gap").hide();
             $(".big_gap").hide();
             gapsShowing = false;
         } else {
+            //show
             $(".gap").show();
             $(".big_gap").show();
             gapsShowing = true;
         }
     })
 
-    var eventsShowing = false;
-    $(".event").hide();
+    // someone hath toggled the all events button
     $("#eventtoggle").click( function() {
+        // should we hide or show?
         if (eventsShowing) {
+            //hide
             $(".event").hide();
             eventsShowing = false;
         } else {
+            //show
             $(".event").show();
             eventsShowing = true;
         }
     })
     
+    // someone has clicked any of the input checkboxes
     $("input").click( function () {
+        // get the css class of whichever checkbox was clicked
+        // this.value[this.value.length - 1] is just the last character in the class
+        // of whichever checkbox was clicked
+        // so for the first run through it will just be '0' taken from 'events_of_user0'
         users_event_class = ".event" + this.value[this.value.length - 1];
+        // should we hide or show these events?
         if ($.inArray(users_event_class, currentlyHidden) > -1) {
+            //show
             $(users_event_class).show();
+            //remove from hidden list
             currentlyHidden.splice( $.inArray(users_event_class, currentlyHidden), 1 );
         }
         else {
+            //hide
             $(users_event_class).hide();
+            //add to hidden list
             currentlyHidden.push(users_event_class);
         };
     });

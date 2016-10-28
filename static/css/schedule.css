@@ -2,6 +2,14 @@ body {
     background-image: url('http://wallpapercave.com/wp/fcaM4Mo.jpg');
 }
 
+#control_panel {
+    position: fixed;
+    right: 0px;
+    background-color:rgba(0,0,0,0.5);
+    z-index: 100;
+    padding: 10px 10px 10px 10px;
+}
+
 h1 {
     color: white;
 }
@@ -100,51 +108,51 @@ h1 {
 }
 
 .events_of_user0 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user1 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user2 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user3 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user4 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user5 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user6 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user7 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user8 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user9 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user10 {
-    display: block;
+    display: inline;
 }
 
 .events_of_user11 {
-    display: block;
+    display: inline;
 }
 
 

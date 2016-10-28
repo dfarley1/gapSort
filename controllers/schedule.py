@@ -49,9 +49,11 @@ def groupschedule():
     users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
     # add each users events to the events list
     list_of_events = []
+    #populate a 2d list of everybody's events
     for user in users:
         one_users_events = db(db.events.user_id == user.user_id).select()
         list_of_events.append(one_users_events)
+    # a list of week days could come in handy
     weekdays   = ['Sunday',
               'Monday',
               'Tuesday',
