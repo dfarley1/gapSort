@@ -2,11 +2,16 @@
 <!-- include our css file -->
 <link rel="stylesheet" type = "text/css" href="../../static/css/schedule.css">
 
-
-
 <input id="gaptoggle" type="checkbox"></input><label style="color: white;">Gaps</label><br>
 
-<input id="eventtoggle" type="checkbox"></input><label style="color: white;">Events</label>
+<input id="eventtoggle" type="checkbox"></input><label style="color: white;">All Events</label>
+{{userNum = 0}}
+{{for one_users_events in list_of_events:}}
+    {{user_toggle_class = "events_of_user%d" % userNum}}
+    <input class="{{=user_toggle_class}}" type="checkbox" value="{{=user_toggle_class}}"></input>
+    <label style="color: white;">{{=one_users_events[0].user_id}}</label>
+    {{userNum += 1}}
+{{pass}}
 
 <h1>Group Schedule</h1>
 
@@ -69,13 +74,24 @@
 
 <script>
     var gapsShowing = false;
+    var currentlyHidden = [];
+    
+    for (var i = 0; i < 12; i++) {
+        class_to_hide = ".event" + String(i);
+        currentlyHidden.push(class_to_hide);
+    }
+    
     $(".gap").hide();
+    $(".big_gap").hide();
+    
     $("#gaptoggle").click( function() {
         if (gapsShowing) {
             $(".gap").hide();
+            $(".big_gap").hide();
             gapsShowing = false;
         } else {
             $(".gap").show();
+            $(".big_gap").show();
             gapsShowing = true;
         }
     })
@@ -90,4 +106,17 @@
             $(".event").show();
             eventsShowing = true;
         }
-    })</script>
+    })
+    
+    $("input").click( function () {
+        users_event_class = ".event" + this.value[this.value.length - 1];
+        if ($.inArray(users_event_class, currentlyHidden) > -1) {
+            $(users_event_class).show();
+            currentlyHidden.splice( $.inArray(users_event_class, currentlyHidden), 1 );
+        }
+        else {
+            $(users_event_class).hide();
+            currentlyHidden.push(users_event_class);
+        };
+    });
+</script>
