@@ -22,30 +22,41 @@
     <!-- have the weekday and date for this calendar day displayed at the top of the tile -->
     <p class="date">
         {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
-        {{=date + datetime.timedelta(days=i)}}
+        {{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
     </p>
-    
+    {{userNum = 0}}
+    {{colors = ["color: blue;", "color: green;", "color: orange;", "color: purple;", "color: red;"]}}
     {{for one_users_events in list_of_events:}}
         {{for event in one_users_events:}}
+            {{event_class = "event event%d" % userNum}}
             {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
-                <p class="event">
+                <p class="{{=event_class}}">
                 {{=event.description}}<br>
                 </p>
             {{pass}}
         {{pass}}
+        {{userNum += 1}}
     {{pass}}
-    
 
-    
+
+
     <!-- check if there is a gap on this day and, if so, display it -->
     {{for gap in gaps:}}
-    {{if (gap.start_time.date() == date + datetime.timedelta(days=i)):}}
-    <p class="gap">
-    {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
-    </p>
+        {{if (gap.start_time.date() == date + datetime.timedelta(days=i)):}}
+            {{start = gap.start_time.hour}}
+            {{end = gap.end_time.hour}}
+            {{if ((abs(end - start)) < 3):}}
+                <p class="gap">
+                {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
+                </p>
+            {{else:}}
+                <p class="big_gap">
+                {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
+                </p>
+            {{pass}}
+        {{pass}}
     {{pass}}
-    {{pass}}
-    
+
 
 </div></a>
 {{pass}}
@@ -55,17 +66,6 @@
     
 </div> <!-- end of outer calendar div -->
 
-<div style="color: white">
-{{=gaps}}   
-</div><br><br>
-
-<div style="color: white">
-{{=users}}
-</div>
-
-<div style="color: white">
-{{=list_of_events[1]}}
-</div>
 
 <script>
     var gapsShowing = false;
