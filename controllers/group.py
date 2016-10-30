@@ -36,10 +36,10 @@ def create():
 
 #allows the manager to edit the group
 def edit():
-    print "this is the group"
     groupID = request.args(0)
     editNameForm = SQLFORM(db.groups, groupID, fields=['name'])
     addUserForm = FORM('Email address: ', INPUT(_name='email'), INPUT(_type = 'submit'))
+    
     if editNameForm.process().accepted:
         session.flash = 'record updated'
         db.executesql("""UPDATE groups
@@ -51,17 +51,18 @@ def edit():
     users = []
     users = displayGroup(groupID) 
 
-    # users = []
-    # membersID = db.executesql("""SELECT id
-    #                         FROM user_groups
-    #                         WHERE (group_id = '%s') """ %(groupID))
-    # for ID in membersID:
-    #     userSQl = db.executesql("""SELECT id
-    #                         FROM auth_user
-    #                         where (id = '%s') """ %(ID.user_id))
-    #     users.append(userSQl)
-
     return dict(editNameForm = editNameForm, addUserForm = addUserForm , users = users, groupID=groupID)
+
+#deletes a group from the database
+def deleteGroup():
+    groupID = request.args(0)
+    print groupID
+    db.executesql("""DELETE FROM groups
+                    WHERE id = '%s' """ %(groupID))
+    db.executesql("""DELETE FROM user_groups
+                    WHERE group_id = '%s' """ %(groupID))
+    redirect(URL('myGroups'))
+    dict()
 
 def isUser(addUserForm):
     member = db.executesql("""SELECT id
@@ -97,18 +98,11 @@ def exists(form):
 
 #displays the memebers in a given group id
 def displayGroup(groupID):
-    #NAME = db.groups(db.groups.group_id == groupID)
-    print "THESE ARE THE GROUP MEMEBERS"
     names = db(db.user_groups.group_id == groupID).select()
     users = []
     for name in names:
         userName =  db.auth_user(name.user_id)
-        print userName.first_name 
         users.append(userName)
-    
-    #UserID = db().select(db.auth_user.ALL)
-    #for ID in UserID:
-        #if(UserID == groupID):
     return users  
 
 @auth.requires_login()
