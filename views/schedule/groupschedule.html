@@ -15,14 +15,14 @@
     <!-- each user will have a unique css class so that we can hide/show that class with javascript later -->
     {{user_toggle_class = "events_of_user%d" % userNum}}
     <input class="{{=user_toggle_class}}" type="checkbox" value="{{=user_toggle_class}}"></input>
-    <label style="color: white;">{{=user.user_id}}</label><br>
+    <label style="color: white;">{{=list_of_usernames[userNum][0].first_name.title()}}</label><br>
     {{userNum += 1}}
 {{pass}}
 </div>
 
 
-
-<h1>Group Schedule</h1>
+<!-- display name of this group -->
+<h1>{{=group.name.title()}}</h1>
 
 <!-- python module for all date related things -->
 {{import datetime}}
@@ -90,6 +90,7 @@
 <a href="./add"><div class="addevent"></div></a>
     
 </div> <!-- end of whole calendar -->
+
 
 
 <script>
@@ -160,4 +161,5 @@
             currentlyHidden.push(users_event_class);
         };
     });
+    
 </script>
