@@ -42,16 +42,23 @@ def groupschedule():
     # what group is this?
     group_id = int(request.args[0])
     #get this groups gaps
+    group = db(db.groups.id == group_id).select()[0]
 
     gaps = db(db.gaps.group_id == group_id).select()
 
     # get user_ids for all people in this group
     users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
+    # maintain a list of all the usernames
+    list_of_usernames = []
     # add each users events to the events list
     list_of_events = []
+    #populate a 2d list of everybody's events and another list of just usernames
     for user in users:
         one_users_events = db(db.events.user_id == user.user_id).select()
         list_of_events.append(one_users_events)
+        username = db(db.auth_user.id == user.user_id).select()
+        list_of_usernames.append(username)
+    # a list of week days could come in handy
     weekdays   = ['Sunday',
               'Monday',
               'Tuesday',
@@ -59,4 +66,4 @@ def groupschedule():
               'Thursday',
               'Friday',
               'Saturday']
-    return dict(date=date, weekdays=weekdays, gaps=gaps, users=users, list_of_events=list_of_events)
+    return dict(date=date, weekdays=weekdays, gaps=gaps, users=users, list_of_events=list_of_events, list_of_usernames=list_of_usernames, group=group)
