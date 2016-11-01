@@ -45,7 +45,7 @@ def edit():
         db.executesql("""UPDATE groups
                         SET name = '%s'
                         WHERE id = '%s' """ %(editNameForm.vars.name, groupID))
-    if addUserForm.process(onvalidation=isUser).accepted:
+    if addUserForm.process().accepted:
        session.flash = 'record inserted'
        insertUser(addUserForm,groupID)
     users = []
@@ -63,13 +63,6 @@ def deleteGroup():
                     WHERE group_id = '%s' """ %(groupID))
     redirect(URL('myGroups'))
     dict()
-
-def isUser(addUserForm):
-    member = db.executesql("""SELECT id
-                            FROM auth_user
-                            WHERE (email = '%s')""" %(addUserForm.vars.name))
-    # if member:
-    #     form.errors.email = 'not a user'
 
 #inserts a user into a given group
 def insertUser(form,groupID):
@@ -115,16 +108,18 @@ def myGroups():
     return dict(groups = groups)
 
 def deleteUserFromGroup():
-    # isManager = db.executesql("""SELECT id 
-    #                         FROM groups
-    #                         WHERE manager = '%s' AND id = '%s' == """%(userID,groupID))
-    # if isManager:
-    #     print "THIS is the manager"
-    # else:
-    # db.executesql("""DELETE FROM user_groups
-    #                 WHERE  user_id = '%s' AND group_id = '%s'""" %(userID,groupID))
-    print "got into here"
-    redirect(URL('edit', args=(request.args(0))))
+    print "Group ID and user email"
+    groupID  = request.args(0)
+    userEmail = request.args(1)
+    print userEmail
+    print groupID
+    user = db(db.auth_user.email == userEmail).select()
+    userID = user[0].id
+    db.executesql("""DELETE FROM user_groups
+                    WHERE user_id = '%s' AND group_id = '%s'""" %(userID,groupID))
+    
+    redirect(URL('edit', args=(groupID)))
+    return
 
 def user(): return dict(form=auth())
 
