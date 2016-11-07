@@ -13,8 +13,17 @@ def add():
     record = db.events(request.args(0)) or None
 
     form = SQLFORM(db.events, record, deleteable=True, fields=['start_time', 'end_time', 'description', 'name'],showid=False)
+    
     form.vars.user_id = auth.user.id
+    #does this event span multiple days?
     if form.process().accepted:
+        start_time = form.vars.start_time + datetime.timedelta(days=1)
+        end_time = form.vars.end_time
+        escape = 0
+        while start_time.date() <= end_time.date() or escape > 10:
+            db.events.insert(user_id = auth.user.id, start_time = start_time, end_time = end_time, description=form.vars.description, name=form.vars.description)
+            start_time = start_time + datetime.timedelta(days=1)
+            escape += 1
         if record:
             redirect('../../default/index')
         redirect('../default/index')
