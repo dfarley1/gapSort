@@ -1,0 +1,22 @@
+body{
+	background-image: url('http://wallpapercave.com/wp/fcaM4Mo.jpg');
+	color: white;
+}
+
+h1 {
+	text-align: center;
+}
+
+a.delete{
+	 border: 2px solid black;
+	 background-color: black;
+	 color: white;
+	 padding: 5px;
+}
+
+li{
+	padding: 6px;
+}
+
+.editName{
+}

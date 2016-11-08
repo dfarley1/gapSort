@@ -1,18 +1,19 @@
 {{extend 'layout.html'}}
-<h1>Your group memebers</h1>
+<head>
+	<link rel="stylesheet" href="{{=URL('static', 'css/edit.css')}}">
+</head>
+<h1>Group Name</h1>
 {{=editNameForm}}
-<h2>Add user to group:</h2>
+<h2>Add user:</h2>
 {{=addUserForm}}
 
 {{for user in users:}}
-
-	<li>{{=" ".join((user.first_name, user.last_name))}} <a href="../deleteUserFromGroup/{{=groupID}}/{{=user.email}}">(Delete)</a></li>
+	<li>{{=" ".join((user.first_name, user.last_name))}} <a class="delete" href="../deleteUserFromGroup/{{=groupID}}/{{=user.email}}">Delete</a></li>
 	
-	<!-- <input type="checkbox" id={{=user.email}} value={{=user.email}}>{{=" ".join((user.first_name, user.last_name))}}</input> -->
 {{pass}}
 
 
-<a href="../deleteGroup/{{=groupID}}">Delete Group</a>
+<a class="delete" href="../deleteGroup/{{=groupID}}">Delete Group</a>
 
 
 

@@ -1,5 +1,8 @@
 {{extend 'layout.html'}}
-<h1 style="text-align: center;">
+<head>
+	<link rel="stylesheet" href="{{=URL('static', 'css/create.css')}}">
+</head>
+<h1>
     Enter the the email of group members
 </h1>
 {{=form}}
@@ -9,14 +12,10 @@
 </h3>
 <form>
 {{for user in users:}}
-	<input type="checkbox" id={{=user.email}} value={{=user.email}}>{{=" ".join((user.first_name, user.last_name))}}</input>
-	<br>
+	<li>{{=" ".join((user.first_name, user.last_name))}} <a href="../deleteUserFromGroup/{{=groupID}}/{{=user.email}}"> Delete </a></li>
 {{pass}}
 </form>
 
-<button onclick="jQuery.ajax('{{=URL('deleteUserFromGroup')}}');">Delete Members</button>
-
-<script type="text/javascript"></script>
 
 
 

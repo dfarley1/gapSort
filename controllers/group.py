@@ -11,33 +11,30 @@ def name():
     form.vars.manager = auth.user.id
     if form.process(onvalidation=exists).accepted:
         #ID = db.groups.insert(manager = auth.user.id)
-        db.user_groups.insert(user_id = auth.user.id, group_id = form.vars.id)
+        groupID = form.vars.id
+        db.user_groups.insert(user_id = auth.user.id, group_id = groupID)
         session.groupName = form.vars.name  #saving the groupName for the next page
-        redirect('create')
+        redirect(URL('edit', args=(groupID)))
         print "This is a new group"
     return dict(form=form)
 
 #creates a group and allows you to add users to the group
 def create():
     #getting the ID of the group name
-    rows = db().select(db.groups.ALL)
-    for row in rows:
-        if(row.name == session.groupName):
-            groupID = row.id
-
+    groupID = request.args(0)
     form=FORM('Email address: ', INPUT(_name='email'), INPUT(_type = 'submit'))
     
-    if form.process(onvalidation=isUser).accepted:
+    if form.process().accepted:
        session.flash = 'record inserted'
        insertUser(form,groupID)
     users = []
     users = displayGroup(groupID)
-    return dict(form=form, users = users)
+    return dict(form=form, users = users, groupID = groupID)
 
 #allows the manager to edit the group
 def edit():
     groupID = request.args(0)
-    editNameForm = SQLFORM(db.groups, groupID, fields=['name'])
+    editNameForm = SQLFORM(db.groups, groupID, fields=['name'],showid=False, _class='editName')
     addUserForm = FORM('Email address: ', INPUT(_name='email'), INPUT(_type = 'submit'))
     
     if editNameForm.process().accepted:

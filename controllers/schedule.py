@@ -12,7 +12,7 @@ def add():
     #return them all
     record = db.events(request.args(0)) or None
 
-    form = SQLFORM(db.events, record, deleteable=True, fields=['start_time', 'end_time', 'description', 'name'])
+    form = SQLFORM(db.events, record, deleteable=True, fields=['start_time', 'end_time', 'description', 'name'],showid=False)
     form.vars.user_id = auth.user.id
     if form.process().accepted:
         if record:
