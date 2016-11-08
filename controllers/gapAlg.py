@@ -52,10 +52,12 @@ def gaps():
     #SETTING UP GAPS AS SINGLE DAYS INSTEAD OF ONE WHOLE BLOCK
     now = datetime.datetime.now()
     gap_start = now.replace(hour=0, minute=0, second=0)
+    #loop through 14 days
     for delta in range (0,14):
         gap_end = gap_start + datetime.timedelta(days=1)
-
+        #add the gap to temp_gaps
         temp_gaps.append((gap_start,gap_end))
+        #resett the start gap time
         gap_start = gap_end
 
     event = events.pop()
