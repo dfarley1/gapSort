@@ -23,11 +23,13 @@
 
 <!-- display name of this group -->
 <h1>{{=group.name.title()}}</h1>
-<div style="width:200px; display:inline">
-{{=form.custom.begin}}
-Show gaps longer than: {{=form.custom.widget.gap_length}}{{=form.custom.submit}}
-{{=form.custom.end}}
-</div>
+
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#gapsModal">Gap Preferences</button>
+
+
+
+
+
 
 <!-- python module for all date related things -->
 {{import datetime}}
@@ -101,7 +103,29 @@ Show gaps longer than: {{=form.custom.widget.gap_length}}{{=form.custom.submit}}
 </div>
 
 
-<div id="gapsModal" class="modal fade" role="dialog">This is ShowGaps in groupschedule</div>
+<div id="gapsModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Gap Preferences</h4>
+      </div>
+      <div class="modal-body">
+        <div style="width:200px; display:inline">
+{{=form.custom.begin}}
+Show gaps longer than: {{=form.custom.widget.gap_length}}{{=form.custom.submit}}
+{{=form.custom.end}}
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 
 <script>
