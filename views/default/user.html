@@ -1,12 +1,23 @@
 {{extend 'layout.html'}}
+<body style="background-image: url('http://wallpapercave.com/wp/fcaM4Mo.jpg');">
+    
 
-<h2>
-{{=T('Sign Up') if request.args(0) == 'register' else T('Log In') if request.args(0) == 'login' else T(request.args(0).replace('_',' ').title())}}
-</h2>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <a href="/gapSort/default/index.html" type="button" class="close">&times;</a>
+        <h4 class="modal-title">{{=T('Sign Up') if request.args(0) == 'register' else T('Log In') if request.args(0) == 'login' else T(request.args(0).replace('_',' ').title())}}</h4>
+      </div>
+      <div class="modal-body">
 
 <div class="container">
     <div class="row">
-        <div id="web2py_user_form" class="col-lg-6">
+        <div id="web2py_user_form" class="col-lg-6" style="width: 500px;">
         {{
         if request.args(0)=='login':
             if not 'register' in auth.settings.actions_disabled:
@@ -21,6 +32,16 @@
         </div>
     </div>
 </div>
+      </div>
+      <div class="modal-footer">
+        <a href="/gapSort/default/index.html" type="button" class="btn btn-default" >Close</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
 
 
 {{block page_js}}
@@ -33,3 +54,9 @@
 {{pass}}
 </script>
 {{end page_js}}
+
+<script type="text/javascript">
+    $(window).load(function(){
+        $('#myModal').modal('show');
+    });
+</script>
