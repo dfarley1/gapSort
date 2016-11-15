@@ -75,4 +75,19 @@ def groupschedule():
               'Thursday',
               'Friday',
               'Saturday']
-    return dict(date=date, weekdays=weekdays, gaps=gaps, users=users, list_of_events=list_of_events, list_of_usernames=list_of_usernames, group=group)
+    
+    db.define_table('gap_length',
+        Field('gap_length', requires=IS_IN_SET(
+            ['15 minutes', '30 minutes', '1 hour', '2 hours', '4 hours'])))
+    form = SQLFORM(db.gap_length)
+    if form.process(formname='test').accepted:
+        response.flash = 'form accepted'
+    elif form.errors:
+        response.flash = 'form has errors'
+    else:
+        response.flash = 'please fill out the form'
+    
+    return dict(date=date, weekdays=weekdays, gaps=gaps, 
+        users=users, list_of_events=list_of_events, 
+        list_of_usernames=list_of_usernames, group=group, 
+        form=form)
