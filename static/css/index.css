@@ -70,7 +70,8 @@ body {
     height: 250px;
     display: inline-block;
     border: solid;
-    background-image: url('https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/512/plus_minus-.png');
+    /*background-image: url('https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/512/plus_minus-.png');*/
+    background-image: url('../images/create_group_icon.png');
     background-size: cover; /* or contain depending on what you want */
     background-position: center center;
     background-repeat: no-repeat;
@@ -92,4 +93,8 @@ body {
 
 a:hover {
     opacity: .8;
+}
+
+footer{
+    display: none;
 }

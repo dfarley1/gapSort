@@ -1,3 +1,32 @@
 {{extend 'layout.html'}}
-<h1>Enter group name</h1>
-{{=form}}
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="{{=URL('static', 'css/name.css')}}">
+	</head>
+	<body>
+		<div id='title'>
+		<h1>Enter group name</h1>
+		</div>
+		
+		<!-- <form action="#" class="form-horizontal" enctype="multipart/form-data" method="post">
+			<div class="form-group" id="groups_name__row">
+				<label class="control-label col-sm-3" for="groups_name" id="groups_name__label">Name</label>
+				<div class="col-sm-9">
+					<input class="form-control string" id="groups_name" name="name" type="text" value="">
+					<input class="btn btn-primary" type="submit" value="Submit">
+				</div>
+			</div>
+		</form> -->
+		
+		{{=form}}
+		<h2>Current groups</h2>
+		<div id="groupNames">
+			{{for names in groupNames:}}
+				<a href="edit/{{=names.id}}">{{=names.name}}</a>
+				<br>
+			{{pass}}
+		</div>
+	</body>
+</html>
+

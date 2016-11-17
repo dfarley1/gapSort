@@ -1,0 +1,44 @@
+body{
+	background: url('http://wallpapercave.com/wp/fcaM4Mo.jpg');
+	/*color: #fca800;*/
+	color: white;
+	padding: none;
+}
+
+#title h1{
+	font-size: 60px;
+	padding-bottom: 10px;
+}
+
+form{
+	display: inline-grid;
+}
+
+#groups_name{
+	width: 300px;
+	color: black;
+	background: white;
+	border: 1px solid black;
+}
+
+#col-sm-9 input{
+	display: inline;
+	vertical-align: middle;
+}
+
+div #groupNames{-webkit-columns: 50px 3;}
+
+a{
+	font-size: 25px;
+	color: white;
+}
+a:hover{color: white;}
+
+label{
+	font-size: 35px;
+	display: inline-block;
+}
+
+footer{
+	display: none;
+}
