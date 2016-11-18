@@ -93,7 +93,7 @@ def gaps():
         #if they overlap
         else:
             #if the event falls within the gap
-            if (gap[START_TIME] < event[END_TIME]) and (gap[END_TIME] > event[START_TIME]):
+            if (gap[START_TIME] < event[START_TIME]) and (gap[END_TIME] > event[END_TIME]):
                 #create two new gaps
                 print 'event in the middle'
                 gap1 = (gap[START_TIME],event[START_TIME])
