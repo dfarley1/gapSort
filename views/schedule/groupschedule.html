@@ -35,10 +35,11 @@
 <!-- css background will actually show the tile image -->
 <a href="./add"><div class="calendar_tile">
     <!-- have the weekday and date for this calendar day displayed at the top of the tile -->
-    <p class="date">
+    <!-- links to the view of the days gaps -->
+    <a href="../groupday/{{=group.id}}/{{=(date + datetime.timedelta(days=i)).strftime('%m%d%Y')}}">
         {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         {{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
-    </p>
+    </a>
     
     <!-- keep track of which user's events we are talking about -->
     {{userNum = 0}}
