@@ -23,6 +23,7 @@ def gaps():
 
 
     #clear the gaps in the group id
+    print 'begin'
     try:
         #try to get the group id from the url
         group = int(request.args(0))
@@ -56,36 +57,45 @@ def gaps():
     for delta in range (0,14):
         gap_end = gap_start + datetime.timedelta(days=1)
         #add the gap to temp_gaps
-        temp_gaps.append((gap_start,gap_end))
+        temp_gaps.append([gap_start,gap_end])
         #resett the start gap time
         gap_start = gap_end
 
-    event = events.pop()
-    gap = temp_gaps.pop()
+    for gap in temp_gaps:
+        print "%s %s" %(str(gap[START_TIME]),str(gap[END_TIME]))
+
+    event = events.pop(0)
+    gap = temp_gaps.pop(0)
+    
 
     #loop through until all events are accounted for
     while True:
+        print "(%s,%s) (%s,%s)" %(str(gap[START_TIME]),str(gap[END_TIME]),str(event[START_TIME]),str(event[END_TIME]))
         #if the gap starts after the event
         if gap[START_TIME] > event[END_TIME]:
+            print 'gap after event'
             if events:
-                event = events.pop()
+                event = events.pop(0)
                 continue
             break
 
         #if the gap ends before the event
         if gap[END_TIME] < event[START_TIME]:
             #insert the gap into the database!!
+            print 'gap before event'
             db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
             if temp_gaps:
-                gap = temp_gaps.pop()
+                gap = temp_gaps.pop(0)
+                print gap
                 continue
             break
 
         #if they overlap
         else:
             #if the event falls within the gap
-            if (gap[START_TIME] < event[END_TIME]) and (gap[END_TIME] > event[START_TIME]):
+            if (gap[START_TIME] < event[START_TIME]) and (gap[END_TIME] > event[END_TIME]):
                 #create two new gaps
+                print 'event in the middle'
                 gap1 = (gap[START_TIME],event[START_TIME])
                 gap2 = (event[END_TIME],gap[END_TIME])
 
@@ -96,26 +106,28 @@ def gaps():
                 gap = gap1
 
                 if events:
-                    event = events.pop()
+                    event = events.pop(0)
                     continue
                 break
 
             #if the event begins before the gap and end before the gap does
             if gap[START_TIME] < event[START_TIME]:
+                print 'event first'
                 #reset the gap to the accurate gap
                 gap = (gap[START_TIME],event[START_TIME])
 
                 if events:
-                    event = events.pop()
+                    event = events.pop(0)
                     continue
                 break
 
             #if the event begins after the gap begins and ends after the gap
             else:
                 #reset the gap to the accurate gap
+                print 'event last'
                 gap = (event[END_TIME],gap[END_TIME])
                 if events:
-                    event = events.pop()
+                    event = events.pop(0)
                     continue
                 break
 
