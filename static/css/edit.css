@@ -7,6 +7,14 @@ h1 {
 	text-align: center;
 }
 
+/*this is the form box*/
+#groups_name{
+	width: 300px;
+	color: black;
+	background: white;
+	border: 1px solid black;
+}
+
 a.delete{
 	 border: 2px solid black;
 	 background-color: black;
@@ -19,4 +27,9 @@ li{
 }
 
 .editName{
+
+}
+
+footer{
+	display: none;
 }
