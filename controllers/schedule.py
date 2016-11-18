@@ -67,16 +67,18 @@ def groupschedule():
     #get this groups gaps
     group = db(db.groups.id == group_id).select()[0]
 
-    gaps = db(db.gaps.group_id == group_id).select()
+    gaps_db = db(db.gaps.group_id == group_id).select()
     
     #Remove gaps tha are shorter than the minimum gap length
     min_length = timedelta(minutes = group.gap_length)
     print min_length
-    for gap in gaps:
+    gaps = []
+    for gap in gaps_db:
         print "gap length is ", (gap.end_time - gap.start_time), "min is ", min_length
-        if (gap.end_time - gap.start_time) < min_length:
-            print "removing ", gap
-            gaps.remove(gap)
+        if (gap.end_time - gap.start_time) >= min_length:
+            print "adding ", gap
+            gaps.append(gap)
+    print "\n\n\n", gaps, "\n\n"
 
     # get user_ids for all people in this group
     users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
