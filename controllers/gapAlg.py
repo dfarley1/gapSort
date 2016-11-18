@@ -42,9 +42,6 @@ def gaps():
         ORDER BY event.end_time DESC
         """ %group)
 
-    if not events:
-        redirect('../../schedule/groupschedule/%d' %group)
-
     #create a list to store all temporary gaps in
     temp_gaps = []
 
@@ -63,6 +60,12 @@ def gaps():
 
     for gap in temp_gaps:
         print "%s %s" %(str(gap[START_TIME]),str(gap[END_TIME]))
+
+    #if there are no events, all is well, move on
+    if not events:
+        for gap in temp_gaps:
+            db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
+        redirect('../../schedule/groupschedule/%d' %group)
 
     event = events.pop(0)
     gap = temp_gaps.pop(0)
@@ -110,9 +113,9 @@ def gaps():
                     continue
                 break
 
-            #if the event begins before the gap and end before the gap does
+            #if the event begins  after the gap and end before the gap does
             if gap[START_TIME] < event[START_TIME]:
-                print 'event first'
+                print 'event last'
                 #reset the gap to the accurate gap
                 gap = (gap[START_TIME],event[START_TIME])
 
