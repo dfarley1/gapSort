@@ -16,7 +16,12 @@ def name():
         session.groupName = form.vars.name  #saving the groupName for the next page
         redirect(URL('edit', args=(groupID)))
         print "This is a new group"
-    return dict(form=form)
+
+    # groupNames = db.executesql("""SELECT name FROM groups
+    #                             WHERE manager = ('%s')""" %(auth.user.id))
+    groupNames = db(db.groups.manager == auth.user.id).select()
+    
+    return dict(form=form, groupNames=groupNames)
 
 #creates a group and allows you to add users to the group
 def create():

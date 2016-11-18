@@ -108,3 +108,43 @@ def groupschedule():
         users=users, list_of_events=list_of_events, 
         list_of_usernames=list_of_usernames, group=group, 
         form=form)
+
+@auth.requires_login()
+def groupday():
+
+    #retreive the required inputs, if they don't exists send 404
+    try:
+        group = int(request.args[0])
+        date_string = request.args[1]
+    except:
+        redirect('gapSort/404')
+
+    #transfer the day into the appropriate format (datetime)
+    month = int(date_string[0:2])
+    day = int(date_string[2:4])
+    year = int(date_string[4:])
+
+    #figure out the beginning and end times of the day
+    start_date = datetime.datetime(year,month,day,0,0)
+    end_date = datetime.datetime(year,month,day,23,59)
+
+    print str(start_date)
+
+    #select all gaps that are on the given day
+    temp_gaps = db.executesql("""
+        SELECT gap.start_time, gap.end_time
+        FROM gaps as gap
+        WHERE gap.group_id = %s 
+        ORDER BY gap.start_time ASC
+        """ %(group))
+
+    #find only gaps from the given day.
+    gaps = []
+    for gap in temp_gaps:
+        print gap
+        if gap[0] >= start_date and gap[0] <= end_date:
+            gaps.append(gap)
+            print str(gap)
+
+    #return
+    return dict(gaps = gaps, group = group, date = date_string)
