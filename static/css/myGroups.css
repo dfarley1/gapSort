@@ -6,10 +6,15 @@
 }
 
 h1{
-	text-align: center;
+	margin: 200px
+	text-align: right;
 }
 
 body{
 	background-image: url('http://wallpapercave.com/wp/fcaM4Mo.jpg');
 	color: white;
+}
+
+footer{
+	display: none;
 }
