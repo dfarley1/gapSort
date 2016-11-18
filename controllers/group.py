@@ -34,7 +34,12 @@ def create():
 #allows the manager to edit the group
 def edit():
     groupID = request.args(0)
-    editNameForm = SQLFORM(db.groups, groupID, fields=['name'],showid=False, _class='editName')
+    editNameForm = SQLFORM(db.groups, 
+        groupID, 
+        fields=['name', 'gap_length'], 
+        labels={'name':'Group Name:', 'gap_length':'Minimum gap length (minutes):'},
+        showid=False, 
+        _class='editName')
     addUserForm = FORM('Email address: ', INPUT(_name='email'), INPUT(_type = 'submit'))
     
     if editNameForm.process().accepted:
