@@ -23,17 +23,19 @@ h1 {
 .whole_calendar {
     border-style: solid;
     border-radius: 4px;
-    width: 1004px;
+    width: 1200px;
     margin-bottom: 100px;
 }
 
 .calendar_tile {
+    position: relative;
     vertical-align: top;
     display: inline-block;
-    width: 200px;
-    height: 200px;
-    background-image: url('../images/tile.png');
+    width: 170px;
+    height: 500px;
+    background-image: url('../images/week_tile.png');
     margin-right: -4px;
+    z-index: -2;
 }
 
 .addevent {
@@ -50,7 +52,8 @@ h1 {
 
 .date {
     color: white;
-    margin-top: 0px;
+    margin-top: 10px;
+    padding-bottom: 25px;
 }
 
 .event0 {
@@ -59,6 +62,7 @@ h1 {
 }
 
 .event1 {
+    position: absolute;
     height: 10px;
     color: green;
 }

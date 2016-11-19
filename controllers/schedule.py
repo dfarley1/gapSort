@@ -3,6 +3,7 @@
 import datetime
 from gluon import DAL, Field
 from collections import namedtuple
+from gluon.serializers import json
 
 def index(): return dict(message="hello from schedule.py")
 
@@ -102,7 +103,104 @@ def groupschedule():
     #else:
     #    response.flash = 'please fill out the form'
     
-    return dict(date=date, weekdays=weekdays, gaps=gaps, 
+    return dict(date=date, weekdays=weekdays, json_weekdays=json(weekdays), gaps=gaps, 
         users=users, list_of_events=list_of_events, 
         list_of_usernames=list_of_usernames, group=group, 
         form=form)
+
+def day():
+    # get todays date so we know where the calendar should start
+    date = datetime.date.today()
+    # what group is this?
+    group_id = 1 #int(request.args[0])
+    #get this groups gaps
+    group = db(db.groups.id == group_id).select()[0]
+
+    gaps = db(db.gaps.group_id == group_id).select()
+
+    # get user_ids for all people in this group
+    users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
+    # maintain a list of all the usernames
+    list_of_usernames = []
+    # add each users events to the events list
+    list_of_events = []
+    #populate a 2d list of everybody's events and another list of just usernames
+    for user in users:
+        one_users_events = db(db.events.user_id == user.user_id).select()
+        list_of_events.append(one_users_events)
+        username = db(db.auth_user.id == user.user_id).select()
+        list_of_usernames.append(username)
+    # a list of week days could come in handy
+    weekdays   = ['Sunday',
+              'Monday',
+              'Tuesday',
+              'Wednesday',
+              'Thursday',
+              'Friday',
+              'Saturday']
+    
+    db.define_table('gap_length',
+        Field('gap_length', requires=IS_IN_SET(
+            ['15 minutes', '30 minutes', '1 hour', '2 hours', '4 hours'])))
+    form = SQLFORM(db.gap_length)
+    form.element('form')['_onsubmit']='$('#gapsModal').modal('show');'
+    
+    #if form.process(formname='test').accepted:
+    #    response.flash = 'form accepted'
+    #elif form.errors:
+    #    response.flash = 'form has errors'
+    #else:
+    #    response.flash = 'please fill out the form'
+    
+    return dict(date=date, weekdays=weekdays, json_weekdays=json(weekdays), gaps=gaps, 
+        users=users, list_of_events=list_of_events, 
+        list_of_usernames=list_of_usernames, group=group, 
+        form=form)
+
+def week():
+    # get todays date so we know where the calendar should start
+    date = datetime.date.today()
+    # what group is this?
+    group_id = 1 #int(request.args[0])
+    #get this groups gaps
+    group = db(db.groups.id == group_id).select()[0]
+
+    gaps = db(db.gaps.group_id == group_id).select()
+
+    # get user_ids for all people in this group
+    users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
+    # maintain a list of all the usernames
+    list_of_usernames = []
+    # add each users events to the events list
+    list_of_events = []
+    #populate a 2d list of everybody's events and another list of just usernames
+    for user in users:
+        one_users_events = db(db.events.user_id == user.user_id).select()
+        list_of_events.append(one_users_events)
+        username = db(db.auth_user.id == user.user_id).select()
+        list_of_usernames.append(username)
+    # a list of week days could come in handy
+    weekdays   = ['Sunday',
+              'Monday',
+              'Tuesday',
+              'Wednesday',
+              'Thursday',
+              'Friday',
+              'Saturday']
+    
+    db.define_table('gap_length',
+        Field('gap_length', requires=IS_IN_SET(
+            ['15 minutes', '30 minutes', '1 hour', '2 hours', '4 hours'])))
+    form = SQLFORM(db.gap_length)
+    form.element('form')['_onsubmit']='$('#gapsModal').modal('show');'
+    
+    #if form.process(formname='test').accepted:
+    #    response.flash = 'form accepted'
+    #elif form.errors:
+    #    response.flash = 'form has errors'
+    #else:
+    #    response.flash = 'please fill out the form'
+    
+    return dict(date=date, weekdays=weekdays, gaps=gaps, 
+        users=users, list_of_events=list_of_events, 
+        list_of_usernames=list_of_usernames, group=group)
