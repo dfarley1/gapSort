@@ -3,6 +3,7 @@
 import datetime
 from gluon import DAL, Field
 from collections import namedtuple
+from datetime import timedelta
 
 def index(): return dict(message="hello from schedule.py")
 
@@ -29,12 +30,12 @@ def add():
         while start_time.date() <= end_time.date():
             #is this the last day?
             if start_time.date() == end_time.date():
-                starts_at_midnight = start_time.replace(hour=0, minute=0)
+                starts_at_midnight = start_time.replace(hour=0, minute=0,second=0)
                 db.events.insert(user_id = auth.user.id, start_time = starts_at_midnight, end_time = end_time, description=form.vars.description, name=form.vars.description)
                 start_time = start_time + datetime.timedelta(days=1)
             else:
-                starts_at_midnight = start_time.replace(hour=0, minute=0)
-                midnight_tomorrow = (start_time + datetime.timedelta(days=1)).replace(hour=0, minute=0)
+                starts_at_midnight = start_time.replace(hour=0, minute=0,second=0)
+                midnight_tomorrow = (start_time + datetime.timedelta(days=1)).replace(hour=0, minute=0, second=0)
                 db.events.insert(user_id = auth.user.id, start_time = starts_at_midnight, end_time = midnight_tomorrow, description=form.vars.description, name=form.vars.description)
                 start_time = start_time + datetime.timedelta(days=1)
         if record:
@@ -66,7 +67,18 @@ def groupschedule():
     #get this groups gaps
     group = db(db.groups.id == group_id).select()[0]
 
-    gaps = db(db.gaps.group_id == group_id).select()
+    gaps_db = db(db.gaps.group_id == group_id).select()
+    
+    #Remove gaps tha are shorter than the minimum gap length
+    min_length = timedelta(minutes = group.gap_length)
+    print min_length
+    gaps = []
+    for gap in gaps_db:
+        print "gap length is ", (gap.end_time - gap.start_time), "min is ", min_length
+        if (gap.end_time - gap.start_time) >= min_length:
+            print "adding ", gap
+            gaps.append(gap)
+    print "\n\n\n", gaps, "\n\n"
 
     # get user_ids for all people in this group
     users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
@@ -88,19 +100,11 @@ def groupschedule():
               'Thursday',
               'Friday',
               'Saturday']
-                  
-    db.define_table('gap_length',
-        Field('gap_length', requires=IS_IN_SET(
-            ['15 minutes', '30 minutes', '1 hour', '2 hours', '4 hours'])))
-    form = SQLFORM(db.gap_length)
-    form.element('form')['_onsubmit']='$('#gapsModal').modal('show');'
     
-    #if form.process(formname='test').accepted:
-    #    response.flash = 'form accepted'
-    #elif form.errors:
-    #    response.flash = 'form has errors'
-    #else:
-    #    response.flash = 'please fill out the form'
+    #Create form for changing the minimum gap length
+    record = db.groups(request.args[0])
+    form = SQLFORM(db.groups, record, showid=False, fields=['gap_length'], labels={'gap_length':'Minimum gap length (minutes): '})
+    form.process()
     
     return dict(date=date, weekdays=weekdays, gaps=gaps, 
         users=users, list_of_events=list_of_events, 
