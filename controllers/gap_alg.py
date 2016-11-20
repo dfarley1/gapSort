@@ -127,12 +127,20 @@ def gaps():
                 break
 
             #if the event begins after the gap begins and ends after the gap
-            else:
+            if gap[END_TIME] > event[END_TIME]:
                 #reset the gap to the accurate gap
                 print 'event first'
                 gap = (event[END_TIME],gap[END_TIME])
                 if events:
                     event = events.pop(0)
+                    continue
+                break
+
+            #if event covers the gap completely
+            else:
+                print 'gap in middle'
+                if temp_gaps:
+                    gap = temp_gaps.pop(0)
                     continue
                 break
 
