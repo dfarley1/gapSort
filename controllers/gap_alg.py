@@ -39,7 +39,7 @@ def gaps():
         FROM events as event 
         WHERE
             event.user_id IN (SELECT user_id FROM user_groups WHERE group_id=%d)
-        ORDER BY event.end_time DESC
+        ORDER BY event.start_time ASC
         """ %group)
 
     #create a list to store all temporary gaps in
@@ -129,7 +129,7 @@ def gaps():
             #if the event begins after the gap begins and ends after the gap
             else:
                 #reset the gap to the accurate gap
-                print 'event last'
+                print 'event first'
                 gap = (event[END_TIME],gap[END_TIME])
                 if events:
                     event = events.pop(0)

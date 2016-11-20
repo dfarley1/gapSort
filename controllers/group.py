@@ -111,7 +111,6 @@ def myGroups():
     groups = []
     for user_group in user_groups:
         groups.append(db.groups(user_group.group_id))
-    
     return dict(groups = groups)
 
 def deleteUserFromGroup():
