@@ -7,7 +7,7 @@
 <!-- My ID={{=int(auth.user.id)}}</br></br> -->
 
 {{for group in groups:}}
-    <span style="font-size:36px"><a href="../gapAlg/gaps/{{=group.id}}">{{=group.name}}</a></span>
+    <span style="font-size:36px"><a href="../gap_alg/gaps/{{=group.id}}">{{=group.name}}</a></span>
     {{if (int(group.manager) == int(auth.user.id)):}}
         <a class="edit" href="edit/{{=group.id}}"> edit</a>
         <a class="edit" href="delete_group/{{=group.id}}">Delete Group</a>
