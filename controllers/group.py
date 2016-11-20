@@ -16,7 +16,12 @@ def name():
         session.groupName = form.vars.name  #saving the groupName for the next page
         redirect(URL('edit', args=(groupID)))
         print "This is a new group"
-    return dict(form=form)
+
+    # groupNames = db.executesql("""SELECT name FROM groups
+    #                             WHERE manager = ('%s')""" %(auth.user.id))
+    groupNames = db(db.groups.manager == auth.user.id).select()
+    
+    return dict(form=form, groupNames=groupNames)
 
 #creates a group and allows you to add users to the group
 def create():
@@ -34,7 +39,12 @@ def create():
 #allows the manager to edit the group
 def edit():
     groupID = request.args(0)
-    editNameForm = SQLFORM(db.groups, groupID, fields=['name'],showid=False, _class='editName')
+    editNameForm = SQLFORM(db.groups, 
+        groupID, 
+        fields=['name', 'gap_length'], 
+        labels={'name':'Group Name:', 'gap_length':'Minimum gap length (minutes):'},
+        showid=False, 
+        _class='editName')
     addUserForm = FORM('Email address: ', INPUT(_name='email'), INPUT(_type = 'submit'))
     
     if editNameForm.process().accepted:
@@ -101,7 +111,6 @@ def myGroups():
     groups = []
     for user_group in user_groups:
         groups.append(db.groups(user_group.group_id))
-    
     return dict(groups = groups)
 
 def deleteUserFromGroup():

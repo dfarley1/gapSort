@@ -41,10 +41,11 @@
 <!-- css background will actually show the tile image -->
 <div class="calendar_tile" name='{{=i}}'><param value='{{=i}}' class="dayCounter">
     <!-- have the weekday and date for this calendar day displayed at the top of the tile -->
-    <p class="date">
+    <!-- links to the view of the days gaps -->
+    <a href="../groupday/{{=group.id}}/{{=(date + datetime.timedelta(days=i)).strftime('%m%d%Y')}}">
         {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         {{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
-    </p>
+    </a>
     
     <!-- keep track of which user's events we are talking about -->
     {{userNum = 0}}
@@ -113,9 +114,7 @@
       </div>
       <div class="modal-body">
         <div style="width:200px; display:inline">
-{{=form.custom.begin}}
-Show gaps longer than: {{=form.custom.widget.gap_length}}{{=form.custom.submit}}
-{{=form.custom.end}}
+{{=form}}
 </div>
       </div>
       <div class="modal-footer">

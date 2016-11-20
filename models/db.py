@@ -130,7 +130,10 @@ auth.settings.reset_password_requires_verification = True
 db.define_table('users', Field('name', 'string'), Field('email', 'string'), Field('password', 'string'))
 
 #define group table
-db.define_table('groups', Field('manager', 'string'), Field('name', 'string'))
+db.define_table('groups', 
+    Field('manager', 'string'), 
+    Field('name', 'string'), 
+    Field('gap_length', type='integer',default=0))
 
 #define user_groups table
 db.define_table('user_groups', Field('user_id', 'integer'), Field('group_id', 'integer'))

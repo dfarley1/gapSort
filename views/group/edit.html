@@ -7,10 +7,18 @@
 <h2>Add user:</h2>
 {{=addUserForm}}
 
+
+<!-- <div id="allUsers">
+	<h1>This is over here</h1>
+</div> -->
+
+
 {{for user in users:}}
 	<li>{{=" ".join((user.first_name, user.last_name))}} <a class="delete" href="../deleteUserFromGroup/{{=groupID}}/{{=user.email}}">Delete</a></li>
 	
 {{pass}}
+
+
 
 
 <a class="delete" href="../deleteGroup/{{=groupID}}">Delete Group</a>
