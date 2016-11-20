@@ -3,9 +3,9 @@
 	<link rel="stylesheet" href="{{=URL('static', 'css/edit.css')}}">
 </head>
 <h1>Group Name</h1>
-{{=editNameForm}}
+{{=edit_name_form}}
 <h2>Add user:</h2>
-{{=addUserForm}}
+{{=add_user_form}}
 
 
 <!-- <div id="allUsers">
@@ -14,14 +14,16 @@
 
 
 {{for user in users:}}
-	<li>{{=" ".join((user.first_name, user.last_name))}} <a class="delete" href="../deleteUserFromGroup/{{=groupID}}/{{=user.email}}">Delete</a></li>
-	
+	<li>
+		{{=" ".join((user.first_name, user.last_name))}} 
+		<a class="delete" href="../delete_user_from_group/{{=group_id}}/{{=user.email}}">Delete</a>
+	</li>	
 {{pass}}
 
 
 
 
-<a class="delete" href="../deleteGroup/{{=groupID}}">Delete Group</a>
+<a class="delete" href="../delete_group/{{=group_id}}">Delete Group</a>
 
 
 

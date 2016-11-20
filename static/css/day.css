@@ -1,0 +1,16 @@
+body {
+    background-image: url('http://wallpapercave.com/wp/fcaM4Mo.jpg');
+}
+
+#calendar_day {
+	width: 500px;
+	height: 1440px;
+	background-color: white;
+}
+
+#gap {
+	float: left;
+	width: 500px;
+    height: 500px;
+    background-color: #13b4ff;
+}
