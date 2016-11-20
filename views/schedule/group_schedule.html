@@ -37,7 +37,7 @@
 <a href="./add"><div class="calendar_tile">
     <!-- have the weekday and date for this calendar day displayed at the top of the tile -->
     <!-- links to the view of the days gaps -->
-    <a href="../groupday/{{=group.id}}/{{=(date + datetime.timedelta(days=i)).strftime('%m%d%Y')}}">
+    <a href="../group_day/{{=group.id}}/{{=(date + datetime.timedelta(days=i)).strftime('%m%d%Y')}}">
         {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         {{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
     </a>
