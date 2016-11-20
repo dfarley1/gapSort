@@ -64,8 +64,10 @@ def gaps():
     #if there are no events, all is well, move on
     if not events:
         for gap in temp_gaps:
-            db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
-        redirect('../../schedule/groupschedule/%d' %group)
+            db.gaps.insert(start_time=gap[START_TIME],
+                           end_time=gap[END_TIME],
+                           group_id=group)
+        redirect('../../schedule/group_schedule/%d' %group)
 
     event = events.pop(0)
     gap = temp_gaps.pop(0)
@@ -135,11 +137,15 @@ def gaps():
                 break
 
     #insert the gap we are looking at once done
-    db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
+    db.gaps.insert(start_time=gap[START_TIME],
+                   end_time=gap[END_TIME],
+                   group_id=group)
 
     #insert the rest of temp_gaps into the database.
     for gap in temp_gaps:
-        db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
+        db.gaps.insert(start_time=gap[START_TIME],
+                       end_time=gap[END_TIME],
+                       group_id=group)
 
     #set random message
-    redirect('../../schedule/groupschedule/%d' %group)
+    redirect('../../schedule/group_schedule/%d' %group)
