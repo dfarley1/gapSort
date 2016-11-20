@@ -12,7 +12,7 @@
 </h3>
 <form>
 {{for user in users:}}
-	<li>{{=" ".join((user.first_name, user.last_name))}} <a href="../deleteUserFromGroup/{{=groupID}}/{{=user.email}}"> Delete </a></li>
+	<li>{{=" ".join((user.first_name, user.last_name))}} <a href="../deleteUserFromGroup/{{=group_id}}/{{=user.email}}"> Delete </a></li>
 {{pass}}
 </form>
 

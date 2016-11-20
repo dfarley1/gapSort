@@ -7,72 +7,69 @@ def index():
 #Name the group
 @auth.requires_login()
 def name():
+    manager = auth.user.id
     form = SQLFORM(db.groups, fields=['name'])
-    form.vars.manager = auth.user.id
+    form.vars.manager = manager
     if form.process(onvalidation=exists).accepted:
-        #ID = db.groups.insert(manager = auth.user.id)
-        groupID = form.vars.id
-        db.user_groups.insert(user_id = auth.user.id, group_id = groupID)
+        group_id = form.vars.id
+        db.user_groups.insert(user_id = manager, group_id = group_id)
         session.groupName = form.vars.name  #saving the groupName for the next page
-        redirect(URL('edit', args=(groupID)))
+        redirect(URL('edit', args=(group_id)))
         print "This is a new group"
-
-    # groupNames = db.executesql("""SELECT name FROM groups
-    #                             WHERE manager = ('%s')""" %(auth.user.id))
-    groupNames = db(db.groups.manager == auth.user.id).select()
+    group_names = db(db.groups.manager == manager).select()
     
-    return dict(form=form, groupNames=groupNames)
+    return dict(form=form, group_names=group_names)
 
 #creates a group and allows you to add users to the group
 def create():
     #getting the ID of the group name
-    groupID = request.args(0)
+    group_id = request.args(0)
     form=FORM('Email address: ', INPUT(_name='email'), INPUT(_type = 'submit'))
     
     if form.process().accepted:
        session.flash = 'record inserted'
-       insertUser(form,groupID)
+       insert_user(form,group_id)
     users = []
-    users = displayGroup(groupID)
-    return dict(form=form, users = users, groupID = groupID)
+    users = displayGroup(group_id)
+    return dict(form=form, users = users, group_id = group_id)
 
 #allows the manager to edit the group
 def edit():
-    groupID = request.args(0)
-    editNameForm = SQLFORM(db.groups, 
-        groupID, 
+    group_id = request.args(0)
+    edit_name_form = SQLFORM(db.groups, 
+        group_id, 
         fields=['name', 'gap_length'], 
         labels={'name':'Group Name:', 'gap_length':'Minimum gap length (minutes):'},
         showid=False, 
         _class='editName')
-    addUserForm = FORM('Email address: ', INPUT(_name='email'), INPUT(_type = 'submit'))
+    add_user_form = FORM('Email address: ', INPUT(_name='email'), INPUT(_type = 'submit'))
     
-    if editNameForm.process().accepted:
+    if edit_name_form.process().accepted:
         session.flash = 'record updated'
         db.executesql("""UPDATE groups
                         SET name = '%s'
-                        WHERE id = '%s' """ %(editNameForm.vars.name, groupID))
-    if addUserForm.process().accepted:
+                        WHERE id = '%s' """ %(edit_name_form.vars.name, group_id))
+    if add_user_form.process().accepted:
        session.flash = 'record inserted'
-       insertUser(addUserForm,groupID)
+       insert_user(add_user_form,group_id)
     users = []
-    users = displayGroup(groupID) 
+    users = display_group(group_id) 
 
-    return dict(editNameForm = editNameForm, addUserForm = addUserForm , users = users, groupID=groupID)
+    return dict(edit_name_form = edit_name_form, add_user_form = add_user_form , users = users, group_id=group_id)
 
 #deletes a group from the database
-def deleteGroup():
-    groupID = request.args(0)
-    print groupID
+def delete_group():
+    group_id = request.args(0)
+    print group_id
     db.executesql("""DELETE FROM groups
-                    WHERE id = '%s' """ %(groupID))
+                    WHERE id = '%s' """ %(group_id))
     db.executesql("""DELETE FROM user_groups
-                    WHERE group_id = '%s' """ %(groupID))
-    redirect(URL('myGroups'))
+                    WHERE group_id = '%s' """ %(group_id))
+    redirect(URL('my_groups'))
     dict()
 
 #inserts a user into a given group
-def insertUser(form,groupID):
+def insert_user(form,group_id):
     email = form.vars.email   #getting the email from the form
     print email
     #finds the users email
@@ -81,50 +78,50 @@ def insertUser(form,groupID):
         if(row.email == email):
             print "its a match"
             print row.first_name
-            db.user_groups.insert(user_id = row.id, group_id = groupID) #inserts the user into the group
+            db.user_groups.insert(user_id = row.id, group_id = group_id) #inserts the user into the group
     return dict()
 
 
 
 #this function finds if a group is already exists by that manager
 def exists(form):
-    Name = form.vars.name
+    name = form.vars.name
     manager = auth.user.id
     rows = db().select(db.groups.ALL)
     for row in rows:
-        if(row.name == Name and row.manager == manager):
+        if(row.name == name and row.manager == manager):
             return True
     return False
 
 #displays the memebers in a given group id
-def displayGroup(groupID):
-    names = db(db.user_groups.group_id == groupID).select()
+def display_group(group_id):
+    names = db(db.user_groups.group_id == group_id).select()
     users = []
     for name in names:
-        userName =  db.auth_user(name.user_id)
-        users.append(userName)
+        user_name =  db.auth_user(name.user_id)
+        users.append(user_name)
     return users  
 
 @auth.requires_login()
-def myGroups():
+def my_groups():
     user_groups = db(db.user_groups.user_id == auth.user.id).select()  
     groups = []
     for user_group in user_groups:
         groups.append(db.groups(user_group.group_id))
     return dict(groups = groups)
 
-def deleteUserFromGroup():
+def delete_user_from_group():
     print "Group ID and user email"
-    groupID  = request.args(0)
-    userEmail = request.args(1)
-    print userEmail
-    print groupID
-    user = db(db.auth_user.email == userEmail).select()
-    userID = user[0].id
+    group_id  = request.args(0)
+    user_email = request.args(1)
+    print user_email
+    print group_id
+    user = db(db.auth_user.email == user_email).select()
+    user_id = user[0].id
     db.executesql("""DELETE FROM user_groups
-                    WHERE user_id = '%s' AND group_id = '%s'""" %(userID,groupID))
+                    WHERE user_id = '%s' AND group_id = '%s'""" %(user_id,group_id))
     
-    redirect(URL('edit', args=(groupID)))
+    redirect(URL('edit', args=(group_id)))
     return
 
 def user(): return dict(form=auth())
