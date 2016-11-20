@@ -1,0 +1,32 @@
+Style Guideline from: https://google.github.io/styleguide/pyguide.html
+
+Indentation:
+	Indent your code blocks with 4 spaces
+
+Whitespace:
+	standard typographic rules for the use of spaces around punctuation
+
+Semicolons:
+	Do not terminate your lines with semi-colons and do not use semi-colons to put two commands on the same line.
+
+Comments:
+	never describe the code. Assume the person reading the code knows Python (though not what you're trying to do) better than you do.
+
+Strings:
+	Use the format method or the % operator for formatting strings, even when the parameters are all strings
+	
+Statements:
+	only one statement per line
+
+Naming:
+	Packages						lower_with_under	
+	Modules							lower_with_under	
+	Classes							CapWords	
+	Exceptions						CapWords	
+	Functions						lower_with_under()	
+	Global/Class Constants			CAPS_WITH_UNDER	
+	Global/Class Variables			lower_with_under	
+	Instance Variables				lower_with_under	
+	Method Names					lower_with_under()	
+	Function/Method Parameters		lower_with_under	
+	Local Variables					lower_with_under	
