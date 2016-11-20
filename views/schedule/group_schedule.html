@@ -10,13 +10,13 @@
     <input id="eventtoggle" type="checkbox"></input><label style="color: white;">All Events</label><br>
 
 <!-- make toggle options for each user in the group -->
-{{userNum = 0}}
+{{user_num = 0}}
 {{for user in users:}}
     <!-- each user will have a unique css class so that we can hide/show that class with javascript later -->
-    {{user_toggle_class = "events_of_user%d" % userNum}}
+    {{user_toggle_class = "events_of_user%d" % user_num}}
     <input class="{{=user_toggle_class}}" type="checkbox" value="{{=user_toggle_class}}"></input>
-    <label style="color: white;">{{=list_of_usernames[userNum][0].first_name.title()}}</label><br>
-    {{userNum += 1}}
+    <label style="color: white;">{{=list_of_usernames[user_num][0].first_name.title()}}</label><br>
+    {{user_num += 1}}
 {{pass}}
 </div>
 
@@ -43,13 +43,13 @@
     </a>
     
     <!-- keep track of which user's events we are talking about -->
-    {{userNum = 0}}
+    {{user_num = 0}}
     <!-- gotta go through our 2d list of user events -->
     {{for one_users_events in list_of_events:}}
         {{for event in one_users_events:}}
             <!-- include which user number user this and put it in their css class
                  so they can have a unique color for their events -->
-            {{event_class = "event event%d" % userNum}}
+            {{event_class = "event event%d" % user_num}}
             <!-- does this user even have an event on this day? -->
             {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
                 <p class="{{=event_class}}">
@@ -58,7 +58,7 @@
             {{pass}}
         {{pass}}
         <!-- on to the next user's set of events -->
-        {{userNum += 1}}
+        {{user_num += 1}}
     {{pass}}
 
 
