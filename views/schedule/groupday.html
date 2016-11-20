@@ -1,0 +1,13 @@
+{{extend 'layout.html'}}
+
+<head>
+	<link rel="stylesheet" href="{{=URL('static', 'css/day.css')}}">
+</head>
+
+ {{for gap in gaps:}}
+ 	<div style = "float: left; width: 20px; height: 20px; background: ##13b4ff;">
+ 		<!--{{length = gap[1]-gap[0]}}
+		{{=length}}
+ 		{{=gap[0].time()}} to {{=gap[1].time()}}-->
+ 	</div>
+ {{pass}}
