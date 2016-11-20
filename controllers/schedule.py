@@ -30,12 +30,12 @@ def add():
         while start_time.date() <= end_time.date():
             #is this the last day?
             if start_time.date() == end_time.date():
-                starts_at_midnight = start_time.replace(hour=0, minute=0)
+                starts_at_midnight = start_time.replace(hour=0, minute=0,second=0)
                 db.events.insert(user_id = auth.user.id, start_time = starts_at_midnight, end_time = end_time, description=form.vars.description, name=form.vars.description)
                 start_time = start_time + datetime.timedelta(days=1)
             else:
-                starts_at_midnight = start_time.replace(hour=0, minute=0)
-                midnight_tomorrow = (start_time + datetime.timedelta(days=1)).replace(hour=0, minute=0)
+                starts_at_midnight = start_time.replace(hour=0, minute=0,second=0)
+                midnight_tomorrow = (start_time + datetime.timedelta(days=1)).replace(hour=0, minute=0, second=0)
                 db.events.insert(user_id = auth.user.id, start_time = starts_at_midnight, end_time = midnight_tomorrow, description=form.vars.description, name=form.vars.description)
                 start_time = start_time + datetime.timedelta(days=1)
         if record:
