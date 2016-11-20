@@ -126,6 +126,9 @@ auth.settings.reset_password_requires_verification = True
 # >>> for row in rows: print row.id, row.myfield
 # -------------------------------------------------------------------------
 
+
+# db.executesql("DROP TABLE groups;")
+
 #define user table
 db.define_table('users', Field('name', 'string'), Field('email', 'string'), Field('password', 'string'))
 
