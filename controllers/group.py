@@ -106,7 +106,7 @@ def displayGroup(groupID):
     return users  
 
 @auth.requires_login()
-def myGroups():
+def my_groups():
     user_groups = db(db.user_groups.user_id == auth.user.id).select()  
     groups = []
     for user_group in user_groups:
