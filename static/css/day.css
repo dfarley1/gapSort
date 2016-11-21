@@ -2,15 +2,36 @@ body {
     background-image: url('http://wallpapercave.com/wp/fcaM4Mo.jpg');
 }
 
+#date {
+	width: 500px;
+	height: 20px;
+	background-color: #393a35; 
+	color: white;
+	z-index:2;
+}
+
+#times {
+	width: 50px;
+	height: 720px;
+	background-color: red;
+	float: left;
+}
+
 #calendar_day {
 	width: 500px;
-	height: 1440px;
-	background-color: white;
+	height: 720px;
+	background-image: url('../images/calendar.jpg');
+	z-index: -1;
 }
 
 #gap {
 	float: left;
 	width: 500px;
     height: 500px;
+    border-style: solid;
+    border-width: 2px;
     background-color: #13b4ff;
+    z-index: 1;
+    position: absolute;
+    opacity: .5;
 }
