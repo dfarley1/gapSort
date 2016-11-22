@@ -15,13 +15,8 @@ def gaps():
     Removes the elements in db.gaps associated with group HARD_CODED
     Finds gaps in the users events and then places them in db.gaps
     With the correct group_id
-
-    **NOTES**: currently does not have a view to see them on the webpage,
-    also currently the group is hard-coded to group_id=1 and finding gaps in
-    date range 10-5-16 -> 10-19-15. Will want to change this to prompt user
-    for what information they want"""
-
-
+    """
+    
     #clear the gaps in the group id
     print 'begin'
     try:
@@ -64,8 +59,10 @@ def gaps():
     #if there are no events, all is well, move on
     if not events:
         for gap in temp_gaps:
-            db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
-        redirect('../../schedule/groupschedule/%d' %group)
+            db.gaps.insert(start_time=gap[START_TIME],
+                           end_time=gap[END_TIME],
+                           group_id=group)
+        redirect('../../schedule/group_schedule/%d' %group)
 
     event = events.pop(0)
     gap = temp_gaps.pop(0)
@@ -125,7 +122,7 @@ def gaps():
                 break
 
             #if the event begins after the gap begins and ends after the gap
-            else:
+            if gap[END_TIME] > event[END_TIME]:
                 #reset the gap to the accurate gap
                 print 'event first'
                 gap = (event[END_TIME],gap[END_TIME])
@@ -134,12 +131,24 @@ def gaps():
                     continue
                 break
 
+            #if event covers the gap completely
+            else:
+                print 'gap in middle'
+                if temp_gaps:
+                    gap = temp_gaps.pop(0)
+                    continue
+                break
+
     #insert the gap we are looking at once done
-    db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
+    db.gaps.insert(start_time=gap[START_TIME],
+                   end_time=gap[END_TIME],
+                   group_id=group)
 
     #insert the rest of temp_gaps into the database.
     for gap in temp_gaps:
-        db.gaps.insert(start_time=gap[START_TIME],end_time=gap[END_TIME],group_id=group)
+        db.gaps.insert(start_time=gap[START_TIME],
+                       end_time=gap[END_TIME],
+                       group_id=group)
 
     #set random message
-    redirect('../../schedule/groupschedule/%d' %group)
+    redirect('../../schedule/group_schedule/%d' %group)

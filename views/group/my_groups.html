@@ -1,16 +1,16 @@
 {{extend 'layout.html'}}
 <head>
-	<link rel="stylesheet" href="{{=URL('static', 'css/myGroups.css')}}">
+	<link rel="stylesheet" href="{{=URL('static', 'css/my_groups.css')}}">
 </head>
 <h1>My Groups</h1><br><br>
 
 <!-- My ID={{=int(auth.user.id)}}</br></br> -->
 
 {{for group in groups:}}
-    <span style="font-size:36px"><a href="../gapAlg/gaps/{{=group.id}}">{{=group.name}}</a></span>
+    <span style="font-size:36px"><a href="../gap_alg/gaps/{{=group.id}}">{{=group.name}}</a></span>
     {{if (int(group.manager) == int(auth.user.id)):}}
         <a class="edit" href="edit/{{=group.id}}"> edit</a>
-        <a class="edit" href="deleteGroup/{{=group.id}}">Delete Group</a>
+        <a class="edit" href="delete_group/{{=group.id}}">Delete Group</a>
     {{pass}}
     <hr>
 {{pass}}

@@ -20,15 +20,16 @@
 {{pass}}
 </div>
 
-
 <!-- display name of this group -->
 <h1>{{=group.name.title()}}</h1>
+
 
 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#gapsModal">Gap Preferences</button>
 
 <a type="button" href="/gapSort/schedule/week/{{=group_id}}/0" id="weekly_view_btn" class="btn btn-info btn-sm">
     Weekly View
 </a>
+
 
 <!-- python module for all date related things -->
 {{import datetime}}
@@ -42,7 +43,7 @@
 <div class="calendar_tile" name='{{=i}}'><param value='{{=i}}' class="dayCounter">
     <!-- have the weekday and date for this calendar day displayed at the top of the tile -->
     <!-- links to the view of the days gaps -->
-    <a href="../groupday/{{=group.id}}/{{=(date + datetime.timedelta(days=i)).strftime('%m%d%Y')}}">
+    <a href="../group_day/{{=group.id}}/{{=(date + datetime.timedelta(days=i)).strftime('%m%d%Y')}}">
         {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         {{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
     </a>
@@ -65,7 +66,6 @@
         <!-- on to the next user's set of events -->
         {{user_num += 1}}
     {{pass}}
-
 
 
     <!-- check if there is a gap on this day and, if so, display it -->
@@ -97,9 +97,6 @@
 <a href="./add"><div class="addevent"></div></a>
 
 </div> <!-- end of whole calendar -->
-
-
-
 
 <div id="gapsModal" class="modal fade" role="dialog">
       <div class="modal-dialog">

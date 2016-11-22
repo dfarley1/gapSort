@@ -20,9 +20,9 @@
     </p>
     <!-- check all of the user's events for this day and display any that are found -->
     {{for event in events:}}
-    {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
-    <a href = "../schedule/add/{{=event.id}}"> {{=event.name}} </a>
-    {{pass}}
+        {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
+            <a href = "../schedule/add/{{=event.id}}"> {{=event.name}} </a>
+        {{pass}}
     {{pass}}
 
 </div></a>

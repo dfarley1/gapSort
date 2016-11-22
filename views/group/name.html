@@ -22,7 +22,7 @@
 		{{=form}}
 		<h2>Current groups</h2>
 		<div id="groupNames">
-			{{for names in groupNames:}}
+			{{for names in group_names:}}
 				<a href="edit/{{=names.id}}">{{=names.name}}</a>
 				<br>
 			{{pass}}

@@ -6,7 +6,9 @@ from collections import namedtuple
 from datetime import timedelta
 
 
-def index(): return dict(message="hello from schedule.py")
+def index():
+    return dict(message="hello from schedule.py")
+
 
 @auth.requires_login()
 def add():
@@ -14,7 +16,9 @@ def add():
     record = db.events(request.args(0)) or None
 
     # Create a form to add an event to the database
-    form = SQLFORM(db.events, record, deleteable=True, fields=['start_time', 'end_time', 'description', 'name'],showid=False)
+    form = SQLFORM(db.events, record, deleteable=True,
+                   fields=['start_time', 'end_time', 'description', 'name'],
+                   showid=False)
 
     #autofill the user_id since users won't know their own user id
     form.vars.user_id = auth.user.id
@@ -25,6 +29,7 @@ def add():
         #first day already got stored when the form was accepted so start one day later
         start_time = form.vars.start_time + datetime.timedelta(days=1)
         end_time = form.vars.end_time
+
         #does this event span multiple days?
         #num_days = (end_time - start_time).days()
         which_day = 1
@@ -32,24 +37,35 @@ def add():
             #is this the last day?
             if start_time.date() == end_time.date():
                 starts_at_midnight = start_time.replace(hour=0, minute=0,second=0)
-                db.events.insert(user_id = auth.user.id, start_time = starts_at_midnight, end_time = end_time, description=form.vars.description, name=form.vars.description)
+                db.events.insert(user_id = auth.user.id,
+                                 start_time = starts_at_midnight,
+                                 end_time = end_time,
+                                 description=form.vars.description,
+                                 name=form.vars.description)
                 start_time = start_time + datetime.timedelta(days=1)
             else:
                 starts_at_midnight = start_time.replace(hour=0, minute=0,second=0)
                 midnight_tomorrow = (start_time + datetime.timedelta(days=1)).replace(hour=0, minute=0, second=0)
-                db.events.insert(user_id = auth.user.id, start_time = starts_at_midnight, end_time = midnight_tomorrow, description=form.vars.description, name=form.vars.description)
+                db.events.insert(user_id = auth.user.id,
+                                 start_time = starts_at_midnight,
+                                 end_time = midnight_tomorrow,
+                                 description=form.vars.description,
+                                 name=form.vars.description)
                 start_time = start_time + datetime.timedelta(days=1)
+
         if record:
             redirect('../../default/index')
         redirect('../default/index')
+
     return dict(form=form)
 
 @auth.requires_login()
-def myschedule():
+def my_schedule():
     # get todays date so we know where the calendar should start
     date = datetime.date.today()
     # get all events for this user
     events = db(db.events.user_id == auth.user.id).select();
+
     weekdays = ['Monday',
               'Tuesday',
               'Wednesday',
@@ -57,10 +73,11 @@ def myschedule():
               'Friday',
               'Saturday',
               'Sunday']
+
     return dict(date=date, events=events, weekdays=weekdays)
 
 @auth.requires_login()
-def groupschedule():
+def group_schedule():
     # get todays date so we know where the calendar should start
     date = datetime.date.today()
     # what group is this?
@@ -72,14 +89,14 @@ def groupschedule():
 
     #Remove gaps tha are shorter than the minimum gap length
     min_length = timedelta(minutes = group.gap_length)
-    print min_length
+    #print min_length
     gaps = []
     for gap in gaps_db:
-        print "gap length is ", (gap.end_time - gap.start_time), "min is ", min_length
+        #print "gap length is ", (gap.end_time - gap.start_time), "min is ", min_length
         if (gap.end_time - gap.start_time) >= min_length:
-            print "adding ", gap
+            #print "adding ", gap
             gaps.append(gap)
-    print "\n\n\n", gaps, "\n\n"
+    #print "\n\n\n", gaps, "\n\n"
 
     # get user_ids for all people in this group
     users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
@@ -94,6 +111,7 @@ def groupschedule():
         username = db(db.auth_user.id == user.user_id).select()
         list_of_usernames.append(username)
     # a list of week days could come in handy
+
     weekdays = ['Monday',
               'Tuesday',
               'Wednesday',
@@ -104,7 +122,11 @@ def groupschedule():
 
     #Create form for changing the minimum gap length
     record = db.groups(request.args[0])
-    form = SQLFORM(db.groups, record, showid=False, fields=['gap_length'], labels={'gap_length':'Minimum gap length (minutes): '})
+    form = SQLFORM(db.groups,
+                   record,
+                   showid=False,
+                   fields=['gap_length'],
+                   labels={'gap_length':'Minimum gap length (minutes): '})
     form.process()
 
     return dict(date=date, weekdays=weekdays, gaps=gaps,
@@ -147,27 +169,22 @@ def week():
               'Saturday',
               'Sunday',]
 
-    db.define_table('gap_length',
-        Field('gap_length', requires=IS_IN_SET(
-            ['15 minutes', '30 minutes', '1 hour', '2 hours', '4 hours'])))
-    form = SQLFORM(db.gap_length)
-    form.element('form')['_onsubmit']='$('#gapsModal').modal('show');'
-
-    #if form.process(formname='test').accepted:
-    #    response.flash = 'form accepted'
-    #elif form.errors:
-    #    response.flash = 'form has errors'
-    #else:
-    #    response.flash = 'please fill out the form'
-
     return dict(date=date, weekdays=weekdays, gaps=gaps,
         users=users, list_of_events=list_of_events,
         list_of_usernames=list_of_usernames, group=group,
          fast_forward=fast_forward, group_id=group_id)
 
 @auth.requires_login()
-def groupday():
+def group_day():
+    """ group_day()
 
+    displays the gaps for the given group and the given day.
+
+    INPUTS:
+        args[0] [INTEGER]: group_id, will error if not int
+        args[1] [STRING]: the given date **NOTE TO SELF, does not error properly if passed not an accruate date. oops
+
+    """
     #retreive the required inputs, if they don't exists send 404
     try:
         group = int(request.args[0])
@@ -202,5 +219,9 @@ def groupday():
             gaps.append(gap)
             print str(gap)
 
+    #determine yesterday and the next day
+    prev_date = (start_date - datetime.timedelta(days=1)).date().strftime('%m%d%Y')
+    next_date = (end_date + datetime.timedelta(minutes=1)).date().strftime('%m%d%Y')
+
     #return
-    return dict(gaps = gaps, group = group, date = date_string)
+    return dict(gaps = gaps, group = group, date = date_string, prev_date = prev_date, next_date = next_date)
