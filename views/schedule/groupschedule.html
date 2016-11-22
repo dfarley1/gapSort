@@ -26,9 +26,9 @@
 
 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#gapsModal">Gap Preferences</button>
 
-<button type="button" id="weekly_view_btn" class="btn btn-info btn-sm">
+<a type="button" href="/gapSort/schedule/week/{{=group_id}}" id="weekly_view_btn" class="btn btn-info btn-sm">
     Weekly View
-</button>
+</a>
 
 <!-- python module for all date related things -->
 {{import datetime}}
@@ -46,7 +46,7 @@
         {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         {{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
     </a>
-    
+
     <!-- keep track of which user's events we are talking about -->
     {{userNum = 0}}
     <!-- gotta go through our 2d list of user events -->
@@ -92,15 +92,13 @@
 <!-- end of this calendar tile, on to the next day -->
     </param></div>
 {{pass}}
-    
+
 <!-- plus minus sign to fill up the last tile slot -->
 <a href="./add"><div class="addevent"></div></a>
-    
+
 </div> <!-- end of whole calendar -->
 
-<div style="color: white">
- {{=gaps}}   
-</div>
+
 
 
 <div id="gapsModal" class="modal fade" role="dialog">
@@ -150,22 +148,22 @@
 
 
 <script>
-    
+
     var gapsShowing = false;
     var eventsShowing = false;
     var currentlyHidden = [];
-    
+
     // start with each users' event class in the hidden list
     for (var i = 0; i < 12; i++) {
         class_to_hide = ".event" + String(i);
         currentlyHidden.push(class_to_hide);
     }
-    
+
     //start with all gaps and events hidden
     $(".gap").hide();
     $(".big_gap").hide();
     $(".event").hide();
-    
+
     //someone clicked on the toggle gaps button
     $("#gaptoggle").click( function() {
         //should we hide or show all gaps?
@@ -195,7 +193,7 @@
             eventsShowing = true;
         }
     })
-    
+
     // someone has clicked any of the input checkboxes
     $("input").click( function () {
         // get the css class of whichever checkbox was clicked
@@ -217,7 +215,7 @@
             currentlyHidden.push(users_event_class);
         };
     });
-    
+
     $(".calendar_tile").click(function() {
         var day = parseInt($(this).attr("name"));
         var weekdays = {{=XML(weekdays)}};
@@ -227,8 +225,8 @@
         //{{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         //{{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
     });
-    
-    
-    
-    
+
+
+
+
 </script>

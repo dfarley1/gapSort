@@ -64,7 +64,7 @@
     </p>
     {{pass}}
 
-
+    
     <!-- keep track of which user's events we are talking about -->
     {{userNum = 0}}
     <!-- gotta go through our 2d list of user events -->
@@ -96,13 +96,13 @@
             {{end = gap.end_time.hour}}
             <!-- gap might have been small so give it a small box -->
             {{if ((abs(end - start)) < 3):}}
-                {{how_far_down = "position: absolute;top: " + str(int(gap.start_time.hour * 17) + 59) + "px;left: 40px;z-index: -1;"}}
+                {{how_far_down = "position: absolute;top: " + str(int(gap.start_time.hour * 17) + 58) + "px;left: 40px;z-index: -1;height: " + str(int((gap.start_time.hour - gap.end_time.hour)*17)) + ";"}}
                 <p class="gap" style="{{=how_far_down}}">
                 {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
                 </p>
             <!-- gap must have been pretty big, give it a big box -->
             {{else:}}
-                {{how_far_down = "position: absolute;top: " + str(int(gap.start_time.hour * 17) + 59) + "px;left: 40px;z-index: -1;"}}
+                {{how_far_down = "position: absolute;top: " + str(int(gap.start_time.hour * 17) + 58) + "px;left: 40px;z-index: -1;"}}
                 <p class="big_gap" style="{{=how_far_down}}">
                 {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
                 </p>
@@ -114,24 +114,23 @@
     </param></div>
 {{pass}}
 
-
 <script>
-
+    
     var gapsShowing = false;
     var eventsShowing = false;
     var currentlyHidden = [];
-
+    
     // start with each users' event class in the hidden list
     for (var i = 0; i < 12; i++) {
         class_to_hide = ".event" + String(i);
         currentlyHidden.push(class_to_hide);
     }
-
+    
     //start with all gaps and events hidden
     $(".gap").hide();
     $(".big_gap").hide();
     $(".event").hide();
-
+    
     //someone clicked on the toggle gaps button
     $("#gaptoggle").click( function() {
         //should we hide or show all gaps?
@@ -161,7 +160,7 @@
             eventsShowing = true;
         }
     })
-
+    
     // someone has clicked any of the input checkboxes
     $("input").click( function () {
         // get the css class of whichever checkbox was clicked
@@ -183,7 +182,7 @@
             currentlyHidden.push(users_event_class);
         };
     });
-
+    
     $(".calendar_tile").click(function() {
         var day = parseInt($(this).attr("name"));
         var weekdays = {{=XML(weekdays)}};
@@ -193,8 +192,8 @@
         //{{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         //{{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
     });
-
-
-
-
+    
+    
+    
+    
 </script>

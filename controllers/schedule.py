@@ -111,7 +111,7 @@ def groupschedule():
     return dict(date=date, weekdays=weekdays, json_weekdays=json(weekdays), gaps=gaps,
         users=users, list_of_events=list_of_events,
         list_of_usernames=list_of_usernames, group=group,
-        form=form)
+        form=form, group_id=group_id)
 
 def day():
     # get todays date so we know where the calendar should start
@@ -162,7 +162,7 @@ def day():
         list_of_usernames=list_of_usernames, group=group,
         form=form)
 
-<<<<<<< HEAD
+
 def week():
     # get todays date so we know where the calendar should start
     date = datetime.date.today()
@@ -210,7 +210,7 @@ def week():
     return dict(date=date, weekdays=weekdays, gaps=gaps,
         users=users, list_of_events=list_of_events,
         list_of_usernames=list_of_usernames, group=group)
-=======
+
 @auth.requires_login()
 def groupday():
 
@@ -250,4 +250,3 @@ def groupday():
 
     #return
     return dict(gaps = gaps, group = group, date = date_string)
->>>>>>> e0e8470c731e370f977cbede582d49ae1717d209
