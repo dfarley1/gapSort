@@ -10,13 +10,13 @@
     <input id="eventtoggle" type="checkbox"></input><label style="color: white;">All Events</label><br>
 
 <!-- make toggle options for each user in the group -->
-{{userNum = 0}}
+{{user_num = 0}}
 {{for user in users:}}
     <!-- each user will have a unique css class so that we can hide/show that class with javascript later -->
-    {{user_toggle_class = "events_of_user%d" % userNum}}
+    {{user_toggle_class = "events_of_user%d" % user_num}}
     <input class="{{=user_toggle_class}}" type="checkbox" value="{{=user_toggle_class}}"></input>
-    <label style="color: white;">{{=list_of_usernames[userNum][0].first_name.title()}}</label><br>
-    {{userNum += 1}}
+    <label style="color: white;">{{=list_of_usernames[user_num][0].first_name.title()}}</label><br>
+    {{user_num += 1}}
 {{pass}}
 </div>
 
@@ -26,7 +26,7 @@
 
 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#gapsModal">Gap Preferences</button>
 
-<a type="button" href="/gapSort/schedule/week/{{=group_id}}" id="weekly_view_btn" class="btn btn-info btn-sm">
+<a type="button" href="/gapSort/schedule/week/{{=group_id}}/0" id="weekly_view_btn" class="btn btn-info btn-sm">
     Weekly View
 </a>
 
@@ -48,13 +48,13 @@
     </a>
 
     <!-- keep track of which user's events we are talking about -->
-    {{userNum = 0}}
+    {{user_num = 0}}
     <!-- gotta go through our 2d list of user events -->
     {{for one_users_events in list_of_events:}}
         {{for event in one_users_events:}}
             <!-- include which user number user this and put it in their css class
                  so they can have a unique color for their events -->
-            {{event_class = "event event%d" % userNum}}
+            {{event_class = "event event%d" % user_num}}
             <!-- does this user even have an event on this day? -->
             {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
                 <p class="{{=event_class}}">
@@ -63,7 +63,7 @@
             {{pass}}
         {{pass}}
         <!-- on to the next user's set of events -->
-        {{userNum += 1}}
+        {{user_num += 1}}
     {{pass}}
 
 
@@ -149,14 +149,14 @@
 
 <script>
 
-    var gapsShowing = false;
-    var eventsShowing = false;
-    var currentlyHidden = [];
+    var gaps_showing = false;
+    var events_showing = false;
+    var currently_hidden = [];
 
     // start with each users' event class in the hidden list
     for (var i = 0; i < 12; i++) {
         class_to_hide = ".event" + String(i);
-        currentlyHidden.push(class_to_hide);
+        currently_hidden.push(class_to_hide);
     }
 
     //start with all gaps and events hidden
@@ -167,30 +167,30 @@
     //someone clicked on the toggle gaps button
     $("#gaptoggle").click( function() {
         //should we hide or show all gaps?
-        if (gapsShowing) {
+        if (gaps_showing) {
             //hide
             $(".gap").hide();
             $(".big_gap").hide();
-            gapsShowing = false;
+            gaps_showing = false;
         } else {
             //show
             $(".gap").show();
             $(".big_gap").show();
-            gapsShowing = true;
+            gaps_showing = true;
         }
     })
 
     // someone hath toggled the all events button
     $("#eventtoggle").click( function() {
         // should we hide or show?
-        if (eventsShowing) {
+        if (events_showing) {
             //hide
             $(".event").hide();
-            eventsShowing = false;
+            events_showing = false;
         } else {
             //show
             $(".event").show();
-            eventsShowing = true;
+            events_showing = true;
         }
     })
 
@@ -202,28 +202,18 @@
         // so for the first run through it will just be '0' taken from 'events_of_user0'
         users_event_class = ".event" + this.value[this.value.length - 1];
         // should we hide or show these events?
-        if ($.inArray(users_event_class, currentlyHidden) > -1) {
+        if ($.inArray(users_event_class, currently_hidden) > -1) {
             //show
             $(users_event_class).show();
             //remove from hidden list
-            currentlyHidden.splice( $.inArray(users_event_class, currentlyHidden), 1 );
+            currently_hidden.splice( $.inArray(users_event_class, currently_hidden), 1 );
         }
         else {
             //hide
             $(users_event_class).hide();
             //add to hidden list
-            currentlyHidden.push(users_event_class);
+            currently_hidden.push(users_event_class);
         };
-    });
-
-    $(".calendar_tile").click(function() {
-        var day = parseInt($(this).attr("name"));
-        var weekdays = {{=XML(weekdays)}};
-        $(".whole_calendar").html(
-            '<iframe id ="single_day" src="/gapSort/schedule/day"></iframe>'
-        ).css("border-style", "none");
-        //{{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
-        //{{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
     });
 
 

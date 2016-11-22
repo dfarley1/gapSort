@@ -53,6 +53,9 @@ h1 {
     margin-top: 0px;
 }
 
+.event {
+    margin-top: 10px;
+}
 .event0 {
     height: 10px;
     color: red;
@@ -167,6 +170,7 @@ h1 {
     height: 20px;
     color: #003399;
     background-color: #ccffcc;
+    margin-top: 10px;
 }
 
 .big_gap {

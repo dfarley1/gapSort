@@ -3,7 +3,6 @@
 import datetime
 from gluon import DAL, Field
 from collections import namedtuple
-from gluon.serializers import json
 from datetime import timedelta
 
 
@@ -51,13 +50,13 @@ def myschedule():
     date = datetime.date.today()
     # get all events for this user
     events = db(db.events.user_id == auth.user.id).select();
-    weekdays   = ['Sunday',
-              'Monday',
+    weekdays = ['Monday',
               'Tuesday',
               'Wednesday',
               'Thursday',
               'Friday',
-              'Saturday']
+              'Saturday',
+              'Sunday']
     return dict(date=date, events=events, weekdays=weekdays)
 
 @auth.requires_login()
@@ -95,79 +94,33 @@ def groupschedule():
         username = db(db.auth_user.id == user.user_id).select()
         list_of_usernames.append(username)
     # a list of week days could come in handy
-    weekdays   = ['Sunday',
-              'Monday',
+    weekdays = ['Monday',
               'Tuesday',
               'Wednesday',
               'Thursday',
               'Friday',
-              'Saturday']
+              'Saturday',
+              'Sunday']
 
     #Create form for changing the minimum gap length
     record = db.groups(request.args[0])
     form = SQLFORM(db.groups, record, showid=False, fields=['gap_length'], labels={'gap_length':'Minimum gap length (minutes): '})
     form.process()
 
-    return dict(date=date, weekdays=weekdays, json_weekdays=json(weekdays), gaps=gaps,
+    return dict(date=date, weekdays=weekdays, gaps=gaps,
         users=users, list_of_events=list_of_events,
         list_of_usernames=list_of_usernames, group=group,
         form=form, group_id=group_id)
-
-def day():
-    # get todays date so we know where the calendar should start
-    date = datetime.date.today()
-    # what group is this?
-    group_id = 1 #int(request.args[0])
-    #get this groups gaps
-    group = db(db.groups.id == group_id).select()[0]
-
-    gaps = db(db.gaps.group_id == group_id).select()
-
-    # get user_ids for all people in this group
-    users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
-    # maintain a list of all the usernames
-    list_of_usernames = []
-    # add each users events to the events list
-    list_of_events = []
-    #populate a 2d list of everybody's events and another list of just usernames
-    for user in users:
-        one_users_events = db(db.events.user_id == user.user_id).select()
-        list_of_events.append(one_users_events)
-        username = db(db.auth_user.id == user.user_id).select()
-        list_of_usernames.append(username)
-    # a list of week days could come in handy
-    weekdays   = ['Sunday',
-              'Monday',
-              'Tuesday',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-              'Saturday']
-
-    db.define_table('gap_length',
-        Field('gap_length', requires=IS_IN_SET(
-            ['15 minutes', '30 minutes', '1 hour', '2 hours', '4 hours'])))
-    form = SQLFORM(db.gap_length)
-    form.element('form')['_onsubmit']='$('#gapsModal').modal('show');'
-
-    #if form.process(formname='test').accepted:
-    #    response.flash = 'form accepted'
-    #elif form.errors:
-    #    response.flash = 'form has errors'
-    #else:
-    #    response.flash = 'please fill out the form'
-
-    return dict(date=date, weekdays=weekdays, json_weekdays=json(weekdays), gaps=gaps,
-        users=users, list_of_events=list_of_events,
-        list_of_usernames=list_of_usernames, group=group,
-        form=form)
 
 
 def week():
     # get todays date so we know where the calendar should start
     date = datetime.date.today()
     # what group is this?
-    group_id = 1 #int(request.args[0])
+    group_id = int(request.args[0])
+    #should we fast-forward or rewind a week?
+    fast_forward = int(request.args[1])
+    date = date + datetime.timedelta(days=fast_forward)
     #get this groups gaps
     group = db(db.groups.id == group_id).select()[0]
 
@@ -186,13 +139,13 @@ def week():
         username = db(db.auth_user.id == user.user_id).select()
         list_of_usernames.append(username)
     # a list of week days could come in handy
-    weekdays   = ['Sunday',
-              'Monday',
+    weekdays   = ['Monday',
               'Tuesday',
               'Wednesday',
               'Thursday',
               'Friday',
-              'Saturday']
+              'Saturday',
+              'Sunday',]
 
     db.define_table('gap_length',
         Field('gap_length', requires=IS_IN_SET(
@@ -209,7 +162,8 @@ def week():
 
     return dict(date=date, weekdays=weekdays, gaps=gaps,
         users=users, list_of_events=list_of_events,
-        list_of_usernames=list_of_usernames, group=group)
+        list_of_usernames=list_of_usernames, group=group,
+         fast_forward=fast_forward, group_id=group_id)
 
 @auth.requires_login()
 def groupday():
