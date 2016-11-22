@@ -15,13 +15,8 @@ def gaps():
     Removes the elements in db.gaps associated with group HARD_CODED
     Finds gaps in the users events and then places them in db.gaps
     With the correct group_id
-
-    **NOTES**: currently does not have a view to see them on the webpage,
-    also currently the group is hard-coded to group_id=1 and finding gaps in
-    date range 10-5-16 -> 10-19-15. Will want to change this to prompt user
-    for what information they want"""
-
-
+    """
+    
     #clear the gaps in the group id
     print 'begin'
     try:

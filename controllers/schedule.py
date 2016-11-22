@@ -131,6 +131,15 @@ def group_schedule():
 
 @auth.requires_login()
 def group_day():
+    """ group_day()
+
+    displays the gaps for the given group and the given day.
+
+    INPUTS:
+        args[0] [INTEGER]: group_id, will error if not int
+        args[1] [STRING]: the given date **NOTE TO SELF, does not error properly if passed not an accruate date. oops
+
+    """
     #retreive the required inputs, if they don't exists send 404
     try:
         group = int(request.args[0])
@@ -165,5 +174,9 @@ def group_day():
             gaps.append(gap)
             print str(gap)
 
+    #determine yesterday and the next day
+    prev_date = (start_date - datetime.timedelta(days=1)).date().strftime('%m%d%Y')
+    next_date = (end_date + datetime.timedelta(minutes=1)).date().strftime('%m%d%Y')
+
     #return
-    return dict(gaps = gaps, group = group, date = date_string)
+    return dict(gaps = gaps, group = group, date = date_string, prev_date = prev_date, next_date = next_date)
