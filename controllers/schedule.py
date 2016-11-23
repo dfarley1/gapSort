@@ -218,23 +218,18 @@ def group_day():
             gaps.append(gap)
             print str(gap)
 
-    # get user_ids for all people in this group
-    users = db(group == db.user_groups.group_id).select(db.user_groups.user_id)
-    # maintain a list of all the usernames
-    list_of_usernames = []
-    # add each users events to the events list
-    list_of_events = []
-    #populate a 2d list of everybody's events and another list of just usernames
-    for user in users:
-        one_users_events = db(db.events.user_id == user.user_id).select()
-        list_of_events.append(one_users_events)
-        username = db(db.auth_user.id == user.user_id).select()
-        list_of_usernames.append(username)
-
     #determine yesterday and the next day
     prev_date = (start_date - datetime.timedelta(days=1)).date().strftime('%m%d%Y')
     next_date = (end_date + datetime.timedelta(minutes=1)).date().strftime('%m%d%Y')
 
+    #TESTING
+
     #return
-    return dict(gaps = gaps, group = group, users = users, list_of_events = list_of_events,
+    return dict(gaps = gaps, group = group,
         date = date_string, prev_date = prev_date, next_date = next_date)
+
+
+# @auth_user.requires_login()
+# def user_day():
+
+
