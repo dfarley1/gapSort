@@ -4,23 +4,22 @@
 </head>
 <h1>Group Name</h1>
 {{=edit_name_form}}
-<h2>Add user:</h2>
-{{=add_user_form}}
 
+<div id="group_users">
+	<h2>Add user:</h2>
+	<div id="add_user">
+	{{=add_user_form}}
+	</div>
 
-<!-- <div id="allUsers">
-	<h1>This is over here</h1>
-</div> -->
-
-
-{{for user in users:}}
-	<li>
-		{{=" ".join((user.first_name, user.last_name))}} 
-		<a class="delete" href="../delete_user_from_group/{{=group_id}}/{{=user.email}}">Delete</a>
-	</li>	
-{{pass}}
-
-
+	{{for user in users:}}
+		<li>
+			{{=" ".join((user.first_name, user.last_name))}} 
+			{{if user.id != manager_id:}}
+			<a class="delete" href="../delete_user_from_group/{{=group_id}}/{{=user.email}}">Delete</a>
+			{{pass}}
+		</li>	
+	{{pass}}
+</div>
 
 
 <a class="delete" href="../delete_group/{{=group_id}}">Delete Group</a>
