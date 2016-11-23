@@ -16,8 +16,7 @@ def name():
         session.groupName = form.vars.name  #saving the groupName for the next page
         redirect(URL('edit', args=(group_id)))
         print "This is a new group"
-    group_names = db(db.groups.manager == manager).select()
-    
+    group_names = db(db.groups.manager == manager).select()  
     return dict(form=form, group_names=group_names)
 
 #creates a group and allows you to add users to the group
@@ -54,8 +53,9 @@ def edit():
        insert_user(add_user_form,group_id)
     users = []
     users = display_group(group_id) 
-
-    return dict(edit_name_form = edit_name_form, add_user_form = add_user_form , users = users, group_id=group_id)
+    manager_id = auth.user.id
+    return dict(edit_name_form = edit_name_form, add_user_form = add_user_form , users = users, 
+                group_id=group_id, manager_id = manager_id)
 
 #deletes a group from the database
 def delete_group():
@@ -111,7 +111,6 @@ def my_groups():
     return dict(groups = groups)
 
 def delete_user_from_group():
-    print "Group ID and user email"
     group_id  = request.args(0)
     user_email = request.args(1)
     print user_email
@@ -122,9 +121,23 @@ def delete_user_from_group():
                     WHERE user_id = '%s' AND group_id = '%s'""" %(user_id,group_id))
     
     redirect(URL('edit', args=(group_id)))
-    return
+    return dict()
+
+#inserts a user from the side list
+def insert():
+    print "I got into here"
+    user_id = request.args(0)
+    group_id = request.args(1)
+    print user_id
+    print group_id
+    db.executesql("""INSERT INTO user_groups (user_id, group_id)
+                    VALUES ('%s','%s')""" %(user_id,group_id))
+    return dict()
+
+def all_users():
+    group_id = request.args(0)
+    manager_id = request.args(1)
+    users = db().select(db.auth_user.ALL)
+    return dict(group_id = group_id, manager_id = manager_id ,users = users)
 
 def user(): return dict(form=auth())
-
-
-#select id form users where email = email

@@ -1,6 +1,11 @@
 body {
-    background-image: url('http://wallpapercave.com/wp/fcaM4Mo.jpg');
+    background-image: url('../images/big_tile.png')
 }
+
+h1 {
+    color: white;
+}
+
 
 #menu {
 	height:720px;
@@ -13,7 +18,7 @@ body {
 	width: 500px;
 	height: 20px;
 	float:left;
-	background-color: #393a35; 
+	background-color: #393a35;
 	position: relative;
 	color: white;
 	z-index:2;

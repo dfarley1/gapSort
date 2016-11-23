@@ -15,8 +15,30 @@ h1 {
 	border: 1px solid black;
 }
 
-#allusers{
-	text-align: right;
+#groups_gap_length{
+	width: 300px;
+	color: black;
+	background: white;
+	border: 1px solid black;
+}
+
+#group_users{
+	float: ;left: 
+}
+
+#add_user{
+	color: white;
+}
+
+input {
+	color: black;
+}
+
+iframe{
+	border: none;
+	width: 450px;
+	height: 400px;
+
 }
 
 a.delete{
