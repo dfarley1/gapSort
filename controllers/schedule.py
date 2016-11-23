@@ -140,6 +140,7 @@ def group_day():
         args[1] [STRING]: the given date **NOTE TO SELF, does not error properly if passed not an accruate date. oops
 
     """
+
     #retreive the required inputs, if they don't exists send 404
     try:
         group = int(request.args[0])
@@ -156,13 +157,11 @@ def group_day():
     start_date = datetime.datetime(year,month,day,0,0)
     end_date = datetime.datetime(year,month,day,23,59)
     
-    print str(start_date)
-    
     #select all gaps that are on the given day
     temp_gaps = db.executesql("""
         SELECT gap.start_time, gap.end_time
         FROM gaps as gap
-        WHERE gap.group_id = %s 
+        WHERE gap.group_id = %d
         ORDER BY gap.start_time ASC
         """ %(group))
     
@@ -174,9 +173,23 @@ def group_day():
             gaps.append(gap)
             print str(gap)
 
+    # get user_ids for all people in this group
+    users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
+    # maintain a list of all the usernames
+    list_of_usernames = []
+    # add each users events to the events list
+    list_of_events = []
+    #populate a 2d list of everybody's events and another list of just usernames
+    for user in users:
+        one_users_events = db(db.events.user_id == user.user_id).select()
+        list_of_events.append(one_users_events)
+        username = db(db.auth_user.id == user.user_id).select()
+        list_of_usernames.append(username)
+
     #determine yesterday and the next day
     prev_date = (start_date - datetime.timedelta(days=1)).date().strftime('%m%d%Y')
     next_date = (end_date + datetime.timedelta(minutes=1)).date().strftime('%m%d%Y')
 
     #return
-    return dict(gaps = gaps, group = group, date = date_string, prev_date = prev_date, next_date = next_date)
+    return dict(gaps = gaps, group = group, users = users, list_of_events = list_of_events
+        date = date_string, prev_date = prev_date, next_date = next_date)
