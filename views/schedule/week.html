@@ -1,7 +1,7 @@
 {{extend 'layout.html'}}
-<!-- include our css file -->
-<link rel="stylesheet" type = "text/css" href="../../static/css/schedule.css">
-
+<link rel="stylesheet" type = "text/css" href="/gapSort/static/css/week.css">
+<!-- python module for all date related things -->
+{{import datetime}}
 <!-- get a little control panel going -->
 <div id="control_panel">
     <!-- have some toggle options -->
@@ -20,33 +20,61 @@
 {{pass}}
 </div>
 
+
 <!-- display name of this group -->
 <h1>{{=group.name.title()}}</h1>
 
-
 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#gapsModal">Gap Preferences</button>
 
-<a type="button" href="/gapSort/schedule/week/{{=group_id}}/0" id="weekly_view_btn" class="btn btn-info btn-sm">
-    Weekly View
+<a type="button" href="/gapSort/schedule/groupschedule/{{=group_id}}" id="weekly_view_btn" class="btn btn-info btn-sm">
+    Bi-Weekly View
 </a>
 
+<ul class="pager" style="position: relative;display: inline-block; left: 250px;">
+<li><a href="/gapSort/schedule/week/{{=group_id}}/{{=fast_forward-7}}" id="weekly_view_btn">
+    Previous Week
+</a></li>
 
-<!-- python module for all date related things -->
-{{import datetime}}
+<li><a href="/gapSort/schedule/week/{{=group_id}}/{{=fast_forward+7}}" id="weekly_view_btn">
+    Next Week
+</a></li>
+</ul>
+
 <!-- outer div to contain all of the calendar tiles -->
 <div class="whole_calendar">
 
 <!-- for the next 14 days (2 weeks) -->
-{{for i in range(0,14):}}
+{{for i in range(0,7):}}
 
 <!-- css background will actually show the tile image -->
 <div class="calendar_tile" name='{{=i}}'><param value='{{=i}}' class="dayCounter">
     <!-- have the weekday and date for this calendar day displayed at the top of the tile -->
-    <!-- links to the view of the days gaps -->
-    <a href="../group_day/{{=group.id}}/{{=(date + datetime.timedelta(days=i)).strftime('%m%d%Y')}}">
+    <p class="date">
         {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         {{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
-    </a>
+    </p>
+    {{if i == 0:}}
+    <p style="line-height:7px;z-index: 100;">
+        12am
+    </p>
+    {{for k in range(1, 12):}}
+    <p style="line-height:7px;">
+        {{=k}}
+    </p>
+    {{pass}}
+    <p style="line-height:7px;">
+        12pm
+    </p>
+    {{for j in range(1, 12):}}
+    <p style="line-height:7px;">
+        {{=j}}
+    </p>
+    {{pass}}
+    <p style="line-height:7px;">
+        12am
+    </p>
+    {{pass}}
+
 
     <!-- keep track of which user's events we are talking about -->
     {{user_num = 0}}
@@ -58,7 +86,8 @@
             {{event_class = "event event%d" % user_num}}
             <!-- does this user even have an event on this day? -->
             {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
-                <p class="{{=event_class}}">
+                {{how_far_down = "position: absolute;top: " + str(int(event.start_time.hour * 17) + 58) + "px;left: 25px;"}}
+                <p class="{{=event_class}}" style="{{=how_far_down}}">
                 {{=event.description}}<br>
                 </p>
             {{pass}}
@@ -66,6 +95,7 @@
         <!-- on to the next user's set of events -->
         {{user_num += 1}}
     {{pass}}
+
 
 
     <!-- check if there is a gap on this day and, if so, display it -->
@@ -77,12 +107,14 @@
             {{end = gap.end_time.hour}}
             <!-- gap might have been small so give it a small box -->
             {{if ((abs(end - start)) < 3):}}
-                <p class="gap">
+                {{how_far_down = "position: absolute;top: " + str(int(gap.start_time.hour * 17) + 59) + "px;left: 40px;z-index: -1;"}}
+                <p class="gap" style="{{=how_far_down}}">
                 {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
                 </p>
             <!-- gap must have been pretty big, give it a big box -->
             {{else:}}
-                <p class="big_gap">
+                {{how_far_down = "position: absolute;top: " + str(int(gap.start_time.hour * 17) + 59) + "px;left: 40px;z-index: -1;"}}
+                <p class="big_gap" style="{{=how_far_down}}">
                 {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
                 </p>
             {{pass}}
@@ -92,56 +124,6 @@
 <!-- end of this calendar tile, on to the next day -->
     </param></div>
 {{pass}}
-
-<!-- plus minus sign to fill up the last tile slot -->
-<a href="./add"><div class="addevent"></div></a>
-
-</div> <!-- end of whole calendar -->
-
-<div id="gapsModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Gap Preferences</h4>
-      </div>
-      <div class="modal-body">
-        <div style="width:200px; display:inline">
-{{=form}}
-</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div> <!-- end of modal -->
-
-<!-- Modal -->
-<div id="dayModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <p id = "modalDay">Some Day</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
 
 
 <script>
@@ -212,8 +194,5 @@
             currently_hidden.push(users_event_class);
         };
     });
-
-
-
 
 </script>

@@ -6,21 +6,50 @@
 	<link rel="stylesheet" href="{{=URL('static', 'css/day.css')}}">
 </head>
 
+{{prev_link = "./%s" %prev_date}}
+{{next_link = "./%s" %next_date}}
+{{prev_page_link = "../../group_schedule/%d" %group}}
 
-<p> hello</p>
+{{date_string = "%s-%s-%s" %(date[0:2],date[2:4],date[4:])}}
 
-<div id = "calendar_day">
- {{for gap in gaps:}}
 
- 	{{time_length = gap[1] - gap[0]}}
- 	{{length = int(time_length.total_seconds()/60)}}
- 	{{offset = gap[0].hour*60 + gap[0].minute}}
- 	{{style = "height:%d; position: absolute; top:%d;" %(length,offset)}}
+<div id = "calendar">
+	<div id = "date"> 
+		{{=date_string}}
+	</div>
 
- 	<div id="gap" style= "{{=style}}">
- 		{{=length}} and {{=offset}}
- 	</div>
- {{pass}}
+	<div id = "calendar_day">
+	 	{{for gap in gaps:}}
+		 	{{time_length = gap[1] - gap[0]}}
+		 	{{length = int(time_length.total_seconds()/120)}}
+		 	{{offset = int((gap[0].hour*60 + gap[0].minute)/2)}}
+		 	{{style = "height:%d; top:%d;" %(length,offset)}}
+
+	 	<p class="gap" style= "{{=style}}"></p>
+	 {{pass}}
+	</div>
 </div>
 
- {{=gaps}}
+<div id = "menu">
+
+	<a class = "btn" href = {{=prev_link}}> 
+		<button> Yesterday </button>
+	</a>
+
+	<br><br>
+
+	<a class = "btn" href = {{=next_link}}>
+		<button> Tomorrow </button>
+	</a>
+
+	<br><br>
+
+	<a class = "btn" href = {{=prev_page_link}}>
+		<button> 2 Week View </button>
+	</a>
+
+</div>
+
+<div id="control_panel">
+
+</div>

@@ -1,7 +1,7 @@
 {{extend 'layout.html'}}
-<!-- include our css file -->
-<link rel="stylesheet" type = "text/css" href="../../static/css/schedule.css">
-
+<link rel="stylesheet" type = "text/css" href="../../static/css/week.css">
+<!-- python module for all date related things -->
+{{import datetime}}
 <!-- get a little control panel going -->
 <div id="control_panel">
     <!-- have some toggle options -->
@@ -10,62 +10,81 @@
     <input id="eventtoggle" type="checkbox"></input><label style="color: white;">All Events</label><br>
 
 <!-- make toggle options for each user in the group -->
-{{user_num = 0}}
+{{userNum = 0}}
 {{for user in users:}}
     <!-- each user will have a unique css class so that we can hide/show that class with javascript later -->
-    {{user_toggle_class = "events_of_user%d" % user_num}}
+    {{user_toggle_class = "events_of_user%d" % userNum}}
     <input class="{{=user_toggle_class}}" type="checkbox" value="{{=user_toggle_class}}"></input>
-    <label style="color: white;">{{=list_of_usernames[user_num][0].first_name.title()}}</label><br>
-    {{user_num += 1}}
+    <label style="color: white;">{{=list_of_usernames[userNum][0].first_name.title()}}</label><br>
+    {{userNum += 1}}
 {{pass}}
 </div>
+
 
 <!-- display name of this group -->
 <h1>{{=group.name.title()}}</h1>
 
-
 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#gapsModal">Gap Preferences</button>
 
-<a type="button" href="/gapSort/schedule/week/{{=group_id}}/0" id="weekly_view_btn" class="btn btn-info btn-sm">
+<button type="button" id="weekly_view_btn" class="btn btn-info btn-sm">
     Weekly View
-</a>
-
-
-<!-- python module for all date related things -->
-{{import datetime}}
+</button>
 <!-- outer div to contain all of the calendar tiles -->
 <div class="whole_calendar">
 
 <!-- for the next 14 days (2 weeks) -->
-{{for i in range(0,14):}}
+{{for i in range(0,7):}}
 
 <!-- css background will actually show the tile image -->
 <div class="calendar_tile" name='{{=i}}'><param value='{{=i}}' class="dayCounter">
     <!-- have the weekday and date for this calendar day displayed at the top of the tile -->
-    <!-- links to the view of the days gaps -->
-    <a href="../group_day/{{=group.id}}/{{=(date + datetime.timedelta(days=i)).strftime('%m%d%Y')}}">
+    <p class="date">
         {{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
         {{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
-    </a>
+    </p>
+    {{if i == 0:}}
+    <p style="line-height:7px;z-index: 100;">
+        12am
+    </p>
+    {{for k in range(1, 12):}}
+    <p style="line-height:7px;">
+        {{=k}}
+    </p>
+    {{pass}}
+    <p style="line-height:7px;">
+        12pm
+    </p>
+    {{for j in range(1, 12):}}
+    <p style="line-height:7px;">
+        {{=j}}
+    </p>
+    {{pass}}
+    <p style="line-height:7px;">
+        12am
+    </p>
+    {{pass}}
 
+    
     <!-- keep track of which user's events we are talking about -->
-    {{user_num = 0}}
+    {{userNum = 0}}
     <!-- gotta go through our 2d list of user events -->
     {{for one_users_events in list_of_events:}}
         {{for event in one_users_events:}}
             <!-- include which user number user this and put it in their css class
                  so they can have a unique color for their events -->
-            {{event_class = "event event%d" % user_num}}
+            {{event_class = "event event%d" % userNum}}
             <!-- does this user even have an event on this day? -->
             {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
-                <p class="{{=event_class}}">
+                {{how_far_down = "position: absolute;top: " + str(int(event.start_time.hour * 17) + 58) + "px;left: 25px;"}}
+                <p class="{{=event_class}}" style="{{=how_far_down}}">
                 {{=event.description}}<br>
                 </p>
             {{pass}}
         {{pass}}
         <!-- on to the next user's set of events -->
-        {{user_num += 1}}
+        {{userNum += 1}}
     {{pass}}
+
 
 
     <!-- check if there is a gap on this day and, if so, display it -->
@@ -77,12 +96,14 @@
             {{end = gap.end_time.hour}}
             <!-- gap might have been small so give it a small box -->
             {{if ((abs(end - start)) < 3):}}
-                <p class="gap">
+                {{how_far_down = "position: absolute;top: " + str(int(gap.start_time.hour * 17) + 58) + "px;left: 40px;z-index: -1;height: " + str(int((gap.start_time.hour - gap.end_time.hour)*17)) + ";"}}
+                <p class="gap" style="{{=how_far_down}}">
                 {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
                 </p>
             <!-- gap must have been pretty big, give it a big box -->
             {{else:}}
-                <p class="big_gap">
+                {{how_far_down = "position: absolute;top: " + str(int(gap.start_time.hour * 17) + 58) + "px;left: 40px;z-index: -1;"}}
+                <p class="big_gap" style="{{=how_far_down}}">
                 {{=gap.start_time.time()}} to {{=gap.end_time.time()}}
                 </p>
             {{pass}}
@@ -93,104 +114,53 @@
     </param></div>
 {{pass}}
 
-<!-- plus minus sign to fill up the last tile slot -->
-<a href="./add"><div class="addevent"></div></a>
-
-</div> <!-- end of whole calendar -->
-
-<div id="gapsModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Gap Preferences</h4>
-      </div>
-      <div class="modal-body">
-        <div style="width:200px; display:inline">
-{{=form}}
-</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div> <!-- end of modal -->
-
-<!-- Modal -->
-<div id="dayModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-        <p id = "modalDay">Some Day</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-
-
 <script>
-
-    var gaps_showing = false;
-    var events_showing = false;
-    var currently_hidden = [];
-
+    
+    var gapsShowing = false;
+    var eventsShowing = false;
+    var currentlyHidden = [];
+    
     // start with each users' event class in the hidden list
     for (var i = 0; i < 12; i++) {
         class_to_hide = ".event" + String(i);
-        currently_hidden.push(class_to_hide);
+        currentlyHidden.push(class_to_hide);
     }
-
+    
     //start with all gaps and events hidden
     $(".gap").hide();
     $(".big_gap").hide();
     $(".event").hide();
-
+    
     //someone clicked on the toggle gaps button
     $("#gaptoggle").click( function() {
         //should we hide or show all gaps?
-        if (gaps_showing) {
+        if (gapsShowing) {
             //hide
             $(".gap").hide();
             $(".big_gap").hide();
-            gaps_showing = false;
+            gapsShowing = false;
         } else {
             //show
             $(".gap").show();
             $(".big_gap").show();
-            gaps_showing = true;
+            gapsShowing = true;
         }
     })
 
     // someone hath toggled the all events button
     $("#eventtoggle").click( function() {
         // should we hide or show?
-        if (events_showing) {
+        if (eventsShowing) {
             //hide
             $(".event").hide();
-            events_showing = false;
+            eventsShowing = false;
         } else {
             //show
             $(".event").show();
-            events_showing = true;
+            eventsShowing = true;
         }
     })
-
+    
     // someone has clicked any of the input checkboxes
     $("input").click( function () {
         // get the css class of whichever checkbox was clicked
@@ -199,21 +169,31 @@
         // so for the first run through it will just be '0' taken from 'events_of_user0'
         users_event_class = ".event" + this.value[this.value.length - 1];
         // should we hide or show these events?
-        if ($.inArray(users_event_class, currently_hidden) > -1) {
+        if ($.inArray(users_event_class, currentlyHidden) > -1) {
             //show
             $(users_event_class).show();
             //remove from hidden list
-            currently_hidden.splice( $.inArray(users_event_class, currently_hidden), 1 );
+            currentlyHidden.splice( $.inArray(users_event_class, currentlyHidden), 1 );
         }
         else {
             //hide
             $(users_event_class).hide();
             //add to hidden list
-            currently_hidden.push(users_event_class);
+            currentlyHidden.push(users_event_class);
         };
     });
-
-
-
-
+    
+    $(".calendar_tile").click(function() {
+        var day = parseInt($(this).attr("name"));
+        var weekdays = {{=XML(weekdays)}};
+        $(".whole_calendar").html(
+            '<iframe id ="single_day" src="/gapSort/schedule/day"></iframe>'
+        ).css("border-style", "none");
+        //{{=weekdays[(date + datetime.timedelta(days=i)).weekday()]}}
+        //{{=(date + datetime.timedelta(days=i)).strftime('%m/%d/%Y')}}
+    });
+    
+    
+    
+    
 </script>
