@@ -219,7 +219,7 @@ def group_day():
             print str(gap)
 
     # get user_ids for all people in this group
-    users = db(group_id == db.user_groups.group_id).select(db.user_groups.user_id)
+    users = db(group == db.user_groups.group_id).select(db.user_groups.user_id)
     # maintain a list of all the usernames
     list_of_usernames = []
     # add each users events to the events list
@@ -236,5 +236,5 @@ def group_day():
     next_date = (end_date + datetime.timedelta(minutes=1)).date().strftime('%m%d%Y')
 
     #return
-    return dict(gaps = gaps, group = group, users = users, list_of_events = list_of_events
+    return dict(gaps = gaps, group = group, users = users, list_of_events = list_of_events,
         date = date_string, prev_date = prev_date, next_date = next_date)
