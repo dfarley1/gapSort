@@ -5,7 +5,7 @@ html {
 
 body {
   height: 800px;
-  background-image: url('http://wallpapercave.com/wp/fcaM4Mo.jpg');
+  background-image: url('../images/gapSort_background.jpg');
 }
 #edit {
     width: 250px;
@@ -15,7 +15,7 @@ body {
     background-image: linear-gradient(
       rgba(0, 0, 0, 0.4),
       rgba(0, 0, 0, 0.4)
-    ),url("https://assets.ifttt.com/images/channels/554351061/icons/on_color_large.png");
+    ),url("../images/edit_schedule.png");
     background-size: cover; /* or contain depending on what you want */
     background-position: center center;
     background-repeat: no-repeat;
@@ -35,7 +35,7 @@ body {
     background-image: linear-gradient(
       rgba(0, 0, 0, 0.4),
       rgba(0, 0, 0, 0.4)
-    ),url("http://mcmath.sd38.bc.ca/sites/mcmath.sd38.bc.ca/files/475044059236022788-calendar-sheets.0.39.2000.800.full_.jpg");
+    ),url("../images/view_schedule.jpg");
     background-size: cover; /* or contain depending on what you want */
     background-position: center center;
     background-repeat: no-repeat;
@@ -54,7 +54,7 @@ body {
     background-image: linear-gradient(
       rgba(0, 0, 0, 0.5),
       rgba(0, 0, 0, 0.5)
-    ),url('https://s-media-cache-ak0.pinimg.com/564x/e5/53/e3/e553e3c638ba3353256a1e8f086e1f48.jpg');
+    ),url('../images/my_groups.jpg');
     background-size: cover; /* or contain depending on what you want */
     background-position: center center;
     background-repeat: no-repeat;
