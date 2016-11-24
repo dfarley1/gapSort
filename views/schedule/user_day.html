@@ -18,7 +18,7 @@
 
 <div id="calendar">
 
-	<div id = "date"> 
+	<div id = "date">
 		{{=date_string}}
 	</div>
 
@@ -41,9 +41,9 @@
 		 	{{if event[5]!=0: horizontal_width = int(500/event[5])}}
 
 		 	{{style = "height:%d; top:%d; left:%d; width: %d" %(length,vertical_offset,horizontal_offset, horizontal_width)}}
-		 	<p class="event" style = "{{=style}}"> 
-				{{=event[3]}}  
-		 	</p>
+		 	<a href="/gapSort/schedule/add/{{=event[2]}}" class="event" style = "{{=style}}">
+				{{=event[3]}}
+		 	</a>
 		{{pass}}
 	</div>
 </div>
@@ -51,7 +51,7 @@
 
 <div id = "menu">
 
-	<a class = "btn" href = {{=prev_link}}> 
+	<a class = "btn" href = {{=prev_link}}>
 		<button> Previous Day </button>
 	</a>
 

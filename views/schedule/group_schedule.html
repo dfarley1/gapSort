@@ -31,6 +31,7 @@
 </a>
 
 
+
 <!-- python module for all date related things -->
 {{import datetime}}
 <!-- outer div to contain all of the calendar tiles -->
@@ -58,9 +59,9 @@
             {{event_class = "event event%d" % user_num}}
             <!-- does this user even have an event on this day? -->
             {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
-                <p class="{{=event_class}}">
+                <a href="/gapSort/schedule/add/{{=event.id}}" class="{{=event_class}}" style="display: block;">
                 {{=event.description}}<br>
-                </p>
+                </a>
             {{pass}}
         {{pass}}
         <!-- on to the next user's set of events -->
