@@ -297,28 +297,35 @@ def user_day():
                 print 'changing event totals %d' %previous_event_index
                 for i in range(0,previous_event_index):
                     print i
-                    events[len(events)-i][3] = previous_event_index+1
+                    events[len(events)-i][5] = previous_event_index+1
                 insert_event.append(0)
                 insert_event.append(0)
                 previous_event_index = 0
 
+            #if previous event indec was 0 and still should be zero, just append zeros.
             else:
                 insert_event.append(0)
                 insert_event.append(0)
 
+            #set the previous_end_time to compare too
             previous_event_end_time = event[1]
+
+            #append the new event to the events list
             events.append(insert_event)
 
         elif event[0] >= end_date:
             #since sorted in ascending order we can move on now
             break
 
+    #do one last check for checking the total number of overlap
     if previous_event_index!=0:
         print 'changing event totals %d' %previous_event_index
         print 'length %d' %len(events)
         for i in range(1,previous_event_index+2):
             print i
-            events[len(events)-i][3] = previous_event_index+1
+            print events[len(events)-i][5]
+            events[len(events)-i][5] = previous_event_index+1
 
+    #return
     return dict(user=user, date = date_string,
         events= events, prev_date=prev_date, next_date=next_date)
