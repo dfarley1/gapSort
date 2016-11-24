@@ -58,6 +58,18 @@ h1 {
     opacity: .5;
 }
 
+.event {
+	width: 500px;
+    height: 500px;
+    border-style: solid;
+    border-width: 2px;
+    background-color: #8b008b;
+    color: white;
+    z-index: 1;
+    position: absolute;
+    opacity: .7;
+}
+
 .btn {
 	float: left;
 }

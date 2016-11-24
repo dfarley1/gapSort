@@ -198,6 +198,9 @@ def group_day():
     day = int(date_string[2:4])
     year = int(date_string[4:])
 
+    #find group name
+    group_name = db(group == db.groups.id).select()[0].name
+
     #figure out the beginning and end times of the day
     start_date = datetime.datetime(year,month,day,0,0)
     end_date = datetime.datetime(year,month,day,23,59)
@@ -225,7 +228,7 @@ def group_day():
     #TESTING
 
     #return
-    return dict(gaps = gaps, group = group,
+    return dict(gaps = gaps, group = group, group_name = group_name,
         date = date_string, prev_date = prev_date, next_date = next_date)
 
 
