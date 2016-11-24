@@ -1,0 +1,70 @@
+{{from datetime import timedelta}}
+{{import math}})
+{{extend 'layout.html'}}
+
+<head>
+	<link rel="stylesheet" href="{{=URL('static', 'css/day.css')}}">
+</head>
+
+<h1> Your Schedule </h1>
+
+{{prev_link = "./%s" %prev_date}}
+{{next_link = "./%s" %next_date}}
+{{prev_page_link = "../../my_schedule"}}
+
+{{date_string = "%s-%s-%s" %(date[0:2],date[2:4],date[4:])}}
+
+
+
+<div id="calendar">
+
+	<div id = "date"> 
+		{{=date_string}}
+	</div>
+
+	<div id="calendar_day">
+
+		{{for event in events:}}
+
+			<!-- set the length -->
+			{{time_length = event[1] - event[0]}}
+		 	{{length = int(time_length.total_seconds()/120)}}
+
+		 	<!-- set the vertical offsetoffset -->
+		 	{{vertical_offset = int((event[0].hour*60 + event[0].minute)/2)}}
+		 	{{if length+vertical_offset>720: length=(720-vertical_offset)}}
+
+		 	<!-- set the horizontal offset -->
+		 	{{horizontal_offset = 0}}
+		 	{{if event[5]!=0: horizontal_offset = int(event[4]*(500/event[5]))}}
+		 	{{horizontal_width = 500}}
+		 	{{if event[5]!=0: horizontal_width = int(500/event[5])}}
+
+		 	{{style = "height:%d; top:%d; left:%d; width: %d" %(length,vertical_offset,horizontal_offset, horizontal_width)}}
+		 	<p class="event" style = "{{=style}}"> 
+				{{=event[3]}}  
+		 	</p>
+		{{pass}}
+	</div>
+</div>
+
+
+<div id = "menu">
+
+	<a class = "btn" href = {{=prev_link}}> 
+		<button> Previous Day </button>
+	</a>
+
+	<br><br>
+
+	<a class = "btn" href = {{=next_link}}>
+		<button> Next Day </button>
+	</a>
+
+	<br><br>
+
+	<a class = "btn" href = {{=prev_page_link}}>
+		<button> 2 Week View </button>
+	</a>
+
+</div>
