@@ -6,6 +6,8 @@
 	<link rel="stylesheet" href="{{=URL('static', 'css/day.css')}}">
 </head>
 
+<h1> Gaps For {{=group_name}} </h1>
+
 {{prev_link = "./%s" %prev_date}}
 {{next_link = "./%s" %next_date}}
 {{prev_page_link = "../../group_schedule/%d" %group}}
@@ -26,20 +28,20 @@
 		 	{{style = "height:%d; top:%d;" %(length,offset)}}
 
 	 	<p class="gap" style= "{{=style}}"></p>
-	 {{pass}}
+	 	{{pass}}
 	</div>
 </div>
 
 <div id = "menu">
 
 	<a class = "btn" href = {{=prev_link}}> 
-		<button> Yesterday </button>
+		<button> Previous Day </button>
 	</a>
 
 	<br><br>
 
 	<a class = "btn" href = {{=next_link}}>
-		<button> Tomorrow </button>
+		<button> Next Day </button>
 	</a>
 
 	<br><br>
