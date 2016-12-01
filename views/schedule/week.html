@@ -88,7 +88,7 @@
             {{if (event.start_time.date() == date + datetime.timedelta(days=i)):}}
                 {{how_far_down = "position: absolute;top: " + str(int(event.start_time.hour * 17) + 58) + "px;left: 25px;"}}
                 <p class="{{=event_class}}" style="{{=how_far_down}}">
-                {{=event.description}}<br>
+                {{=event.name}}<br>
                 </p>
             {{pass}}
         {{pass}}
